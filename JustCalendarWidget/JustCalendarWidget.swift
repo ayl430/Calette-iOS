@@ -68,6 +68,7 @@ struct JustCalendarWidget: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             
 //            JustCalendarWidgetEntryView(entry: entry)
+//            CalendarView(entry: entry, viewModel: WidgetSettingModel())
             CalendarView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
                 .environmentObject(DateModel.shared)

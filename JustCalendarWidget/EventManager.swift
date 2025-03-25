@@ -30,8 +30,7 @@ class EventManager: NSObject {
         guard isFullAccess else { return [] }
         let start = Date().startOfMonth
         let end = Date().endOfMonth
-        print("start: \(start)")
-        print("end: \(end)")
+        
         let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: nil)
         return eventStore.events(matching: predicate).sortedEventByAscendingDate()
     }
@@ -40,8 +39,7 @@ class EventManager: NSObject {
         guard isFullAccess else { return }
         let start = Date().startOfMonth
         let end = Date().endOfMonth
-        print("start: \(start)")
-        print("end: \(end)")
+        
         let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: nil)
         let events = eventStore.events(matching: predicate).sortedEventByAscendingDate()
         
@@ -52,45 +50,56 @@ class EventManager: NSObject {
         print(eventNames)
     }
     
-    func fetchEventsDays(date: Date) -> [EventList] {
-        guard isFullAccess else { return [EventList]() }
-        let start = date.startOfMonth
-        let end = date.endOfMonth
+    func fetchEventsDays(date: Date) -> [EventItem] {
+        guard isFullAccess else { return [EventItem]() }
+        let start = date.startOfMonth.local
+        let end = date.endOfMonth.local
+        print(date)
         print("start: \(start)")
         print("end: \(end)")
         let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: nil)
         let events =  eventStore.events(matching: predicate).sortedEventByAscendingDate()
         
-        var eventList: [EventList] = []
+        var eventList: [EventItem] = []
         events.forEach {
             let startDate = $0.startDate
             let endDate = $0.endDate
             let title = $0.title
             
-            var addDate = startDate!
+            let calendarTitle = $0.calendar.title
+            let calendarType = $0.calendar.type
+            let allowModification = $0.calendar.allowsContentModifications
             
+            var addDate = startDate!
             repeat {
-                let value = EventList(title: title!, date: addDate)
+                let value = EventItem(title: title!, date: addDate.local, calendarTitle: calendarTitle, calendarType: calendarType, allowModification: allowModification)
                 eventList.append(value)
                 addDate = addDate.addingTimeInterval(86400)
             } while addDate <= endDate!
             
         }
-        print("fetchEventsDays: \(eventList)")
+        eventList.forEach { print($0) }
         return eventList
     }
-}
-
-
-extension Date {
-    // 현재날짜 + 1달
-    var oneMonthOut: Date {
-        Calendar.current.date(byAdding: .month, value: 1, to: Date.now) ?? Date()
-    }
     
-    var firstDayOfMonth: Date {
-//        Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: self))!
-        Calendar.current.date(byAdding: DateComponents(month: -1, day: 1), to: self)!
+    func getEvents(date: Date) -> [EventItem]? {
+        guard isFullAccess else { return nil }
+        
+        let predicate = eventStore.predicateForEvents(withStart: date.startOfDay, end: date.lastOfDay, calendars: nil)
+        let events =  eventStore.events(matching: predicate).sortedEventByAscendingDate()
+        
+        var eventList: [EventItem] = []
+        events.forEach {
+            let title = $0.title
+            
+            let calendarTitle = $0.calendar.title
+            let calendarType = $0.calendar.type
+            let allowModification = $0.calendar.allowsContentModifications
+            
+            let value = EventItem(title: title!, date: date, calendarTitle: calendarTitle, calendarType: calendarType, allowModification: allowModification)
+            eventList.append(value)
+        }
+        return eventList
     }
 }
 
@@ -105,7 +114,11 @@ extension Array {
     }
 }
 
-struct EventList {
+struct EventItem {
     let title: String?
     let date: Date?
+    
+    let calendarTitle: String?
+    let calendarType: EKCalendarType?
+    let allowModification: Bool?
 }

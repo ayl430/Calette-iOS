@@ -142,4 +142,33 @@ extension Date {
         let day = delta / 86400
         return Int(day)
     }
+    
+    // 현재날짜 + 1달
+    var oneMonthOut: Date {
+        Calendar.current.date(byAdding: .month, value: 1, to: Date.now) ?? Date()
+    }
+    
+    var firstDayOfMonth: Date {
+//        Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: self))!
+        Calendar.current.date(byAdding: DateComponents(month: -1, day: 1), to: self)!
+    }
+    
+    var local: Date {
+        let timezone = TimeZone(identifier: "Asia/Seoul")
+        let secondsFromGMT = timezone!.secondsFromGMT(for: self)
+        let localizedDate = self.addingTimeInterval(TimeInterval(secondsFromGMT))
+        
+        return localizedDate
+    }
+    
+    var startOfDay: Date {
+        return Calendar.current.startOfDay(for: self)
+    }
+    
+    var lastOfDay: Date {
+        var components = DateComponents()
+        components.day = 1
+        return Calendar.current.date(byAdding: components, to: startOfDay)!
+            .addingTimeInterval(-0.0000000000000001)
+    }
 }

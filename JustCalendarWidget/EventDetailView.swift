@@ -8,22 +8,34 @@
 import SwiftUI
 
 struct EventDetailView: View {
+    
+//    var selectedDate: Date
+    @ObservedObject private var dateModel = DateModel.shared
+    
     var body: some View {
     
-        HStack {
-            Text("|")
-            Text("이벤트 1")
-//            Text("8:00 - 10:00")
+        HStack() {
+            Rectangle()
+                .fill(dateModel.hasEvent(on: dateModel.selectedDate.local.getDay()) ? (dateModel.isHoliday(on: dateModel.selectedDate.local.getDay()) ? Color.red : Color.blue) : Color.clear)
+                .frame(width: 1, height: 10)
+                .padding(.leading, 5)
+            
+            if let events = EventManager.shared.getEvents(date: dateModel.selectedDate) {
+                if !events.isEmpty {
+                    Text(events[0].title ?? "")
+                        .font(.system(size: 12))
+                        .padding()
+                }
+            }
             
             Spacer()
-//            Text("+")
-//            Text(">")
         }
-        .font(.system(size: 10))
-        .padding(.vertical, 5)
+//        .background(Color.gray.opacity(0.3))
+        .frame(width: 300, height: 30, alignment: .leading)
     }
 }
 
 #Preview {
+//    EventDetailView(selectedDate: Date())
     EventDetailView()
 }

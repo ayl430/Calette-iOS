@@ -12,66 +12,114 @@ struct CalendarView: View {
     var entry: Provider.Entry
     
     var sevenDays = ["일", "월", "화", "수", "목", "금", "토"]
-    @State var days = DateModel.shared.today.getDays()
+    @State var thisMonthDays = DateModel.shared.selectedDate.getDays()
     let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 10, alignment: .center), count: 7)
     
-    @ObservedObject private var selectedDate = DateModel.shared //변수명 수정!!
+    @ObservedObject private var dateModel = DateModel.shared
+    
+//    let sharedUserDefaults = WidgetSettingsManager.shared.themeColor
+    @AppStorage(WidgetSettings.Keys.themeColorKey, store: UserDefaults.shared) var color: String = "justDefaultColor"
+    
+    private let capsuleButtonWidth: CGFloat = 60
     
     var body: some View {
         VStack {
             HStack {
-                Button(intent: PriorMonthIntent()) {
-                    Text("<")
-                }
-                .frame(width: 30, height: 30)
-                .buttonStyle(.plain)
-                .padding(.horizontal)
-//                .border(.black, width: 1)
-                .foregroundStyle(Color.black)
-                .bold()
-                
-                Text(selectedDate.today.toString().hyphenToDot())
-                    .font(.system(size: 12))
+                Text(dateModel.selectedDate.toString().hyphenToDot())
+                    .font(.system(size: 21))
+                    .bold()
                     .padding(.horizontal)
+                    .contentTransition(.identity)
                 
-                Button(intent: NextMonthIntent()) {
-                    Text(">")
+                Spacer()
+                
+                HStack {
+                    Button(intent: TodayIntent()) {
+                        Image(systemName: "square")
+                            .font(.caption)
+                    }
+                    .frame(width: 30, height: 30)
+                    .background(
+                        RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .fill(WidgetTheme(rawValue: color)!.color)
+                    )
+                    .padding(.horizontal, 5)
+                    .buttonStyle(.plain)
+                    .foregroundStyle(Color.white)
+                    .bold()
+                    
+                    HStack(spacing: 0) {
+                        Button(intent: PriorMonthIntent()) {
+                            RoundedRectangle(cornerRadius: capsuleButtonWidth / 4, style: .continuous)
+                                .fill(WidgetTheme(rawValue: color)!.color)
+                                .frame(width: capsuleButtonWidth, height: capsuleButtonWidth / 2)
+                                .offset(x: capsuleButtonWidth / 4)
+                                .clipped()
+                                .offset(x: -capsuleButtonWidth / 4)
+                                .frame(width: capsuleButtonWidth / 2)
+                                .overlay {
+                                    Image(systemName: "lessthan")
+                                        .font(.caption)
+                                        .foregroundStyle(Color.white)
+                                        .bold()
+                                        .offset(x: -capsuleButtonWidth / 8)
+                                }
+                        }
+                        .frame(width: 30, height: 30)
+                        .buttonStyle(.plain)
+                        
+                        Rectangle()
+                            .fill(WidgetTheme(rawValue: color)!.color)
+                            .frame(width: 1, height: capsuleButtonWidth / 2)
+                            .overlay {
+                                Rectangle()
+                                    .fill(Color.white)
+                                    .frame(width: 1, height: capsuleButtonWidth / 4)
+                            }
+                        
+                        Button(intent: NextMonthIntent()) {
+                            RoundedRectangle(cornerRadius: capsuleButtonWidth / 4, style: .continuous)
+                                .fill(WidgetTheme(rawValue: color)!.color)
+                                .frame(width: capsuleButtonWidth, height: capsuleButtonWidth / 2)
+                                .offset(x: -capsuleButtonWidth / 4)
+                                .clipped()
+                                .offset(x: capsuleButtonWidth / 4)
+                                .frame(width: capsuleButtonWidth / 2)
+                                .overlay {
+                                    Image(systemName: "greaterthan")
+                                        .font(.caption)
+                                        .foregroundStyle(Color.white)
+                                        .bold()
+                                        .offset(x: capsuleButtonWidth / 8)
+                                }
+                        }
+                        .frame(width: 30, height: 30)
+                        .buttonStyle(.plain)
+                    }
+                    .padding(.horizontal)
                 }
-                .frame(width: 30, height: 30)
-                .buttonStyle(.plain)
-                .padding(.horizontal)
-//                .border(.black, width: 1)
-                .foregroundStyle(Color.black)
-                .bold()
             }
             
-                // 요일
-//                LazyVGrid(columns: columns) {
-//                    ForEach(0..<7, id: \.self) { index in
-//                        Text(sevenDays[index])
-//                            .font(.system(size: 10))
-//                        //                        .padding()
-//                            .foregroundStyle(sevenDays[index] == "일" ? Color.yellow : Color.black)
-//                    }
-//                }
-//
-//                Divider()
-            
+            // 날짜 사이에 간격이 없어야 날짜를 누를때 간격을 눌러서 앱으로 이동할 일이 없음
             LazyVGrid(columns: columns) {
-                let countToDraw = (selectedDate.today.dayOfWeekFirst - 1) + days.count
+                let countToDraw = (dateModel.selectedDate.dayOfWeekFirst - 1) + thisMonthDays.count
                 ForEach((0..<42), id: \.self) { index in
-                        if index + 1 < selectedDate.today.dayOfWeekFirst || index >= countToDraw {
-//                            Text(" ")
-                            EmptyCalendarDateView()
-                        } else {
-                            CalendarDateView(day: "\(days[index - (selectedDate.today.dayOfWeekFirst - 1)])",
-                                             index: index)
+                    if index + 1 < dateModel.selectedDate.dayOfWeekFirst || index >= countToDraw {
+                        EmptyCalendarDateView()
+                    } else {
+                        CalendarDateView(date: thisMonthDays[index - (dateModel.selectedDate.dayOfWeekFirst - 1)], index: index)
                             .aspectRatio(contentMode: .fill)
-                        }
                     }
                 }
             }
-            .padding(.horizontal, 5)
+            
+            if let events = EventManager.shared.getEvents(date: dateModel.selectedDate) {
+                EventDetailView()
+            }
+        }
+        .padding(.horizontal, 5)
+        
+        
         }
 }
 

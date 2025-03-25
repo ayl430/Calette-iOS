@@ -11,25 +11,24 @@ import WidgetKit
 
 struct CalendarDateView: View {
     
-    var day: String
+    var date: Int
     var index: Int
     
-    @ObservedObject private var viewModel = DateModel.shared
+    @ObservedObject private var dateModel = DateModel.shared
     
     var body: some View {        
-        Button(intent: SelectDateIntent(dayValue: Int(day)!)) {
-            
+        Button(intent: SelectDateIntent(dayValue: date)) {
             ZStack {
-                VStack {
-                    Text(day)
-                        .font(.system(size: 10))
+                VStack(spacing: 3) {
+                    Text("\(date)")
+                        .font(.system(size: 12))
                     Circle()
-                        .fill(viewModel.hasEvent(on: day) ? Color.blue : Color.clear)
+                        .fill(dateModel.hasEvent(on: date) ? (dateModel.isHoliday(on: date) ? Color.red : Color.blue) : Color.clear)
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 5, height: 5)
+                        .frame(width: 3, height: 3)
                 }
                 
-                if viewModel.today.get(component: .day) == Int(day)! {
+                if dateModel.selectedDate.get(component: .day) == date {
                     Circle()
                         .fill(Color.clear)
                         .stroke(Color.black)
@@ -38,11 +37,11 @@ struct CalendarDateView: View {
                 }
             }
         }
-        .frame(width: 30, height: 30)
+        .frame(width: 40, height: 25)
         .buttonStyle(.plain)
         .padding(.horizontal)
         .foregroundStyle(
-            index % 7 == 0 ? Color.yellow : Color.black)
+            index % 7 == 0 ? Color.justDefaultColor : Color.black)
         .bold()
     }
 }
@@ -51,6 +50,6 @@ struct EmptyCalendarDateView: View {
     var body: some View {
         Rectangle()
             .fill(Color.clear)
-            .frame(width: 30, height: 30)
+            .frame(width: 40, height: 25)
     }
 }
