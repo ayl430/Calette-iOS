@@ -8,28 +8,35 @@
 import SwiftUI
 
 struct FirstDayView: View {
+    @ObservedObject var viewModel: WidgetSettingModel
     
     var body: some View {
             List {
                 Button {
-                    print("tapped")
+                    viewModel.firstDayOfWeek = 1
+                    viewModel.setFirstDayOfWeek(day: 1)
                 } label: {
                     HStack {
                         Text("일요일")
                             .foregroundStyle(Color.black)
                         Spacer()
-                        Image(systemName: "checkmark")
+                        if viewModel.firstDayOfWeek == 1 {
+                            Image(systemName: "checkmark")
+                        }
                     }
                 }
                 
                 Button {
-                    print("tapped")
+                    viewModel.firstDayOfWeek = 2
+                    viewModel.setFirstDayOfWeek(day: 2)
                 } label: {
                     HStack {
                         Text("월요일")
                             .foregroundStyle(Color.black)
                         Spacer()
-                        Image(systemName: "checkmark")
+                        if viewModel.firstDayOfWeek == 2 {
+                            Image(systemName: "checkmark")                            
+                        }
                     }
                 }
             }
@@ -38,5 +45,5 @@ struct FirstDayView: View {
 }
 
 #Preview {
-    FirstDayView()
+//    FirstDayView()
 }

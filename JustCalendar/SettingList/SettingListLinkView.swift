@@ -24,7 +24,7 @@ struct SettingListLinkView: View {
             case .theme:
                 WidgetThemesView()
             case .FirstDay:
-                FirstDayView()
+                FirstDayView(viewModel: WidgetSettingModel())
             case .lunarDay:
                 LunarDayView()
             case .developer:

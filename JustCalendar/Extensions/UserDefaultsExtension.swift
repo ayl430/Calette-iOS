@@ -45,11 +45,23 @@ extension UserDefaults {
         }
     }
     
+    func getPreference(of key: String) -> Int? {
+        if let value = UserDefaults.shared.value(forKey: key) as? Int {
+            return value
+        } else {
+            return nil
+        }
+    }
+    
     func setPreference(of key: String, value: String) -> Void {
         UserDefaults.shared.set(value, forKey: key)
     }
     
     func setPreference(of key: String, value: Bool) -> Void {
+        UserDefaults.shared.set(value, forKey: key)
+    }
+    
+    func setPreference(of key: String, value: Int) -> Void {
         UserDefaults.shared.set(value, forKey: key)
     }
 }

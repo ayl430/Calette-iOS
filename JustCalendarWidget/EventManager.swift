@@ -54,9 +54,6 @@ class EventManager: NSObject {
         guard isFullAccess else { return [EventItem]() }
         let start = date.startOfMonth.local
         let end = date.endOfMonth.local
-        print(date)
-        print("start: \(start)")
-        print("end: \(end)")
         let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: nil)
         let events =  eventStore.events(matching: predicate).sortedEventByAscendingDate()
         

@@ -11,7 +11,7 @@ import SwiftUI
 class WidgetSettingModel: ObservableObject {
     @Published var isOnTheme: Bool = WidgetSettingsManager.shared.isOnTheme
     @Published var themeColor: String = WidgetSettingsManager.shared.themeColor
-    @Published var firstDayOfWeek: String = WidgetSettingsManager.shared.firstDayOfWeek
+    @Published var firstDayOfWeek: Int = WidgetSettingsManager.shared.firstDayOfWeek // 일요일 1, 월요일 2
     @Published var isLunarCalendar: Bool = WidgetSettingsManager.shared.isLunarCalendar
     
     func setTheme(color: String) {
@@ -19,10 +19,8 @@ class WidgetSettingModel: ObservableObject {
         themeColor = color
     }
     
-    func get(color: String) -> Color {
-        if let theme = WidgetTheme(rawValue: themeColor) {
-            return theme.color
-        }
-        return WidgetTheme.justDefaultColor.color
+    func setFirstDayOfWeek(day: Int) {
+        WidgetSettingsManager.shared.firstDayOfWeek = day
+        firstDayOfWeek = day
     }
 }

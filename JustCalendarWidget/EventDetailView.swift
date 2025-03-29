@@ -13,27 +13,45 @@ struct EventDetailView: View {
     @ObservedObject private var dateModel = DateModel.shared
     
     var body: some View {
-    
-        HStack() {
-            Rectangle()
-                .fill(dateModel.hasEvent(on: dateModel.selectedDate.local.getDay()) ? (dateModel.isHoliday(on: dateModel.selectedDate.local.getDay()) ? Color.red : Color.blue) : Color.clear)
-                .frame(width: 1, height: 10)
-                .padding(.leading, 5)
-            
-            if let events = EventManager.shared.getEvents(date: dateModel.selectedDate) {
-                if !events.isEmpty {
-                    Text(events[0].title ?? "")
-                        .font(.system(size: 12))
-                        .padding()
+        if let events = EventManager.shared.getEvents(date: dateModel.selectedDate) {
+            if !events.isEmpty {
+                VStack(spacing: 0) {
+                    let eventCount = events.count
+                    let count = eventCount > 2 ? 2 : eventCount
+                    ForEach(0..<count, id: \.self) { index in
+                        HStack() {
+                            Rectangle()
+                                .fill(dateModel.hasEvent(on: dateModel.selectedDate.local.getDay()) ? (dateModel.isHoliday(on: dateModel.selectedDate.local.getDay()) ? Color.red : Color.blue) : Color.clear)
+                                .frame(width: 1, height: 10)
+                                .padding(.leading, 5)
+                            
+                            Text(events[index].title ?? "")
+                                .font(.system(size: 12))
+                                .foregroundStyle(Color(hex: "#686868"))
+                                .padding()
+                            Spacer()
+                        }
+                    }
+                }
+            } else {
+                HStack {
+                    EventEmptyView()
+                    Spacer()
                 }
             }
-            
-            Spacer()
         }
-//        .background(Color.gray.opacity(0.3))
-        .frame(width: 300, height: 30, alignment: .leading)
+        
     }
 }
+
+struct EventEmptyView: View {
+    var body: some View {
+        Image(systemName: "tree")
+            .frame(width: 45, height: 45)
+            .foregroundStyle(Color.gray)
+    }
+}
+
 
 #Preview {
 //    EventDetailView(selectedDate: Date())

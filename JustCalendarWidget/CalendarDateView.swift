@@ -15,6 +15,7 @@ struct CalendarDateView: View {
     var index: Int
     
     @ObservedObject private var dateModel = DateModel.shared
+    @ObservedObject var viewModel: WidgetSettingModel
     
     var body: some View {        
         Button(intent: SelectDateIntent(dayValue: date)) {
@@ -41,7 +42,10 @@ struct CalendarDateView: View {
         .buttonStyle(.plain)
         .padding(.horizontal)
         .foregroundStyle(
-            index % 7 == 0 ? Color.justDefaultColor : Color.black)
+            viewModel.firstDayOfWeek == 1
+            ? (index % 7 == 0 ? Color.justDefaultColor : Color.black)
+            : (index % 7 == 6 ? Color.justDefaultColor : Color.black)
+        )
         .bold()
     }
 }

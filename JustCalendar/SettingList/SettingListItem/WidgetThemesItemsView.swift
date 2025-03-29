@@ -60,5 +60,5 @@ struct WidgetThemesItemsView: View {
 }
 
 #Preview {
-//    WidgetThemesItemsView()
+    WidgetThemesItemsView(viewModel: WidgetSettingModel())
 }

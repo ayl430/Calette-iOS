@@ -22,6 +22,7 @@ class WidgetSettingsManager: NSObject {
     static let shared = WidgetSettingsManager()
     
     @AppStorage(WidgetSettings.Keys.themeColorKey, store: UserDefaults.shared) var color: String = "justDefaultColor"
+    @AppStorage(WidgetSettings.Keys.firstDayOfWeekKey, store: UserDefaults.shared) var sunOrMon: Int = 1
     
     
     override private init() {
@@ -38,7 +39,6 @@ class WidgetSettingsManager: NSObject {
         get {
 //            print("themeColor: \(UserDefaults.shared.getPreference(of: WidgetSettings.Keys.themeColorKey))")
 //            return UserDefaults.shared.getPreference(of: WidgetSettings.Keys.themeColorKey)
-            print("themeColor: \(color)")
             return color
         }
         set {
@@ -49,12 +49,14 @@ class WidgetSettingsManager: NSObject {
         }
     }
     
-    var firstDayOfWeek: String {
+    var firstDayOfWeek: Int {
         get {
-            return UserDefaults.shared.getPreference(of: WidgetSettings.Keys.firstDayOfWeekKey)
+//            return UserDefaults.shared.getPreference(of: WidgetSettings.Keys.firstDayOfWeekKey) ?? 1
+            return sunOrMon
         }
         set {
-            UserDefaults.shared.setPreference(of: WidgetSettings.Keys.firstDayOfWeekKey, value: newValue)
+//            UserDefaults.shared.setPreference(of: WidgetSettings.Keys.firstDayOfWeekKey, value: newValue)
+            sunOrMon = newValue
             reloadWidget(named: WidgetSettings.widgetName)
         }
     }

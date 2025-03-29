@@ -75,6 +75,7 @@
 				Extensions/StringExtension.swift,
 				Extensions/UIColorExtension.swift,
 				Extensions/UserDefaultsExtension.swift,
+				WidgetSettingModel.swift,
 				WidgetSettingsManager.swift,
 			);
 			target = D832DA282D4FAB3A002B5B13 /* JustCalendarWidgetExtension */;

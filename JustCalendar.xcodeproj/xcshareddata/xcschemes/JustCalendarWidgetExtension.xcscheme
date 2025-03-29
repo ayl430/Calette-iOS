@@ -103,16 +103,17 @@
       debugDocumentVersioning = "YES"
       askForAppToLaunch = "Yes"
       launchAutomaticallySubstyle = "2">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.springboard">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D8E394D22D47E1C300C47FDC"
-            BuildableName = "JustCalendar.app"
-            BlueprintName = "JustCalendar"
+            BlueprintIdentifier = "D832DA282D4FAB3A002B5B13"
+            BuildableName = "JustCalendarWidgetExtension.appex"
+            BlueprintName = "JustCalendarWidgetExtension"
             ReferencedContainer = "container:JustCalendar.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

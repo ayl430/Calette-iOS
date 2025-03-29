@@ -17,8 +17,11 @@ struct CalendarView: View {
     
     @ObservedObject private var dateModel = DateModel.shared
     
+    @ObservedObject var viewModel: WidgetSettingModel
+    
 //    let sharedUserDefaults = WidgetSettingsManager.shared.themeColor
     @AppStorage(WidgetSettings.Keys.themeColorKey, store: UserDefaults.shared) var color: String = "justDefaultColor"
+    @AppStorage(WidgetSettings.Keys.firstDayOfWeekKey, store: UserDefaults.shared) var sunOrMon: Int = 1
     
     private let capsuleButtonWidth: CGFloat = 60
     
@@ -99,28 +102,47 @@ struct CalendarView: View {
                     .padding(.horizontal)
                 }
             }
+            .padding(.bottom, 15)
             
             // 날짜 사이에 간격이 없어야 날짜를 누를때 간격을 눌러서 앱으로 이동할 일이 없음
             LazyVGrid(columns: columns) {
-                let countToDraw = (dateModel.selectedDate.dayOfWeekFirst - 1) + thisMonthDays.count
-                ForEach((0..<42), id: \.self) { index in
-                    if index + 1 < dateModel.selectedDate.dayOfWeekFirst || index >= countToDraw {
-                        EmptyCalendarDateView()
-                    } else {
-                        CalendarDateView(date: thisMonthDays[index - (dateModel.selectedDate.dayOfWeekFirst - 1)], index: index)
-                            .aspectRatio(contentMode: .fill)
+                if viewModel.firstDayOfWeek == 2 {
+                    let zeroToLastDay = (dateModel.selectedDate.dayOfWeekFirst - 2) + thisMonthDays.count
+                    ForEach(0..<zeroToLastDay, id: \.self) { index in
+                        if index + 2 < dateModel.selectedDate.dayOfWeekFirst || index >= zeroToLastDay { //0 1 2 3 4
+                            EmptyCalendarDateView()
+                        } else { //5-(7-2)
+                            CalendarDateView(date: thisMonthDays[index - (dateModel.selectedDate.dayOfWeekFirst - 2)], index: index, viewModel: viewModel)
+                                .aspectRatio(contentMode: .fill)
+                        }
+                    }
+                } else if viewModel.firstDayOfWeek == 1 {
+                    let zeroToLastDay = (dateModel.selectedDate.dayOfWeekFirst - 1) + thisMonthDays.count
+                    ForEach(0..<zeroToLastDay, id: \.self) { index in
+                        if index + 1 < dateModel.selectedDate.dayOfWeekFirst || index >= zeroToLastDay { //0 1 2 3 4 5
+                            EmptyCalendarDateView()
+                        } else { //6-(7-1)
+                            CalendarDateView(date: thisMonthDays[index - (dateModel.selectedDate.dayOfWeekFirst - 1)], index: index, viewModel: viewModel)
+                                .aspectRatio(contentMode: .fill)
+                        }
                     }
                 }
             }
             
-            if let events = EventManager.shared.getEvents(date: dateModel.selectedDate) {
-                EventDetailView()
+            
+            ZStack {
+                Rectangle()
+                    .fill(Color.clear)
+                    .overlay(alignment: .top) {
+                        if let events = EventManager.shared.getEvents(date: dateModel.selectedDate) {
+                            EventDetailView()
+                        }
+                    }
             }
         }
         .padding(.horizontal, 5)
-        
-        
-        }
+        .padding(.vertical, 20)
+    }
 }
 
 #Preview(as: .systemLarge) {
