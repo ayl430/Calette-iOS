@@ -18,7 +18,7 @@ struct WidgetThemesItemsView: View {
     
     var body: some View {
         List {
-            Section {
+            Section(footer: Text("테마 적용을 끄면 기본 테마가 적용됩니다")) {
                 Toggle("테마 적용", isOn: $viewModel.isOnTheme)
                     .onChange(of: viewModel.isOnTheme) {
                         if viewModel.isOnTheme {
@@ -30,6 +30,11 @@ struct WidgetThemesItemsView: View {
             }
             
             if viewModel.isOnTheme {
+                
+                Section {
+                    
+                }
+                
                 Section {
                     ForEach(WidgetTheme.allCases, id: \.self) { color in
                         if color != .justDefaultColor {
@@ -38,14 +43,18 @@ struct WidgetThemesItemsView: View {
                                 viewModel.setTheme(color: color.name)
                             } label: {
                                 HStack {
-                                    Image(systemName: "checkmark.circle")
-                                        .padding(.horizontal, 10)
-                                    Spacer()
                                     if viewModel.themeColor == color.name {
+                                        WiegetThemesItemsChooseView(color: color)
+                                        Spacer()
                                         Text(color.name)
+                                            .foregroundStyle(Color.black)
                                             .bold()
                                     } else {
+                                        WiegetThemesItemsChooseView(color: color)
+                                            .opacity(0.3)
+                                        Spacer()
                                         Text(color.name)
+                                            .foregroundStyle(Color.black)
                                     }
                                     Spacer()
                                 }
@@ -61,4 +70,23 @@ struct WidgetThemesItemsView: View {
 
 #Preview {
     WidgetThemesItemsView(viewModel: WidgetSettingModel())
+}
+
+
+struct WiegetThemesItemsChooseView: View {
+    
+    var color: WidgetTheme
+    
+    var body: some View {
+        
+        Image(systemName: "square")
+            .font(.caption)
+            .frame(width: 20, height: 20)
+            .background(
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .fill(WidgetTheme(rawValue: color.name)!.color)
+            )
+            .foregroundStyle(Color.white)
+            .bold()
+    }
 }
