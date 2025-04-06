@@ -134,8 +134,9 @@ struct CalendarView: View {
                 Rectangle()
                     .fill(Color.clear)
                     .overlay(alignment: .top) {
-                        if let events = EventManager.shared.getEvents(date: dateModel.selectedDate) {
+                        if let _ = EventManager.shared.getEvents(date: dateModel.selectedDate) {
                             EventDetailView()
+                                .widgetURL(URL(string: "widget-deeplink://openCal?url=\(dateModel.selectedDate.calendarUrl)")!)
                         }
                     }
             }

@@ -22,6 +22,12 @@ struct JustCalendarApp: App {
                         }
                     }
                 }
+                .onOpenURL { url in
+                    guard url.scheme == "widget-deeplink" else { return }
+                    let components = URLComponents(string: "\(url)")
+                    let query = components?.queryItems?.first(where: { $0.name == "url" })?.value
+                    UIApplication.shared.open(URL(string: query ?? "calshow://")!)
+                }
         }
     }
 }

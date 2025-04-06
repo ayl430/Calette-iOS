@@ -58,6 +58,16 @@ extension Date {
         return Calendar.current.date(byAdding: DateComponents(month: 1), to: self)!
     }
     
+    var calendarUrl: URL {
+        let timeInterval = self.timeIntervalSinceReferenceDate
+        let urlString = "calshow:" + "\(timeInterval)"
+        if let url = URL(string: urlString) {
+            print(url)
+            return url
+        }
+        return URL(string: "calshow://")!
+    }
+    
     func getDay() -> Int {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd"
