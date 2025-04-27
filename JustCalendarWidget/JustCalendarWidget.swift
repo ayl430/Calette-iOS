@@ -72,9 +72,9 @@ struct JustCalendarWidget: Widget {
                 .containerBackground(.fill.tertiary, for: .widget)
                 .environmentObject(DateModel.shared)
         }
+        .supportedFamilies([.systemLarge])
         .configurationDisplayName("My Widget")
         .description("This is an example widget.")
-//        .supportedFamilies([.systemLarge]) // 이건 왜 에러가 나는걸까
     }
 }
 

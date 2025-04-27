@@ -50,10 +50,11 @@ class EventManager: NSObject {
         print(eventNames)
     }
     
+    //date를 포함한 달의 모든 evnets
     func fetchEventsDays(date: Date) -> [EventItem] {
         guard isFullAccess else { return [EventItem]() }
-        let start = date.startOfMonth.local
-        let end = date.endOfMonth.local
+        let start = date.startOfMonth
+        let end = date.endOfMonth
         let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: nil)
         let events =  eventStore.events(matching: predicate).sortedEventByAscendingDate()
         
@@ -69,16 +70,24 @@ class EventManager: NSObject {
             
             var addDate = startDate!
             repeat {
-                let value = EventItem(title: title!, date: addDate.local, calendarTitle: calendarTitle, calendarType: calendarType, allowModification: allowModification)
+                let value = EventItem(title: title!, date: addDate, calendarTitle: calendarTitle, calendarType: calendarType, allowModification: allowModification)
                 eventList.append(value)
                 addDate = addDate.addingTimeInterval(86400)
             } while addDate <= endDate!
             
         }
-        eventList.forEach { print($0) }
+//        eventList.forEach { print($0) }
         return eventList
     }
     
+    // 특정 날의 이벤트
+    func fetchEvents(on date: Date) -> [EventItem] {        
+        let allEvents = fetchEventsDays(date: date)
+        let events = allEvents.filter { $0.date?.local.startOfDay == date.startOfDay }
+        return events
+    }    
+    
+    // 이달의 모든 이벤트
     func getEvents(date: Date) -> [EventItem]? {
         guard isFullAccess else { return nil }
         

@@ -13,7 +13,8 @@ struct CalendarView: View {
     
     var sevenDays = ["일", "월", "화", "수", "목", "금", "토"]
     @State var thisMonthDays = DateModel.shared.selectedDate.getDays()
-    let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 10, alignment: .center), count: 7)
+    @State var thisMonthDaysDate = DateModel.shared.selectedDate.getDaysDate()
+    let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 0, alignment: .center), count: 7)
     
     @ObservedObject private var dateModel = DateModel.shared
     
@@ -26,7 +27,7 @@ struct CalendarView: View {
     private let capsuleButtonWidth: CGFloat = 60
     
     var body: some View {
-        VStack {
+        VStack(spacing: 8) {
             HStack {
                 Text(dateModel.selectedDate.toString().hyphenToDot())
                     .font(.system(size: 21))
@@ -112,7 +113,7 @@ struct CalendarView: View {
                         if index + 2 < dateModel.selectedDate.dayOfWeekFirst || index >= zeroToLastDay { //0 1 2 3 4
                             EmptyCalendarDateView()
                         } else { //5-(7-2)
-                            CalendarDateView(date: thisMonthDays[index - (dateModel.selectedDate.dayOfWeekFirst - 2)], index: index, viewModel: viewModel)
+                            CalendarDateView(dateDate: thisMonthDaysDate[index - (dateModel.selectedDate.dayOfWeekFirst - 2)], date: thisMonthDays[index - (dateModel.selectedDate.dayOfWeekFirst - 2)], index: index, viewModel: viewModel)
                                 .aspectRatio(contentMode: .fill)
                         }
                     }
@@ -122,7 +123,7 @@ struct CalendarView: View {
                         if index + 1 < dateModel.selectedDate.dayOfWeekFirst || index >= zeroToLastDay { //0 1 2 3 4 5
                             EmptyCalendarDateView()
                         } else { //6-(7-1)
-                            CalendarDateView(date: thisMonthDays[index - (dateModel.selectedDate.dayOfWeekFirst - 1)], index: index, viewModel: viewModel)
+                            CalendarDateView(dateDate: thisMonthDaysDate[index - (dateModel.selectedDate.dayOfWeekFirst - 1)], date: thisMonthDays[index - (dateModel.selectedDate.dayOfWeekFirst - 1)], index: index, viewModel: viewModel)
                                 .aspectRatio(contentMode: .fill)
                         }
                     }
@@ -134,10 +135,10 @@ struct CalendarView: View {
                 Rectangle()
                     .fill(Color.clear)
                     .overlay(alignment: .top) {
-                        if let _ = EventManager.shared.getEvents(date: dateModel.selectedDate) {
+//                        if let _ = EventManager.shared.getEvents(date: dateModel.selectedDate) {
                             EventDetailView()
-                                .widgetURL(URL(string: "widget-deeplink://openCal?url=\(dateModel.selectedDate.calendarUrl)")!)
-                        }
+//                                .widgetURL(URL(string: "widget-deeplink://openCal?url=\(dateModel.selectedDate.calendarUrl)")!)
+//                        }
                     }
             }
         }

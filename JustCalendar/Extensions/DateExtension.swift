@@ -90,6 +90,18 @@ extension Date {
         return daysOfCalendar
     }
     
+    func getDaysDate() -> [Date] {
+        var daysOfCalendar = [Date]()
+        var startOfMonth = self.startOfMonth
+            while startOfMonth <= self.endOfMonth {
+                daysOfCalendar.append(startOfMonth)
+                guard let nextDate = Calendar.current.date(byAdding: .day, value: 1, to: startOfMonth) else { break }
+                startOfMonth = nextDate
+            }
+        
+        return daysOfCalendar
+    }
+    
     func getFiveLinesDays() -> [Int] {
         var daysOfCalendar = [Int]()
         

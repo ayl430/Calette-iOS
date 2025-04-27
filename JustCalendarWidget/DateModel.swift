@@ -40,25 +40,38 @@ class DateModel: ObservableObject {//ViewModel
         }
     }
     
-    func hasEvent(on date: Int) -> Bool {
-        if let _ = events.first(where: { ($0?.date?.getDay()) == date }) {
+    func hasEvent(on date: Date) -> Bool {
+        if let _ = events.first(where: { ($0?.date?.startOfDay) == date.startOfDay }) {
             return true
         }
         return false
         
     }
     
-    func hasMultipleEvents() -> Bool {
-        return events.count >= 2 ? true : false
-    }
-    
-    func isHoliday(on date: Int) -> Bool {
-        if let event = events.first(where: { ($0?.date?.getDay()) == date }) {
+    func isHoliday(on date: Date) -> Bool {
+        if let event = events.first(where: { ($0?.date) == date }) {
             if event?.calendarTitle == "대한민국 공휴일", event?.calendarType == .subscription, ((event?.allowModification!) == false) {
                 return true
             }
             return false
         }
         return false
+    }
+    
+    func totalLines() -> Int {
+        let zeroToLastDay = (selectedDate.dayOfWeekFirst - WidgetSettingsManager.shared.firstDayOfWeek) + selectedDate.getDays().count
+        let lines = zeroToLastDay / 7 + (zeroToLastDay % 7 > 0 ? 1 : 0)
+        return lines
+    }
+    
+    func maxEvents() -> Int {
+//        let zeroToLastDay = (selectedDate.dayOfWeekFirst - WidgetSettingsManager.shared.firstDayOfWeek) + selectedDate.getDays().count
+//        let lines = zeroToLastDay / 7 + (zeroToLastDay % 7 > 0 ? 1 : 0)
+        let lines = totalLines()
+        if lines == 6 {
+            return 1
+        } else {
+            return 2
+        }
     }
 }

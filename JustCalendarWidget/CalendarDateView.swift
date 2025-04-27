@@ -11,6 +11,7 @@ import WidgetKit
 
 struct CalendarDateView: View {
     
+    var dateDate: Date
     var date: Int
     var index: Int
     
@@ -19,26 +20,25 @@ struct CalendarDateView: View {
     
     var body: some View {        
         Button(intent: SelectDateIntent(dayValue: date)) {
-            ZStack {
-                VStack(spacing: 3) {
-                    Text("\(date)")
-                        .font(.system(size: 12))
+            VStack(spacing: 3) {
+                ZStack {
+                    VStack(spacing: 1) {
+                        Text("\(date)")
+                            .font(.system(size: 12))
+                        EventMarkingView(dateDate: dateDate, date: date)
+                    }
+                    
                     Circle()
-                        .fill(dateModel.hasEvent(on: date) ? (dateModel.isHoliday(on: date) ? Color.red : Color.blue) : Color.clear)
+                        .fill(dateModel.selectedDate.get(component: .day) == date ? Color.black.opacity(0.1) : Color.clear)
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 3, height: 3)
+                        .frame(width: 25, height: 25)
                 }
-                
-                if dateModel.selectedDate.get(component: .day) == date {
-                    Circle()
-                        .fill(Color.clear)
-                        .stroke(Color.black)
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 30, height: 30)
-                }
+                Text("\(date)")
+                    .font(.system(size: 8))
+                    .foregroundStyle(dateModel.selectedDate.get(component: .day) == date ? Color(hex: "7A7A7A") : Color.clear)
             }
         }
-        .frame(width: 40, height: 25)
+        .frame(width: 40, height: 30)
         .buttonStyle(.plain)
         .padding(.horizontal)
         .foregroundStyle(
@@ -54,6 +54,12 @@ struct EmptyCalendarDateView: View {
     var body: some View {
         Rectangle()
             .fill(Color.clear)
-            .frame(width: 40, height: 25)
+            .frame(width: 40, height: 30)
     }
+}
+#Preview(as: .systemLarge) {
+    JustCalendarWidget()
+} timeline: {
+    SimpleEntry(date: .now, selectedDate: DateModel.shared)
+    SimpleEntry(date: .now, selectedDate: DateModel.shared)
 }
