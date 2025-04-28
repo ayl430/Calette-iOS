@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import KoreanLunarSolarConverter
 
 extension Date {
     func toString() -> String {
@@ -18,6 +19,13 @@ extension Date {
     func toStringDay() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd"
+        formatter.timeZone = TimeZone(identifier: "ko_KR")
+        return formatter.string(from: self)
+    }
+    
+    func toStringMdd() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "M.dd"
         formatter.timeZone = TimeZone(identifier: "ko_KR")
         return formatter.string(from: self)
     }
@@ -66,6 +74,13 @@ extension Date {
             return url
         }
         return URL(string: "calshow://")!
+    }
+    
+    var lunarDate: Date {
+        let converter  = KoreanSolarToLunarConverter()
+        let lunarDate = try? converter.lunarDate(fromSolar: self)
+        
+        return lunarDate?.date ?? self
     }
     
     func getDay() -> Int {

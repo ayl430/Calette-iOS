@@ -33,7 +33,7 @@ struct CalendarDateView: View {
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 25, height: 25)
                 }
-                Text("\(date)")
+                Text("\(dateDate.lunarDate.toStringMdd())")
                     .font(.system(size: 8))
                     .foregroundStyle(dateModel.selectedDate.get(component: .day) == date ? Color(hex: "7A7A7A") : Color.clear)
             }

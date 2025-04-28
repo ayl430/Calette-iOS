@@ -10,6 +10,8 @@
 		D832DA2A2D4FAB3A002B5B13 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D832DA0B2D4FAAC7002B5B13 /* WidgetKit.framework */; };
 		D832DA2B2D4FAB3A002B5B13 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D832DA0D2D4FAAC7002B5B13 /* SwiftUI.framework */; };
 		D832DA362D4FAB3B002B5B13 /* JustCalendarWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D832DA292D4FAB3A002B5B13 /* JustCalendarWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D8ECE3492DBE808F008211FE /* KoreanLunarSolarConverter in Frameworks */ = {isa = PBXBuildFile; productRef = D8ECE3482DBE808F008211FE /* KoreanLunarSolarConverter */; };
+		D8ECE34B2DBE86E9008211FE /* KoreanLunarSolarConverter in Frameworks */ = {isa = PBXBuildFile; productRef = D8ECE34A2DBE86E9008211FE /* KoreanLunarSolarConverter */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,6 +134,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8ECE34B2DBE86E9008211FE /* KoreanLunarSolarConverter in Frameworks */,
 				D832DA2B2D4FAB3A002B5B13 /* SwiftUI.framework in Frameworks */,
 				D832DA2A2D4FAB3A002B5B13 /* WidgetKit.framework in Frameworks */,
 			);
@@ -141,6 +144,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D8ECE3492DBE808F008211FE /* KoreanLunarSolarConverter in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +218,7 @@
 			);
 			name = JustCalendarWidgetExtension;
 			packageProductDependencies = (
+				D8ECE34A2DBE86E9008211FE /* KoreanLunarSolarConverter */,
 			);
 			productName = JustCalendarWidgetExtension;
 			productReference = D832DA292D4FAB3A002B5B13 /* JustCalendarWidgetExtension.appex */;
@@ -238,6 +243,7 @@
 			);
 			name = JustCalendar;
 			packageProductDependencies = (
+				D8ECE3482DBE808F008211FE /* KoreanLunarSolarConverter */,
 			);
 			productName = JustCalendar;
 			productReference = D8E394D32D47E1C300C47FDC /* JustCalendar.app */;
@@ -324,6 +330,9 @@
 			);
 			mainGroup = D8E394CA2D47E1C300C47FDC;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D8ECE3472DBE808F008211FE /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D8E394D42D47E1C300C47FDC /* Products */;
 			projectDirPath = "";
@@ -780,6 +789,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D8ECE3472DBE808F008211FE /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/swift-man/KoreanLunarSolarConverter.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.7.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D8ECE3482DBE808F008211FE /* KoreanLunarSolarConverter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D8ECE3472DBE808F008211FE /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */;
+			productName = KoreanLunarSolarConverter;
+		};
+		D8ECE34A2DBE86E9008211FE /* KoreanLunarSolarConverter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D8ECE3472DBE808F008211FE /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */;
+			productName = KoreanLunarSolarConverter;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D8E394CB2D47E1C300C47FDC /* Project object */;
 }
