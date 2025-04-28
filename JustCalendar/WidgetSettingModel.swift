@@ -23,4 +23,9 @@ class WidgetSettingModel: ObservableObject {
         WidgetSettingsManager.shared.firstDayOfWeek = day
         firstDayOfWeek = day
     }
+    
+    func setLunarCalendar(isOn: Bool) {
+        WidgetSettingsManager.shared.isLunarCalendar = isOn
+        isLunarCalendar = isOn
+    }
 }
