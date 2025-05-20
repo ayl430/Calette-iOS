@@ -27,7 +27,7 @@ struct CalendarView: View {
     private let capsuleButtonWidth: CGFloat = 60
     
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 5) {
             HStack {
                 Text(dateModel.selectedDate.toString().hyphenToDot())
                     .font(.system(size: 21))

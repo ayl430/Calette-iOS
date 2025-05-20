@@ -25,7 +25,7 @@ extension Date {
     
     func toStringMdd() -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "M.dd"
+        formatter.dateFormat = "M.d"
         formatter.timeZone = TimeZone(identifier: "ko_KR")
         return formatter.string(from: self)
     }
@@ -198,10 +198,12 @@ extension Date {
         return localizedDate
     }
     
+    // 오늘의 시작
     var startOfDay: Date {
         return Calendar.current.startOfDay(for: self)
     }
     
+    // 오늘의 끝
     var lastOfDay: Date {
         var components = DateComponents()
         components.day = 1

@@ -22,16 +22,15 @@ struct CalendarDateView: View {
         Button(intent: SelectDateIntent(dayValue: date)) {
             VStack(spacing: 3) {
                 ZStack {
-                    VStack(spacing: 1) {
-                        Text("\(date)")
-                            .font(.system(size: 12))
-                        EventMarkingView(dateDate: dateDate, date: date)
-                    }
-                    
                     Circle()
-                        .fill(dateModel.selectedDate.get(component: .day) == date ? Color.black.opacity(0.1) : Color.clear)
+                        .fill(dateModel.selectedDate.get(component: .day) == date ? Color(hex: "E1E2E1") : Color.clear)
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 25, height: 25)
+                    VStack(spacing: 1) {
+                        Text("\(date)")
+                            .font(.system(size: 13))
+                        EventMarkingView(dateDate: dateDate, date: date)
+                    }
                 }
                 Text("\(dateDate.lunarDate.toStringMdd())")
                     .font(.system(size: 8))

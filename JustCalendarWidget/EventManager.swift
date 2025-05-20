@@ -82,14 +82,14 @@ class EventManager: NSObject {
     
     // 특정 날의 이벤트
     func fetchEvents(on date: Date) -> [EventItem] {        
-        let allEvents = fetchEventsDays(date: date)
+        let allEvents = getEvents(date: date)
         let events = allEvents.filter { $0.date?.local.startOfDay == date.startOfDay }
         return events
     }    
     
-    // 이달의 모든 이벤트
-    func getEvents(date: Date) -> [EventItem]? {
-        guard isFullAccess else { return nil }
+    // date의 모든 이벤트
+    func getEvents(date: Date) -> [EventItem] {
+        guard isFullAccess else { return [EventItem]() }
         
         let predicate = eventStore.predicateForEvents(withStart: date.startOfDay, end: date.lastOfDay, calendars: nil)
         let events =  eventStore.events(matching: predicate).sortedEventByAscendingDate()

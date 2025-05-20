@@ -21,7 +21,7 @@ struct MainView: View {
                 Section {
 //                    Text("저스트 위젯 알아보기")
                     SettingListLinkView(title: "개발자 문의", link: .developer)
-                    SettingListTextView(title: "버전 정보", text: "v 1.0.0")
+                    SettingListTextView(title: "버전 정보", text: "v\(AppInfo.version)")
                 } header: {
                     Text("앱 정보")
                 }
