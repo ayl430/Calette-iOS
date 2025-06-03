@@ -3,6 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>NSCalendarsFullAccessUsageDescription</key>
-	<string>&quot;위젯에 이벤트를 표시하기 위해 권한이 필요합니다&quot;</string>
+	<string>위젯에 이벤트를 표시하기 위해 권한이 필요합니다</string>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageName</key>
+		<string>launchScreenLogo</string>
+		<key>UILaunchScreen</key>
+		<dict/>
+	</dict>
 </dict>
 </plist>
