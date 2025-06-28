@@ -59,14 +59,20 @@ class DateModel: ObservableObject {//ViewModel
     }
     
     func totalLines() -> Int {
-        let zeroToLastDay = (selectedDate.dayOfWeekFirst - WidgetSettingsManager.shared.firstDayOfWeek) + selectedDate.getDays().count
-        let lines = zeroToLastDay / 7 + (zeroToLastDay % 7 > 0 ? 1 : 0)
+        var lines: Int = 0
+        if WidgetSettingsManager.shared.firstDayOfWeek == 2 {
+            let dayOfWeekFirst = selectedDate.dayOfWeekFirst == 1 ? 8 : selectedDate.dayOfWeekFirst
+            let emptyBeforeFirstDays = (dayOfWeekFirst - WidgetSettingsManager.shared.firstDayOfWeek)
+            let emptyAndThisMonthDays = emptyBeforeFirstDays + selectedDate.getDays().count
+            lines = emptyAndThisMonthDays / 7 + (emptyAndThisMonthDays % 7 > 0 ? 1 : 0)
+        } else if WidgetSettingsManager.shared.firstDayOfWeek == 1 {
+            let zeroToLastDay = (selectedDate.dayOfWeekFirst - WidgetSettingsManager.shared.firstDayOfWeek) + selectedDate.getDays().count
+            lines = zeroToLastDay / 7 + (zeroToLastDay % 7 > 0 ? 1 : 0)
+        }
         return lines
     }
     
     func maxEvents() -> Int {
-//        let zeroToLastDay = (selectedDate.dayOfWeekFirst - WidgetSettingsManager.shared.firstDayOfWeek) + selectedDate.getDays().count
-//        let lines = zeroToLastDay / 7 + (zeroToLastDay % 7 > 0 ? 1 : 0)
         let lines = totalLines()
         if lines == 6 {
             return 1

@@ -10,7 +10,7 @@ import SwiftUI
 import WidgetKit
 
 enum WidgetSettings {
-    static let widgetName = "AddWidgetTestWidget"
+    static let widgetName = "JustCalendarWidget"
     struct Keys {
         static let themeColorKey = "KEY_themeColor"
         static let firstDayOfWeekKey = "KEY_firstDayOfWeek"

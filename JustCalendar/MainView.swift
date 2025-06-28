@@ -134,20 +134,12 @@ struct LargeWidgetView: View {
     let height: CGFloat
     
     var body: some View {
-        RoundedRectangle(cornerRadius: 20)
-            .fill(Color.blue.opacity(0.3))
+        CalendarThemeView(viewModel: WidgetSettingModel())
+            .padding()
+            .background(Color(hex: "EFEFF0"))
             .frame(height: height)
-            .overlay(
-                VStack {
-                    Text("달력")
-                        .font(.title2)
-                        .bold()
-                    Text("systemLarge")
-                        .font(.caption)
-                }
-                    .foregroundColor(.primary)
-            )
-            .padding(.horizontal, 16)
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .padding(.horizontal, 25)
     }
 }
 
@@ -213,6 +205,9 @@ struct HomeScreenWithWidget: View {
     @Binding var selectedApp: AppIcon?
     @Binding var selectedIndex: Int
     
+    @State var showAddEventView: Bool = false
+    @State var showFaqView: Bool = false
+    
     var body: some View {
         GeometryReader { geometry in
             let spacing: CGFloat = 20
@@ -256,13 +251,16 @@ struct HomeScreenWithWidget: View {
                         Spacer()
                         let appIcon = AppIcon(index: 9, type: AppIconType.name(for: 8), image: AppIconType.addEvent.image)
                         AddEventView(icon: appIcon, size: iconSize) {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                selectedApp = appIcon
-                                selectedIndex = 9
-                            }
+                            selectedApp = appIcon
+                            selectedIndex = 9
+                            
+                            showAddEventView.toggle()
                         }
                         .anchorPreference(key: AppIconViewPreferenceKey.self, value: .bounds) { anchor in
                             [9: anchor]
+                        }
+                        .sheet(isPresented: $showAddEventView) {
+                            AddEvent()
                         }
                     }
                     .padding(.horizontal, spacing)
@@ -271,15 +269,31 @@ struct HomeScreenWithWidget: View {
                     // Dock
                     HStack(spacing: spacing) {
                         ForEach(4..<8, id: \.self) { index in
-                            let appIcon = AppIcon(index: index + 1, type: AppIconType.name(for: index), image: AppIconType.image(for: index))
-                            AppIconView(icon: appIcon, size: iconSize) {
-                                withAnimation(.easeInOut(duration: 0.25)) {
+                            let iconIndex = index + 1
+                            let appIcon = AppIcon(index: iconIndex, type: AppIconType.name(for: index), image: AppIconType.image(for: index))
+                            if iconIndex == 8 {
+                                AppIconView(icon: appIcon, size: iconSize) {
                                     selectedApp = appIcon
-                                    selectedIndex = index + 1
+                                    selectedIndex = iconIndex
+                                    
+                                    showFaqView.toggle()
                                 }
-                            }
-                            .anchorPreference(key: AppIconViewPreferenceKey.self, value: .bounds) { anchor in
-                                [index + 1: anchor]
+                                .anchorPreference(key: AppIconViewPreferenceKey.self, value: .bounds) { anchor in
+                                    [iconIndex: anchor]
+                                }
+                                .sheet(isPresented: $showFaqView) {
+                                    FAQSheetView {
+                                        showFaqView.toggle()
+                                    }
+                                }
+                            } else {
+                                AppIconView(icon: appIcon, size: iconSize) {
+                                    selectedApp = appIcon
+                                    selectedIndex = iconIndex
+                                }
+                                .anchorPreference(key: AppIconViewPreferenceKey.self, value: .bounds) { anchor in
+                                    [iconIndex: anchor]
+                                }
                             }
                         }
                     }
@@ -316,14 +330,15 @@ struct HomeScreenWithWidget: View {
 
 // MARK: - FAQ 시트 뷰
 struct FAQItem {
+    let index: Int
     let title: String
     let content: String
 }
 
 struct FAQList {
-    static let widget = FAQItem(title: "위젯은 어디서 추가하나요?", content: "1. 홈 화면에서 빈 영역을 길게 터치\n2. 좌측 상단의 '+' 탭\n3. 위젯을 선택, 추가합니다")
-    static let marking = FAQItem(title: "일정 표시가 되지 않아요", content: "설정 > '앱 이름' > 캘린더\n이동하여 전체 접근 설정을 켜주세요")
-    static let lunar = FAQItem(title: "음력 표시 기준은?", content: "음력은 한국천문연구원 데이터를 기준으로 합니다")
+    static let widget = FAQItem(index: 1, title: "위젯은 어디서 추가하나요?", content: "1. 홈 화면에서 빈 영역을 길게 터치\n2. 좌측 상단의 '+' 탭\n3. 위젯을 선택, 추가합니다")
+    static let marking = FAQItem(index: 2, title: "일정 표시가 되지 않아요", content: "설정 > '앱 이름' > 캘린더\n이동하여 전체 접근 설정을 켜주세요")
+    static let lunar = FAQItem(index: 3, title: "음력 표시 기준은?", content: "음력은 한국천문연구원 데이터를 기준으로 합니다")
 }
 
 struct FAQSheetView: View {
@@ -337,9 +352,9 @@ struct FAQSheetView: View {
                         onCancelTapped()
                     }
                 }) {
-                    Text("취소")
+                    Text("닫기")
                         .font(.headline)
-                        .foregroundStyle(Color.black.opacity(0.5))
+                        .foregroundStyle(Color.secondary)
                         .padding()
                 }
                 Spacer()
@@ -350,7 +365,7 @@ struct FAQSheetView: View {
                 Button(action: {
                     
                 }) {
-                    Text("취소")
+                    Text("닫기")
                         .font(.headline)
                         .foregroundStyle(Color.white)
                         .padding()
@@ -402,6 +417,7 @@ struct FAQItemView: View {
                         .rotationEffect(.degrees(isShowing ? 180 : 0))
                         .animation(.easeInOut(duration: 0.25), value: isShowing)
                         .foregroundColor(.black)
+                        .bold()
                 }
                 .contentShape(Rectangle())
                 .onTapGesture {
@@ -415,8 +431,21 @@ struct FAQItemView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(faqItem.content)
                         .font(.subheadline)
+                        .foregroundStyle(Color(hex: "5E5E5E"))
                         .padding(.top, 4)
                         .padding(.horizontal)
+                    if faqItem.index == 3 {
+                        Link(destination: URL(string: "https://astro.kasi.re.kr/life/pageView/8")!) {
+                            HStack {
+                                Text("한국천문연구원 이동하기")
+                            }
+                            .font(.footnote)
+                            .foregroundStyle(Color.justDefaultColor)
+                            .underline()
+                            .padding(.top, 4)
+                            .padding(.horizontal)
+                        }
+                    }
                     Spacer(minLength: 0)
                 }
                 .transition(.opacity.combined(with: .move(edge: .top)))
@@ -430,48 +459,52 @@ struct FAQItemView: View {
 
 
 // MARK: - 일정 추가 sheet 뷰
-struct AddEventSheetView: View {
-    let onCancelTapped: () -> Void
-    
-    var body: some View {
-        VStack {
-            HStack {
-                Button(action: {
-                    withAnimation(.easeInOut(duration: 0.25)) {
-                        onCancelTapped()
-                    }
-                }) {
-                    Text("취소")
-                        .font(.headline)
-                        .foregroundStyle(Color.black.opacity(0.5))
-                        .padding()
-                }
-                Spacer()
-                Text("일정 추가")
-                    .font(.headline)
-                    .padding()
-                Spacer()
-                Button(action: {
-                    
-                }) {
-                    Text("취소")
-                        .font(.headline)
-                        .foregroundStyle(Color.white)
-                        .padding()
-                }
+
+import EventKit
+import EventKitUI
+
+struct AddEvent: UIViewControllerRepresentable {
+    typealias UIViewControllerType = EKEventEditViewController
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    func makeUIViewController(context: Context) -> EKEventEditViewController {
+        let eventStore = EKEventStore()
+        let controller = EKEventEditViewController()
+        controller.eventStore = eventStore
+        controller.editViewDelegate = context.coordinator
+
+        // Create empty event (optional)
+        let event = EKEvent(eventStore: eventStore)
+        event.title = "새 일정"
+        controller.event = event
+
+        // 권한 확인 및 요청
+        eventStore.requestAccess(to: .event) { granted, error in
+            if !granted {
+                print("Calendar access denied.")
             }
-            .padding(.horizontal, 8)
-            .padding(.top, 10)
-            
-            ScrollView {
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("일정 추가")
-                }
-                .padding(.horizontal)
-            }
-            
         }
-        .background(Color.white)
+
+        return controller
+    }
+
+    func updateUIViewController(_ uiViewController: EKEventEditViewController, context: Context) {
+        // 업데이트 불필요
+    }
+
+    class Coordinator: NSObject, EKEventEditViewDelegate {
+        var parent: AddEvent
+
+        init(_ parent: AddEvent) {
+            self.parent = parent
+        }
+
+        func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
+            controller.dismiss(animated: true)
+        }
     }
 }
 
@@ -489,9 +522,9 @@ struct AppFullScreenView: View {
     var body: some View {
         if let appIcon = appIcon {
             if appIcon.index == 8 {
-                FAQSheetView(onCancelTapped: onTap)
+//                FAQSheetView(onCancelTapped: onTap)
             } else if appIcon.index == 9 {
-                AddEventSheetView(onCancelTapped: onTap)
+//                AddEventSheetView(onCancelTapped: onTap)
             } else if appIcon.index == 5 || appIcon.index ==  6 || appIcon.index == 7 {
                 ZStack {
                     Color.black.opacity(0.4)
@@ -627,65 +660,19 @@ struct SubBubbleView: View {
             if index == 5 {
                 Text("위젯의 테마색을 선택합니다")
                     .padding(.bottom)
-                HStack(spacing: 18) {
-                    ForEach(WidgetTheme.allCases, id: \.self) { theme in
-                        ColorOptionView(isPresented: $isPresented, color: theme.color)
-                    }
-                }
+                ColorOptionView(viewModel: WidgetSettingModel())
             } else if index == 6 {
                 Text("위젯의 첫번째 요일을 선택합니다")
                     .frame(width: 235)
                     .padding(.bottom)
                     .multilineTextAlignment(.center)
-                HStack(spacing: 10) {
-                    Button(action: {
-                        //isPresented.toggle()
-                        // 첫번쨰 요일 유저디폴트 저장, 위젯에도 적용
-                    }) {
-                        ZStack {
-                            let buttonColor = Color(hex: "D9D9D9")
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(buttonColor)
-                                .frame(width: 20, height: 20)
-                            
-                            if isPresented { // 유저디폴트의 색과 var color의 값이 같으면 표시
-                                Image(systemName: "checkmark")
-                                    .foregroundStyle(.black.opacity(0.7))
-                                    .font(.system(size: 13, weight: .bold))
-                            }
-                        }
-                    }
-                    Text("일요일")
-                    Button(action: {
-                        //isPresented.toggle()
-                        // 첫번쨰 요일 유저디폴트 저장, 위젯에도 적용
-                    }) {
-                        ZStack {
-                            let buttonColor = Color(hex: "D9D9D9")
-                            RoundedRectangle(cornerRadius: 4)
-                                .fill(buttonColor)
-                                .frame(width: 20, height: 20)
-                            
-                            if isPresented { // 유저디폴트의 색과 var color의 값이 같으면 표시
-                                Image(systemName: "checkmark")
-                                    .foregroundStyle(.black.opacity(0.7))
-                                    .font(.system(size: 13, weight: .bold))
-                            }
-                        }
-                    }
-                    Text("월요일")
-                }
+                FirstDayOptionView(viewModel: WidgetSettingModel())
             } else if index == 7 {
                 Text("날짜 하단에 음력을 표시합니다")
                     .frame(width: 155)
                     .padding(.bottom, 5)
                     .multilineTextAlignment(.center)
-                Toggle(isOn: $isPresented) { // 음력 유저디폴트 저장, 위젯에도 적용
-                    Text("ZZ")
-                }
-                .labelsHidden()
-                .fixedSize()
-                .scaleEffect(0.8)
+                LunarDateOptionView(viewModel: WidgetSettingModel())
             }
         }
         .font(.subheadline)
@@ -709,30 +696,74 @@ struct TrianglePointer: Shape {
 }
 
 struct ColorOptionView: View {
-    @Binding var isPresented: Bool
-    let color: Color
-    
+    @ObservedObject var viewModel: WidgetSettingModel
     
     var body: some View {
-        Button(action: {
-            //isPresented.toggle()
-            // 색 유저디폴트 저장, 위젯에도 적용
-        }) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 4)
-                    .fill(color)
-                    .frame(width: 20, height: 20)
-                
-                if isPresented { // 유저디폴트의 색과 var color의 값이 같으면 표시
-                    Image(systemName: "checkmark")
-                        .foregroundStyle(.black.opacity(0.7))
-                        .font(.system(size: 13, weight: .bold))
+        HStack(spacing: 18) {
+            ForEach(WidgetTheme.allCases, id: \.self) { theme in
+                Button(action: {
+                    viewModel.setTheme(color: theme.name)
+                }) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(theme.color)
+                            .frame(width: 20, height: 20)
+                        
+                        if viewModel.themeColor == theme.name {
+                            Image(systemName: "checkmark")
+                                .foregroundStyle(.black.opacity(0.7))
+                                .font(.system(size: 13, weight: .bold))
+                        }
+                    }
                 }
             }
         }
     }
 }
 
+//리로드 체크
+struct FirstDayOptionView: View {
+    @ObservedObject var viewModel: WidgetSettingModel
+    
+    var body: some View {
+        HStack(spacing: 10) {
+            ForEach(0..<2) { index in
+                Button(action: {
+                    viewModel.setFirstDayOfWeek(day: index + 1)
+                }) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(Color(hex: "D9D9D9"))
+                            .frame(width: 20, height: 20)
+                        
+                        if viewModel.firstDayOfWeek == index + 1 {
+                            Image(systemName: "checkmark")
+                                .foregroundStyle(.black.opacity(0.7))
+                                .font(.system(size: 13, weight: .bold))
+                        }
+                    }
+                }
+                Text(index + 1 == 1 ? "일요일" : "월요일")
+            }
+        }
+    }
+}
+
+//리로드 체크
+struct LunarDateOptionView: View {
+    @ObservedObject var viewModel: WidgetSettingModel
+    
+    var body: some View {
+        Toggle("테마 적용", isOn: $viewModel.isLunarCalendar)
+            .onChange(of: viewModel.isLunarCalendar) {
+                viewModel.setLunarCalendar(isOn: viewModel.isLunarCalendar)
+            }
+            .tint(WidgetTheme.justDefaultColor.color.opacity(0.7))
+            .labelsHidden()
+            .fixedSize()
+            .scaleEffect(0.8)
+    }
+}
 
 // MARK: - 배경 블러 뷰 (Dock용)
 struct VisualEffectBlur: UIViewRepresentable {

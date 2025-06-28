@@ -12,8 +12,7 @@ struct JustCalendarApp: App {
     var body: some Scene {
         WindowGroup {
             MainView()
-                .onAppear() {
-                    
+                .onAppear() {                    
                     if EventManager.shared.isFullAccess {
                         
                     } else {

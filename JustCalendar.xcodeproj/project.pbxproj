@@ -92,7 +92,15 @@
 		D8B59FA72D57C722001E385F /* Exceptions for "JustCalendarWidget" folder in "JustCalendar" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				AppIntents/NextMonthIntent.swift,
+				AppIntents/PriorMonthIntent.swift,
+				AppIntents/SelectDateIntent.swift,
+				AppIntents/TodayIntent.swift,
+				CalendarDateView.swift,
+				DateModel.swift,
+				EventDetailView.swift,
 				EventManager.swift,
+				EventMarkingView.swift,
 			);
 			target = D8E394D22D47E1C300C47FDC /* JustCalendar */;
 		};

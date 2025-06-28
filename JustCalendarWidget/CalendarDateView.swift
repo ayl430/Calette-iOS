@@ -60,9 +60,3 @@ struct EmptyCalendarDateView: View {
             .frame(width: 40, height: 30)
     }
 }
-#Preview(as: .systemLarge) {
-    JustCalendarWidget()
-} timeline: {
-    SimpleEntry(date: .now, selectedDate: DateModel.shared)
-    SimpleEntry(date: .now, selectedDate: DateModel.shared)
-}
