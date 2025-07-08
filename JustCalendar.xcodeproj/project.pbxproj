@@ -96,6 +96,7 @@
 				AppIntents/PriorMonthIntent.swift,
 				AppIntents/SelectDateIntent.swift,
 				AppIntents/TodayIntent.swift,
+				CalendarBuilder.swift,
 				CalendarDateView.swift,
 				DateModel.swift,
 				EventDetailView.swift,

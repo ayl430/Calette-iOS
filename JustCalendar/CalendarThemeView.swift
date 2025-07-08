@@ -102,28 +102,15 @@ struct CalendarThemeView: View {
             }
             .padding(.bottom, 15)
             
-            // 날짜 사이에 간격이 없어야 날짜를 누를때 간격을 눌러서 앱으로 이동할 일이 없음
-            LazyVGrid(columns: columns) {
-                if viewModel.firstDayOfWeek == 2 {
-                    let dayOfWeekFirst = dateModel.selectedDate.dayOfWeekFirst == 1 ? 8 : dateModel.selectedDate.dayOfWeekFirst
-                    let emptyBeforeFirstDays = (dayOfWeekFirst - 2)
-                    let emptyAndThisMonthDays = emptyBeforeFirstDays + thisMonthDays.count
-                    ForEach(0..<emptyAndThisMonthDays, id: \.self) { index in
-                        if index <= emptyBeforeFirstDays - 1 || index > emptyAndThisMonthDays {
-                            EmptyCalendarDateView()
+            LazyVGrid(columns: columns) {                
+                if let days = CalendarBuilder.generateMonth(for: dateModel.selectedDate, firstWeekday: viewModel.firstDayOfWeek) {
+                    ForEach(0..<days.count, id: \.self) { index in
+                        let day = days[index]
+                        if  day.isInCurrentMonth {
+                            CalendarDateView(dateDate: day.date, date: day.date.getDay(), index: index, viewModel: viewModel)
+                                .aspectRatio(contentMode: .fill)
                         } else {
-                            CalendarDateView(dateDate: thisMonthDaysDate[index - emptyBeforeFirstDays], date: thisMonthDays[index - emptyBeforeFirstDays], index: index, viewModel: viewModel)
-                                .aspectRatio(contentMode: .fill)
-                        }
-                    }
-                } else if viewModel.firstDayOfWeek == 1 {
-                    let zeroToLastDay = (dateModel.selectedDate.dayOfWeekFirst - 1) + thisMonthDays.count
-                    ForEach(0..<zeroToLastDay, id: \.self) { index in
-                        if index + 1 < dateModel.selectedDate.dayOfWeekFirst || index >= zeroToLastDay {
                             EmptyCalendarDateView()
-                        } else { //6-(7-1)
-                            CalendarDateView(dateDate: thisMonthDaysDate[index - (dateModel.selectedDate.dayOfWeekFirst - 1)], date: thisMonthDays[index - (dateModel.selectedDate.dayOfWeekFirst - 1)], index: index, viewModel: viewModel)
-                                .aspectRatio(contentMode: .fill)
                         }
                     }
                 }

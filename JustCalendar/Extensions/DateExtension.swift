@@ -36,12 +36,7 @@ extension Date {
 //        return formatter.string(from: self).capitalized
 //    }
     
-//    var startOfMonth: Date {
-//        let start = Calendar.current.startOfDay(for: self)
-//        return start
-//    }
-    
-    var startOfMonth: Date {
+    var startOfMonth: Date { // -> firstDayOfMonth
         let components = Calendar.current.dateComponents([.year, .month], from: self)
         return Calendar.current.date(from: components)!
     }
@@ -183,11 +178,6 @@ extension Date {
     // 현재날짜 + 1달
     var oneMonthOut: Date {
         Calendar.current.date(byAdding: .month, value: 1, to: Date.now) ?? Date()
-    }
-    
-    var firstDayOfMonth: Date {
-//        Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: self))!
-        Calendar.current.date(byAdding: DateComponents(month: -1, day: 1), to: self)!
     }
     
     var local: Date {
