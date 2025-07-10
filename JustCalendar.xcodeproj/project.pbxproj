@@ -73,12 +73,31 @@
 		D832DA452D4FAD61002B5B13 /* Exceptions for "JustCalendar" folder in "JustCalendarWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Extensions/DateExtension.swift,
-				Extensions/StringExtension.swift,
-				Extensions/UIColorExtension.swift,
-				Extensions/UserDefaultsExtension.swift,
+				"Utils/Extensions/ArrayExtension .swift",
+				Utils/Extensions/DateExtension.swift,
+				Utils/Extensions/StringExtension.swift,
+				Utils/Extensions/UIColorExtension.swift,
+				Utils/Extensions/UserDefaultsExtension.swift,
+			);
+			target = D832DA282D4FAB3A002B5B13 /* JustCalendarWidgetExtension */;
+		};
+		D8389F512E1FB2F5004CD9EF /* Exceptions for "Shared" folder in "JustCalendarWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppInfo.swift,
+				AppIntents/NextMonthIntent.swift,
+				AppIntents/PriorMonthIntent.swift,
+				AppIntents/SelectDateIntent.swift,
+				AppIntents/TodayIntent.swift,
+				CalendarBuilder.swift,
+				DateModel.swift,
+				EventManager.swift,
+				View/CalendarDateView.swift,
+				View/EmptyCalendarDateView.swift,
+				View/EventDetailView.swift,
+				View/EventEmptyView.swift,
+				View/EventMarkingView.swift,
 				WidgetSettingModel.swift,
-				WidgetSettingsManager.swift,
 			);
 			target = D832DA282D4FAB3A002B5B13 /* JustCalendarWidgetExtension */;
 		};
@@ -89,32 +108,23 @@
 			);
 			target = D8E394D22D47E1C300C47FDC /* JustCalendar */;
 		};
-		D8B59FA72D57C722001E385F /* Exceptions for "JustCalendarWidget" folder in "JustCalendar" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				AppIntents/NextMonthIntent.swift,
-				AppIntents/PriorMonthIntent.swift,
-				AppIntents/SelectDateIntent.swift,
-				AppIntents/TodayIntent.swift,
-				CalendarBuilder.swift,
-				CalendarDateView.swift,
-				DateModel.swift,
-				EventDetailView.swift,
-				EventManager.swift,
-				EventMarkingView.swift,
-			);
-			target = D8E394D22D47E1C300C47FDC /* JustCalendar */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		D832DA2C2D4FAB3A002B5B13 /* JustCalendarWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				D8B59FA72D57C722001E385F /* Exceptions for "JustCalendarWidget" folder in "JustCalendar" target */,
 				D832DA372D4FAB3B002B5B13 /* Exceptions for "JustCalendarWidget" folder in "JustCalendarWidgetExtension" target */,
 			);
 			path = JustCalendarWidget;
+			sourceTree = "<group>";
+		};
+		D8389F4F2E1FB2E5004CD9EF /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D8389F512E1FB2F5004CD9EF /* Exceptions for "Shared" folder in "JustCalendarWidgetExtension" target */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		D8E394D52D47E1C300C47FDC /* JustCalendar */ = {
@@ -188,6 +198,7 @@
 			children = (
 				D8B5A01C2D5BA187001E385F /* JustCalendarWidgetExtension.entitlements */,
 				D8E394D52D47E1C300C47FDC /* JustCalendar */,
+				D8389F4F2E1FB2E5004CD9EF /* Shared */,
 				D8E394E62D47E1C500C47FDC /* JustCalendarTests */,
 				D8E394F02D47E1C500C47FDC /* JustCalendarUITests */,
 				D832DA2C2D4FAB3A002B5B13 /* JustCalendarWidget */,
@@ -248,6 +259,7 @@
 				D832DA352D4FAB3B002B5B13 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				D8389F4F2E1FB2E5004CD9EF /* Shared */,
 				D8E394D52D47E1C300C47FDC /* JustCalendar */,
 			);
 			name = JustCalendar;

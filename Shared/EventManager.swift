@@ -26,31 +26,7 @@ class EventManager: NSObject {
         return try await eventStore.requestFullAccessToEvents()
     }
     
-    func fetchEvents() -> [EKEvent] {
-        guard isFullAccess else { return [] }
-        let start = Date().startOfMonth
-        let end = Date().endOfMonth
-        
-        let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: nil)
-        return eventStore.events(matching: predicate).sortedEventByAscendingDate()
-    }
-    
-    func fetchEventsString() {
-        guard isFullAccess else { return }
-        let start = Date().startOfMonth
-        let end = Date().endOfMonth
-        
-        let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: nil)
-        let events = eventStore.events(matching: predicate).sortedEventByAscendingDate()
-        
-        var eventNames: [String] = []
-        events.forEach {
-            eventNames.append($0.title)
-        }
-        print(eventNames)
-    }
-    
-    //date를 포함한 달의 모든 evnets
+    //date를 포함한 달의 모든 events
     func fetchEventsDays(date: Date) -> [EventItem] {
         guard isFullAccess else { return [EventItem]() }
         let start = date.startOfMonth
@@ -80,12 +56,45 @@ class EventManager: NSObject {
         return eventList
     }
     
+    // date를 포함한 달에 이벤트가 있는 dates - 공휴일 -> set으로 받기
+    func fetchHolidayEventDates(date: Date) -> [Date]? {
+        guard isFullAccess else { return nil }
+        let start = date.startOfMonth
+        let end = date.endOfMonth
+        let holidayCalendars = eventStore.calendars(for: .event).filter {
+            $0.title.contains("공휴일") || $0.title.lowercased().contains("holiday")
+        }
+        
+        let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: holidayCalendars)
+        let events = eventStore.events(matching: predicate)
+        
+        return events.map { $0.startDate }
+    }
+    
+    // date룰 포함한 달에 이벤트가 있는 dates - 일반 이벤트
+    func fetchEventDates(date: Date) -> [Date]? {
+        guard isFullAccess else { return nil }
+        let start = date.startOfMonth
+        let end = date.endOfMonth
+        let calendars = eventStore.calendars(for: .event)
+        let holidayCalendars = calendars.filter {
+            $0.title.contains("공휴일") || $0.title.lowercased().contains("holiday")
+        }
+        let nonHolidayCalendars = calendars.filter { !holidayCalendars.contains($0) }
+        
+        let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: nonHolidayCalendars)
+        let events = eventStore.events(matching: predicate)
+        
+        return events.map { $0.startDate }
+    }
+    
+    
     // 특정 날의 이벤트
-    func fetchEvents(on date: Date) -> [EventItem] {        
+    func fetchEvents(on date: Date) -> [EventItem] {
         let allEvents = getEvents(date: date)
         let events = allEvents.filter { $0.date?.local.startOfDay == date.startOfDay }
         return events
-    }    
+    }
     
     // date의 모든 이벤트
     func getEvents(date: Date) -> [EventItem] {
@@ -106,17 +115,6 @@ class EventManager: NSObject {
             eventList.append(value)
         }
         return eventList
-    }
-}
-
-extension Array {
-    // 캘린더 이벤트를 오름차순으로 배열
-    func sortedEventByAscendingDate() -> [EKEvent] {
-        guard let self = self as? [EKEvent] else { return [] }
-        
-        return self.sorted(by: { (first: EKEvent, second: EKEvent) in
-            return first.compareStartDate(with: second) == .orderedAscending
-        })
     }
 }
 

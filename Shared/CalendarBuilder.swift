@@ -28,13 +28,15 @@ struct CalendarBuilder {
     ///
     /// - for: 기준이 될 날짜
     /// - firstWeekday: 1이면 일요일 시작, 2면 월요일 시작
-    static func generateMonth(for baseDate: Date, firstWeekday: Int, events: Set<Int> = []) -> [CalendarDay]? {
+    static func generateMonth(for baseDate: Date, events: Set<Int> = []) -> [CalendarDay]? {
         let calendar = Calendar.current
         let firstDayOfMonth = baseDate.startOfMonth
         guard let range = calendar.range(of: .day, in: .month, for: firstDayOfMonth) else { return nil }
         
         let weekday = calendar.component(.weekday, from: firstDayOfMonth) // 일1 ~ 토7
-        let leadingEmpty = (weekday - firstWeekday + 7) % 7
+//        let firstDayOfWeek = WidgetSettingsManager.shared.firstDayOfWeek
+        let firstDayOfWeek = WidgetSettingModel().firstDayOfWeek
+        let leadingEmpty = (weekday - firstDayOfWeek + 7) % 7
         
         guard let startDate = calendar.date(byAdding: .day, value: -leadingEmpty, to: firstDayOfMonth) else { return nil }
         

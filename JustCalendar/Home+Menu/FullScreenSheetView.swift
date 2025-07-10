@@ -200,7 +200,7 @@ struct ColorOptionView: View {
         HStack(spacing: 18) {
             ForEach(WidgetTheme.allCases, id: \.self) { theme in
                 Button(action: {
-                    viewModel.setTheme(color: theme.name)
+                    viewModel.themeColor = theme.name
                 }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 4)
@@ -219,7 +219,6 @@ struct ColorOptionView: View {
     }
 }
 
-//리로드 체크
 struct FirstDayOptionView: View {
     @ObservedObject var viewModel: WidgetSettingModel
     
@@ -227,7 +226,7 @@ struct FirstDayOptionView: View {
         HStack(spacing: 10) {
             ForEach(0..<2) { index in
                 Button(action: {
-                    viewModel.setFirstDayOfWeek(day: index + 1)
+                    viewModel.firstDayOfWeek = index + 1
                 }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 4)
@@ -247,15 +246,11 @@ struct FirstDayOptionView: View {
     }
 }
 
-//리로드 체크
 struct LunarDateOptionView: View {
     @ObservedObject var viewModel: WidgetSettingModel
     
     var body: some View {
         Toggle("테마 적용", isOn: $viewModel.isLunarCalendar)
-            .onChange(of: viewModel.isLunarCalendar) {
-                viewModel.setLunarCalendar(isOn: viewModel.isLunarCalendar)
-            }
             .tint(WidgetTheme.justDefaultColor.color.opacity(0.7))
             .labelsHidden()
             .fixedSize()

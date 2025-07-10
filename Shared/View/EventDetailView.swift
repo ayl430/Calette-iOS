@@ -15,7 +15,7 @@ struct EventDetailView: View {
         if !events.isEmpty {
             VStack(spacing: 16) {
                 let eventCount = events.count
-                let count = events.count == 1 ? 1 : (dateModel.maxEvents() == 1 ? 1 : 2)
+                let count = events.count == 1 ? 1 : (dateModel.maxEventDetailViewLines() == 1 ? 1 : 2)
                 ForEach(0..<count, id: \.self) { index in
                     HStack() {
                         Rectangle()
@@ -50,16 +50,6 @@ struct EventDetailView: View {
         
     }
 }
-
-struct EventEmptyView: View {
-    var body: some View {
-        Image(systemName: "tree")
-            .frame(width: 30, height: 30)
-            .foregroundStyle(Color.gray)
-            .padding(.leading, 10)
-    }
-}
-
 
 #Preview {
     EventDetailView()

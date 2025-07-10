@@ -52,11 +52,3 @@ struct CalendarDateView: View {
         .bold()
     }
 }
-
-struct EmptyCalendarDateView: View {
-    var body: some View {
-        Rectangle()
-            .fill(Color.clear)
-            .frame(width: 40, height: 30)
-    }
-}

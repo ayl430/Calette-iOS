@@ -17,12 +17,7 @@ struct CalendarView: View {
     let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 0, alignment: .center), count: 7)
     
     @ObservedObject private var dateModel = DateModel.shared
-    
     @ObservedObject var viewModel: WidgetSettingModel
-    
-//    let sharedUserDefaults = WidgetSettingsManager.shared.themeColor
-    @AppStorage(WidgetSettings.Keys.themeColorKey, store: UserDefaults.shared) var color: String = "justDefaultColor"
-    @AppStorage(WidgetSettings.Keys.firstDayOfWeekKey, store: UserDefaults.shared) var sunOrMon: Int = 1
     
     private let capsuleButtonWidth: CGFloat = 60
     
@@ -52,7 +47,7 @@ struct CalendarView: View {
                         .frame(width: 30, height: 30)
                         .background(
                             RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .fill(WidgetTheme(rawValue: color)!.color)
+                                .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
                         )
                         .padding(.horizontal, 5)
                         .buttonStyle(.plain)
@@ -62,7 +57,7 @@ struct CalendarView: View {
                         HStack(spacing: 0) {
                             Button(intent: PriorMonthIntent()) {
                                 RoundedRectangle(cornerRadius: capsuleButtonWidth / 4, style: .continuous)
-                                    .fill(WidgetTheme(rawValue: color)!.color)
+                                    .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
                                     .frame(width: capsuleButtonWidth, height: capsuleButtonWidth / 2)
                                     .offset(x: capsuleButtonWidth / 4)
                                     .clipped()
@@ -80,7 +75,7 @@ struct CalendarView: View {
                             .buttonStyle(.plain)
                             
                             Rectangle()
-                                .fill(WidgetTheme(rawValue: color)!.color)
+                                .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
                                 .frame(width: 1, height: capsuleButtonWidth / 2)
                                 .overlay {
                                     Rectangle()
@@ -90,7 +85,7 @@ struct CalendarView: View {
                             
                             Button(intent: NextMonthIntent()) {
                                 RoundedRectangle(cornerRadius: capsuleButtonWidth / 4, style: .continuous)
-                                    .fill(WidgetTheme(rawValue: color)!.color)
+                                    .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
                                     .frame(width: capsuleButtonWidth, height: capsuleButtonWidth / 2)
                                     .offset(x: -capsuleButtonWidth / 4)
                                     .clipped()
@@ -113,7 +108,7 @@ struct CalendarView: View {
                 .padding(.bottom, 15)
                 
                 LazyVGrid(columns: columns) {
-                    if let days = CalendarBuilder.generateMonth(for: dateModel.selectedDate, firstWeekday: viewModel.firstDayOfWeek) {
+                    if let days = CalendarBuilder.generateMonth(for: dateModel.selectedDate) {
                         ForEach(0..<days.count, id: \.self) { index in
                             let day = days[index]
                             if  day.isInCurrentMonth {
@@ -144,6 +139,6 @@ struct CalendarView: View {
 #Preview(as: .systemLarge) {
     JustCalendarWidget()
 } timeline: {
-    SimpleEntry(date: .now, selectedDate: DateModel.shared)
-    SimpleEntry(date: .now, selectedDate: DateModel.shared)
+    CalendarEntry(date: .now, selectedDate: DateModel.shared)
+    CalendarEntry(date: .now, selectedDate: DateModel.shared)
 }

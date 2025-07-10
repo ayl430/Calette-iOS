@@ -20,3 +20,11 @@ struct AppInfo {
         return Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? Bundle.main.infoDictionary?["CFBundleName"] as? String ?? ""
     }
 }
+
+enum AppSettings {
+    static let appName = AppInfo.appName
+    
+    struct Keys {
+        static let onboardingKey = "Key_onboarding"
+    }
+}

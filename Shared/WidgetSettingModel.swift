@@ -1,8 +1,8 @@
 //
-//  WidgetSettingsManager.swift
+//  WidgetSettingModel.swift
 //  JustCalendar
 //
-//  Created by yeri on 2/22/25.
+//  Created by yeri on 7/10/25.
 //
 
 import Foundation
@@ -18,16 +18,11 @@ enum WidgetSettings {
     }
 }
 
-class WidgetSettingsManager: NSObject {
-    static let shared = WidgetSettingsManager()
+class WidgetSettingModel: ObservableObject  {
     
     @AppStorage(WidgetSettings.Keys.themeColorKey, store: UserDefaults.shared) var color: String = "justDefaultColor"
     @AppStorage(WidgetSettings.Keys.firstDayOfWeekKey, store: UserDefaults.shared) var sunOrMon: Int = 1
-    
-    
-    override private init() {
-        super.init()
-    }
+    @AppStorage(WidgetSettings.Keys.isLunarCalendarKey, store: UserDefaults.shared) var lunarCalendar: Bool = false
     
     var isOnTheme: Bool {
         get {
@@ -37,13 +32,9 @@ class WidgetSettingsManager: NSObject {
     
     var themeColor: String {
         get {
-//            print("themeColor: \(UserDefaults.shared.getPreference(of: WidgetSettings.Keys.themeColorKey))")
-//            return UserDefaults.shared.getPreference(of: WidgetSettings.Keys.themeColorKey)
             return color
         }
         set {
-//            UserDefaults.shared.setPreference(of: WidgetSettings.Keys.themeColorKey, value: newValue)
-//            reloadWidget(named: WidgetSettings.widgetName)
             color = newValue
             reloadWidget(named: WidgetSettings.widgetName)
         }
@@ -51,11 +42,9 @@ class WidgetSettingsManager: NSObject {
     
     var firstDayOfWeek: Int {
         get {
-//            return UserDefaults.shared.getPreference(of: WidgetSettings.Keys.firstDayOfWeekKey) ?? 1
             return sunOrMon
         }
         set {
-//            UserDefaults.shared.setPreference(of: WidgetSettings.Keys.firstDayOfWeekKey, value: newValue)
             sunOrMon = newValue
             reloadWidget(named: WidgetSettings.widgetName)
         }
@@ -63,13 +52,15 @@ class WidgetSettingsManager: NSObject {
     
     var isLunarCalendar: Bool {
         get {
-            return UserDefaults.shared.getPreference(of: WidgetSettings.Keys.isLunarCalendarKey)
+            return lunarCalendar
         }
         set {
-            UserDefaults.shared.setPreference(of: WidgetSettings.Keys.isLunarCalendarKey, value: newValue)
+            lunarCalendar = newValue
             reloadWidget(named: WidgetSettings.widgetName)
         }
     }
+    
+    
     
     private func reloadWidget(named widgetName: String) {
         WidgetCenter.shared.getCurrentConfigurations { result in

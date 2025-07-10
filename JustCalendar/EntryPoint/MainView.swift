@@ -9,15 +9,8 @@ import SwiftUI
 
 // MARK: - 시작 MainView
 // MainView -> (OnboardingTabView) -> ContentView
-enum AppSettings {
-    static let appName = "AddWidgetTestWidget"
-    struct Keys {
-        static let onboardingKey = "Key_onboarding"
-    }
-}
-
 struct MainView: View {
-    @AppStorage("onboarding") var isOnboarding: Bool = true
+    @AppStorage(AppSettings.Keys.onboardingKey) var isOnboarding: Bool = true
     
     var body: some View {
         ContentView()
