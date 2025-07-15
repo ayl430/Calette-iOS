@@ -9,8 +9,6 @@ import SwiftUI
 
 struct CalendarThemeView: View {
     var sevenDays = ["일", "월", "화", "수", "목", "금", "토"]
-    @State var thisMonthDays = DateModel.shared.selectedDate.getDays()
-    @State var thisMonthDaysDate = DateModel.shared.selectedDate.getDaysDate()
     let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 0, alignment: .center), count: 7)
     
     @ObservedObject private var dateModel = DateModel.shared
@@ -103,7 +101,7 @@ struct CalendarThemeView: View {
                     ForEach(0..<days.count, id: \.self) { index in
                         let day = days[index]
                         if  day.isInCurrentMonth {
-                            CalendarDateView(dateDate: day.date, date: day.date.getDay(), index: index, viewModel: viewModel)
+                            CalendarDateView(dateDate: day.date, date: day.date.get(component: .day), index: index, viewModel: viewModel)
                                 .aspectRatio(contentMode: .fill)
                         } else {
                             EmptyCalendarDateView()

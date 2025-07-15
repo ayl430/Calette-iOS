@@ -92,7 +92,7 @@ class EventManager: NSObject {
     // 특정 날의 이벤트
     func fetchEvents(on date: Date) -> [EventItem] {
         let allEvents = getEvents(date: date)
-        let events = allEvents.filter { $0.date?.local.startOfDay == date.startOfDay }
+        let events = allEvents.filter { $0.date?.startOfDay == date.startOfDay }
         return events
     }
     

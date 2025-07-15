@@ -11,8 +11,8 @@ import WidgetKit
 
 struct CalendarDateView: View {
     
-    var dateDate: Date
-    var date: Int
+    var dateDate: Date //GMT
+    var date: Int //로컬 day
     var index: Int
     
     @ObservedObject private var dateModel = DateModel.shared
@@ -26,10 +26,17 @@ struct CalendarDateView: View {
                         .fill(dateModel.selectedDate.get(component: .day) == date ? Color(hex: "E1E2E1") : Color.clear)
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 25, height: 25)
+                    if Date().toString() == dateDate.toString() {
+                        Circle()
+                            .strokeBorder(Color(name: viewModel.themeColor, alpha: 0.3), lineWidth: 2)
+                            .fill(.clear)
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 25, height: 25)
+                    }
                     VStack(spacing: 1) {
                         Text("\(date)")
                             .font(.system(size: 13))
-                        EventMarkingView(dateDate: dateDate, date: date)
+                        EventMarkingView(dateDate: dateDate)
                     }
                 }
                 Text("\(dateDate.lunarDate.toStringMdd())")

@@ -10,7 +10,6 @@ import SwiftUI
 struct EventMarkingView: View {
     
     var dateDate: Date
-    var date: Int
     
     @ObservedObject private var dateModel = DateModel.shared
     

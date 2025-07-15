@@ -9,15 +9,6 @@ import Foundation
 import SwiftUI
 import WidgetKit
 
-enum WidgetSettings {
-    static let widgetName = "JustCalendarWidget"
-    struct Keys {
-        static let themeColorKey = "KEY_themeColor"
-        static let firstDayOfWeekKey = "KEY_firstDayOfWeek"
-        static let isLunarCalendarKey = "KEY_isLunarCalendar"
-    }
-}
-
 class WidgetSettingModel: ObservableObject  {
     
     @AppStorage(WidgetSettings.Keys.themeColorKey, store: UserDefaults.shared) var color: String = "justDefaultColor"

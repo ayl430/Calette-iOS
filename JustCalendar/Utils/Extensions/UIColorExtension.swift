@@ -21,6 +21,23 @@ extension Color {
         self.init(red: r, green: g, blue: b, opacity: alpha)
     }
     
+    init(name: String, alpha: Double = 1.0) {
+        switch name {
+        case "justDefaultColor":
+            self = .justDefaultColor.opacity(alpha)
+        case "justYellow":
+            self = .justYellow.opacity(alpha)
+        case "justPink":
+            self = .justPink.opacity(alpha)
+        case "justPurple":
+            self = .justPurple.opacity(alpha)
+        case "justBlue":
+            self = .justBlue.opacity(alpha)
+        default:
+            self = .justDefaultColor.opacity(alpha)
+        }
+    }
+    
     static let justDefaultColor = Color(hex: "F7931D")
     static let justYellow = Color(hex: "FFBE0C")
 //    static let justOrange = Color(hex: "FB5607")

@@ -48,8 +48,8 @@ struct JustCalendarWidget: Widget {
                 .environmentObject(DateModel.shared)
         }
         .supportedFamilies([.systemLarge])
-        .configurationDisplayName(AppInfo.appName)
-        .description("This is an example widget.")
+        .configurationDisplayName(AppSettings.widgetName)
+        .description(AppSettings.widgetDescription)
     }
 }
 
