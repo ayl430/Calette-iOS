@@ -18,6 +18,7 @@ struct HomeScreenWithWidget: View {
     @Binding var selectedIndex: Int
     
     @State var showAddEventView: Bool = false
+    @State var showAlertView: Bool = false
     @State var showFaqView: Bool = false
     
     var body: some View {
@@ -66,7 +67,11 @@ struct HomeScreenWithWidget: View {
                             selectedApp = appIcon
                             selectedIndex = 9
                             
-                            showAddEventView.toggle()
+                            if EventManager.shared.isFullAccess {
+                                showAddEventView.toggle()
+                            } else {
+                                showAlertView.toggle()
+                            }
                         }
                         .anchorPreference(key: AppIconViewPreferenceKey.self, value: .bounds) { anchor in
                             [9: anchor]
@@ -122,6 +127,10 @@ struct HomeScreenWithWidget: View {
                     height: geometry.size.height
                 )
                 .ignoresSafeArea(edges: [.top, .bottom])
+                
+                if showAlertView {
+                    AlertView(showAlertView: $showAlertView)                    
+                }
             }
         }
     }

@@ -18,28 +18,24 @@ struct AddEvent: UIViewControllerRepresentable {
     }
 
     func makeUIViewController(context: Context) -> EKEventEditViewController {
-        let eventStore = EKEventStore()
+        let eventManager = EventManager.shared
+        guard eventManager.isFullAccess else { return EKEventEditViewController() }
+        
+        let eventStore = eventManager.eventStore
         let controller = EKEventEditViewController()
         controller.eventStore = eventStore
         controller.editViewDelegate = context.coordinator
 
-        // Create empty event (optional)
         let event = EKEvent(eventStore: eventStore)
-        event.title = "새 일정"
+        event.startDate = DateModel.shared.selectedDate
+        event.endDate = DateModel.shared.selectedDate
         controller.event = event
-
-        // 권한 확인 및 요청
-        eventStore.requestAccess(to: .event) { granted, error in
-            if !granted {
-                print("Calendar access denied.")
-            }
-        }
-
+        
         return controller
     }
 
     func updateUIViewController(_ uiViewController: EKEventEditViewController, context: Context) {
-        // 업데이트 불필요
+        
     }
 
     class Coordinator: NSObject, EKEventEditViewDelegate {
@@ -51,6 +47,7 @@ struct AddEvent: UIViewControllerRepresentable {
 
         func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
             controller.dismiss(animated: true)
+            DateModel.shared.setEvent()
         }
     }
 }

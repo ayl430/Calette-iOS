@@ -8,20 +8,22 @@
 import Foundation
 import SwiftUI
 
-class DateModel: ObservableObject {//ViewModel
+class DateModel: ObservableObject {
     
     static let shared = DateModel()
     
     @Published var selectedDate: Date = Date()
-    @Published var events: [EventItem?] = []
+    @Published var eventDays: [Date] = []
     
     private init() {
         setEvent()
     }
     
     func setThisMonth() {
-        selectedDate = Date()
-        setEvent()
+        DispatchQueue.main.async {
+            self.selectedDate = Date()
+            self.setEvent()
+        }
     }
     
     func setPriorMonth() {
@@ -38,23 +40,25 @@ class DateModel: ObservableObject {//ViewModel
         }
     }
     
-    private func setEvent() {
-        if EventManager.shared.isFullAccess {
-            events = EventManager.shared.fetchEventsDays(date: selectedDate)
+    func setEvent() {
+        DispatchQueue.main.async {
+            if EventManager.shared.isFullAccess {
+                guard let days = EventManager.shared.fetchAllEventsThisMonth(date: self.selectedDate) else { return }
+                self.eventDays = days
+            }
         }
     }
     
     func hasEvent(on date: Date) -> Bool {
-        if let _ = events.first(where: { ($0?.date?.startOfDay) == date.startOfDay }) {
+        if eventDays.contains(where: { $0.startOfDay == date.startOfDay }) {
             return true
         }
         return false
-        
     }
     
-    func isHoliday(on date: Date) -> Bool {
-        if let event = events.first(where: { ($0?.date) == date }) {
-            if event?.calendarTitle == "대한민국 공휴일", event?.calendarType == .subscription, ((event?.allowModification!) == false) {
+    func isHoliday(on date: Date) -> Bool {        
+        if let holidays = EventManager.shared.fetchHolidayEventDates(date: date) {
+            if holidays.contains(where: { $0.startOfDay == date.startOfDay }) {
                 return true
             }
             return false

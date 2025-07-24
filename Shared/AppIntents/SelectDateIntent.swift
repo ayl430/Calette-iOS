@@ -22,7 +22,9 @@ struct SelectDateIntent: AppIntent {
     
     func perform() async throws -> some IntentResult {
         let startOfMonth = DateModel.shared.selectedDate.startOfMonth
-        DateModel.shared.selectedDate = Calendar.current.date(byAdding: DateComponents(day: dayValue - 1), to: startOfMonth)!
+        DispatchQueue.main.async {
+            DateModel.shared.selectedDate = Calendar.current.date(byAdding: DateComponents(day: dayValue - 1), to: startOfMonth)!
+        }
         
         return .result()
     }

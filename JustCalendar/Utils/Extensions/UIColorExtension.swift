@@ -38,13 +38,20 @@ extension Color {
         }
     }
     
+    // 테마색
     static let justDefaultColor = Color(hex: "F7931D")
     static let justYellow = Color(hex: "FFBE0C")
 //    static let justOrange = Color(hex: "FB5607")
     static let justPink = Color(hex: "FF006E")
     static let justPurple = Color(hex: "8338EC")
     static let justBlue = Color(hex: "3986FF")
+    
+    // 텍스트, 배경 색
+    static let selectedDateBG = Color(hex: "E1E2E1")
+    static let lunarDate = Color(hex: "7A7A7A")
 }
+
+
 
 enum WidgetTheme: String, CaseIterable {
     case justDefaultColor

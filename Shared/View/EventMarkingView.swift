@@ -16,44 +16,16 @@ struct EventMarkingView: View {
     var body: some View {
         if dateModel.hasEvent(on: dateDate) {
             if dateModel.isHoliday(on: dateDate) {
-                    if EventManager.shared.fetchEvents(on: dateDate).count >= 2 {
-                        HStack(spacing: 2) {
-                            Circle()
-                                .fill(Color.red)
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 3, height: 3)
-                            ZStack {
-                                Rectangle()
-                                    .frame(width: 3, height: 1, alignment: .center)
-                                Rectangle()
-                                    .frame(width: 1, height: 3, alignment: .center)
-                            }
-                        }
+                if EventManager.shared.fetchAllEvents(date: dateDate).count >= 2 {
+                        EventMarkingSubView(isHoliday: true, moreThanTwo: true)
                     } else {
-                        Circle()
-                            .fill(Color.red)
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 3, height: 3)
+                        EventMarkingSubView(isHoliday: true, moreThanTwo: false)
                     }
                 } else {
-                    if EventManager.shared.fetchEvents(on: dateDate).count >= 2 {
-                        HStack(spacing: 2) {
-                            Circle()
-                                .fill(Color.blue)
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 3, height: 3)
-                            ZStack {
-                                Rectangle()
-                                    .frame(width: 3, height: 1, alignment: .center)
-                                Rectangle()
-                                    .frame(width: 1, height: 3, alignment: .center)
-                            }
-                        }
+                    if EventManager.shared.fetchAllEvents(date: dateDate).count >= 2 {
+                        EventMarkingSubView(isHoliday: false, moreThanTwo: true)
                     } else {
-                        Circle()
-                            .fill(Color.blue)
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 3, height: 3)
+                        EventMarkingSubView(isHoliday: false, moreThanTwo: false)
                     }
                 }
             } else {
@@ -62,11 +34,27 @@ struct EventMarkingView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 3, height: 3)
             }
-        
-
     }
 }
 
-#Preview {
-//    EventMarkingView(date: 1, dateDate: Date())
+struct EventMarkingSubView: View {
+    let isHoliday: Bool
+    let moreThanTwo: Bool
+    
+    var body: some View {
+        HStack(spacing: 2) {
+            Circle()
+                .fill(isHoliday ? Color.red : Color.blue)
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 3, height: 3)
+            if moreThanTwo {
+                ZStack {
+                    Rectangle()
+                        .frame(width: 3, height: 1, alignment: .center)
+                    Rectangle()
+                        .frame(width: 1, height: 3, alignment: .center)
+                }
+            }
+        }
+    }
 }

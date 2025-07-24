@@ -29,7 +29,9 @@ struct CalendarThemeView: View {
                 Spacer()
                 
                 HStack {
-                    Button(intent: TodayIntent()) {
+                    Button {
+                        dateModel.setThisMonth()
+                    } label: {
                         Image(systemName: "square")
                             .font(.caption)
                     }
@@ -44,7 +46,9 @@ struct CalendarThemeView: View {
                     .bold()
                     
                     HStack(spacing: 0) {
-                        Button(intent: PriorMonthIntent()) {
+                        Button {
+                            dateModel.setPriorMonth()
+                        } label: {
                             RoundedRectangle(cornerRadius: capsuleButtonWidth / 4, style: .continuous)
                                 .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
                                 .frame(width: capsuleButtonWidth, height: capsuleButtonWidth / 2)
@@ -72,7 +76,9 @@ struct CalendarThemeView: View {
                                     .frame(width: 1, height: capsuleButtonWidth / 4)
                             }
                         
-                        Button(intent: NextMonthIntent()) {
+                        Button {
+                            dateModel.setNextMonth()
+                        } label: {
                             RoundedRectangle(cornerRadius: capsuleButtonWidth / 4, style: .continuous)
                                 .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
                                 .frame(width: capsuleButtonWidth, height: capsuleButtonWidth / 2)
@@ -126,6 +132,7 @@ struct CalendarThemeView: View {
     }
 }
 
-//#Preview {
-//    CalendarThemeView()
-//}
+#Preview {
+    //    CalendarThemeView(viewModel: .init())
+    ContentView()
+}

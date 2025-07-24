@@ -17,8 +17,6 @@ struct CalendarView: View {
     @ObservedObject private var dateModel = DateModel.shared
     @ObservedObject var viewModel: WidgetSettingModel
     
-    private let capsuleButtonWidth: CGFloat = 60
-    
     var body: some View {
         ZStack {
             Button(intent: EmptyIntent()) {
@@ -51,56 +49,6 @@ struct CalendarView: View {
                         .buttonStyle(.plain)
                         .foregroundStyle(Color.white)
                         .bold()
-                        
-                        HStack(spacing: 0) {
-                            Button(intent: PriorMonthIntent()) {
-                                RoundedRectangle(cornerRadius: capsuleButtonWidth / 4, style: .continuous)
-                                    .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
-                                    .frame(width: capsuleButtonWidth, height: capsuleButtonWidth / 2)
-                                    .offset(x: capsuleButtonWidth / 4)
-                                    .clipped()
-                                    .offset(x: -capsuleButtonWidth / 4)
-                                    .frame(width: capsuleButtonWidth / 2)
-                                    .overlay {
-                                        Image(systemName: "lessthan")
-                                            .font(.caption)
-                                            .foregroundStyle(Color.white)
-                                            .bold()
-                                            .offset(x: -capsuleButtonWidth / 8)
-                                    }
-                            }
-                            .frame(width: 30, height: 30)
-                            .buttonStyle(.plain)
-                            
-                            Rectangle()
-                                .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
-                                .frame(width: 1, height: capsuleButtonWidth / 2)
-                                .overlay {
-                                    Rectangle()
-                                        .fill(Color.white)
-                                        .frame(width: 1, height: capsuleButtonWidth / 4)
-                                }
-                            
-                            Button(intent: NextMonthIntent()) {
-                                RoundedRectangle(cornerRadius: capsuleButtonWidth / 4, style: .continuous)
-                                    .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
-                                    .frame(width: capsuleButtonWidth, height: capsuleButtonWidth / 2)
-                                    .offset(x: -capsuleButtonWidth / 4)
-                                    .clipped()
-                                    .offset(x: capsuleButtonWidth / 4)
-                                    .frame(width: capsuleButtonWidth / 2)
-                                    .overlay {
-                                        Image(systemName: "greaterthan")
-                                            .font(.caption)
-                                            .foregroundStyle(Color.white)
-                                            .bold()
-                                            .offset(x: capsuleButtonWidth / 8)
-                                    }
-                            }
-                            .frame(width: 30, height: 30)
-                            .buttonStyle(.plain)
-                        }
-                        .padding(.horizontal)
                     }
                 }
                 .padding(.bottom, 15)

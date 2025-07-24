@@ -11,7 +11,8 @@ struct EventDetailView: View {
     @ObservedObject private var dateModel = DateModel.shared
     
     var body: some View {
-        let events = EventManager.shared.getEvents(date: dateModel.selectedDate)
+        let events = EventManager.shared.fetchAllEventItems(date: dateModel.selectedDate)
+        
         if !events.isEmpty {
             VStack(spacing: 16) {
                 let eventCount = events.count
