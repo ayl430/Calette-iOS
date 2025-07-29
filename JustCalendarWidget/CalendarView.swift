@@ -11,7 +11,6 @@ import SwiftUI
 struct CalendarView: View {
     var entry: Provider.Entry
     
-    var sevenDays = ["일", "월", "화", "수", "목", "금", "토"]
     let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 0, alignment: .center), count: 7)
     
     @ObservedObject private var dateModel = DateModel.shared
@@ -38,17 +37,14 @@ struct CalendarView: View {
                     HStack {
                         Button(intent: TodayIntent()) {
                             Image(systemName: "square")
+                                .frame(width: 30, height: 30)
                                 .font(.caption)
+                                .foregroundStyle(Color.white)
+                                .bold()
                         }
-                        .frame(width: 30, height: 30)
-                        .background(
-                            RoundedRectangle(cornerRadius: 15, style: .continuous)
-                                .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
-                        )
-                        .padding(.horizontal, 5)
                         .buttonStyle(.plain)
-                        .foregroundStyle(Color.white)
-                        .bold()
+                        .background(WidgetTheme(rawValue: viewModel.themeColor)!.color)
+                        .clipShape(Circle())
                     }
                 }
                 .padding(.bottom, 15)
@@ -72,7 +68,7 @@ struct CalendarView: View {
                     Rectangle()
                         .fill(Color.clear)
                         .overlay(alignment: .top) {
-                            EventDetailView()
+                            EventDetailView(cellWidth: 40.0, cellHeight: 40.0)
                         }
                 }
             }

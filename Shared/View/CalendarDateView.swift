@@ -19,26 +19,21 @@ struct CalendarDateView: View {
     @ObservedObject var viewModel: WidgetSettingModel
     
     var body: some View {
-        Button(intent: SelectDateIntent(dayValue: date)) {
-            VStack(spacing: 3) {
-                ZStack {
-                    Circle()
-                        .fill(dateModel.selectedDate.get(component: .day) == date ? Color.selectedDateBG : Color.clear)
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 25, height: 25)
-                    if Date().toString() == dateDate.toString() {
-                        Circle()
-                            .strokeBorder(Color(name: viewModel.themeColor, alpha: 0.3), lineWidth: 2)
-                            .fill(.clear)
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 25, height: 25)
-                    }
-                    VStack(spacing: 1) {
-                        Text("\(date)")
-                            .font(.system(size: 13))
-                        EventMarkingView(dateDate: dateDate)
-                    }
-                }
+        ZStack {
+            if dateModel.selectedDate.get(component: .day) == date {
+                Circle()
+                    .fill(Color.selectedDateBG)
+            }
+            if Date().toString() == dateDate.toString() {
+                Circle()
+                    .strokeBorder(Color(name: viewModel.themeColor, alpha: 0.3), lineWidth: 2)
+                    .fill(.clear)
+            }
+            
+            VStack(spacing: 1) {
+                Text("\(date)")
+                    .font(.system(size: 14))
+                EventMarkingView(dateDate: dateDate).padding(.bottom, 2)
                 Text("\(dateDate.lunarDate.toStringMdd())")
                     .font(.system(size: 8))
                     .foregroundStyle(
@@ -47,15 +42,19 @@ struct CalendarDateView: View {
                         : Color.clear
                     )
             }
+            .foregroundStyle(
+                viewModel.firstDayOfWeek == 1
+                ? (index % 7 == 0 ? Color(name: viewModel.themeColor) : Color.black)
+                : (index % 7 == 6 ? Color(name: viewModel.themeColor) : Color.black)
+            )
+            
+            Button(intent: SelectDateIntent(dayValue: date)) {
+                Rectangle()
+            }
+            .foregroundStyle(Color.clear)
+//            .background(Color.blue.opacity(0.2))
         }
-        .frame(width: 40, height: 30)
-        .buttonStyle(.plain)
-        .padding(.horizontal)
-        .foregroundStyle(
-            viewModel.firstDayOfWeek == 1
-            ? (index % 7 == 0 ? Color(name: viewModel.themeColor) : Color.black)
-            : (index % 7 == 6 ? Color(name: viewModel.themeColor) : Color.black)
-        )
-        .bold()
+        .offset(y: 3)
     }
 }
+

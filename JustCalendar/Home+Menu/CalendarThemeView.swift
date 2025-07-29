@@ -8,127 +8,130 @@
 import SwiftUI
 
 struct CalendarThemeView: View {
-    var sevenDays = ["일", "월", "화", "수", "목", "금", "토"]
-    let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 0, alignment: .center), count: 7)
+    let CalendarColumns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 0, alignment: .center), count: 7)
+    
+    let gridColumns: Int = 7
+    let gridRows: Int = 8
     
     @ObservedObject private var dateModel = DateModel.shared
-    
     @ObservedObject var viewModel: WidgetSettingModel
     
-    private let capsuleButtonWidth: CGFloat = 60
-    
     var body: some View {
-        VStack(spacing: 5) {
-            HStack {
-                Text(dateModel.selectedDate.toString().hyphenToDot())
-                    .font(.system(size: 21))
-                    .bold()
-                    .padding(.horizontal)
-                    .contentTransition(.identity)
-                
-                Spacer()
-                
-                HStack {
-                    Button {
-                        dateModel.setThisMonth()
-                    } label: {
-                        Image(systemName: "square")
-                            .font(.caption)
-                    }
-                    .frame(width: 30, height: 30)
-                    .background(
-                        RoundedRectangle(cornerRadius: 15, style: .continuous)
-                            .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
-                    )
-                    .padding(.horizontal, 5)
-                    .buttonStyle(.plain)
-                    .foregroundStyle(Color.white)
-                    .bold()
-                    
-                    HStack(spacing: 0) {
-                        Button {
-                            dateModel.setPriorMonth()
-                        } label: {
-                            RoundedRectangle(cornerRadius: capsuleButtonWidth / 4, style: .continuous)
-                                .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
-                                .frame(width: capsuleButtonWidth, height: capsuleButtonWidth / 2)
-                                .offset(x: capsuleButtonWidth / 4)
-                                .clipped()
-                                .offset(x: -capsuleButtonWidth / 4)
-                                .frame(width: capsuleButtonWidth / 2)
-                                .overlay {
-                                    Image(systemName: "lessthan")
-                                        .font(.caption)
-                                        .foregroundStyle(Color.white)
-                                        .bold()
-                                        .offset(x: -capsuleButtonWidth / 8)
-                                }
-                        }
-                        .frame(width: 30, height: 30)
-                        .buttonStyle(.plain)
-                        
-                        Rectangle()
-                            .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
-                            .frame(width: 1, height: capsuleButtonWidth / 2)
-                            .overlay {
-                                Rectangle()
-                                    .fill(Color.white)
-                                    .frame(width: 1, height: capsuleButtonWidth / 4)
-                            }
-                        
-                        Button {
-                            dateModel.setNextMonth()
-                        } label: {
-                            RoundedRectangle(cornerRadius: capsuleButtonWidth / 4, style: .continuous)
-                                .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
-                                .frame(width: capsuleButtonWidth, height: capsuleButtonWidth / 2)
-                                .offset(x: -capsuleButtonWidth / 4)
-                                .clipped()
-                                .offset(x: capsuleButtonWidth / 4)
-                                .frame(width: capsuleButtonWidth / 2)
-                                .overlay {
-                                    Image(systemName: "greaterthan")
-                                        .font(.caption)
-                                        .foregroundStyle(Color.white)
-                                        .bold()
-                                        .offset(x: capsuleButtonWidth / 8)
-                                }
-                        }
-                        .frame(width: 30, height: 30)
-                        .buttonStyle(.plain)
-                    }
-                    .padding(.horizontal)
-                }
-            }
-            .padding(.bottom, 15)
-            
-            LazyVGrid(columns: columns) {                
-                if let days = CalendarBuilder.generateMonth(for: dateModel.selectedDate) {
-                    ForEach(0..<days.count, id: \.self) { index in
-                        let day = days[index]
-                        if  day.isInCurrentMonth {
-                            CalendarDateView(dateDate: day.date, date: day.date.get(component: .day), index: index, viewModel: viewModel)
-                                .aspectRatio(contentMode: .fill)
-                        } else {
-                            EmptyCalendarDateView()
-                        }
-                    }
-                }
-            }
-            
+        GeometryReader { geometry in
+            let cellWidth = geometry.size.width / CGFloat(gridColumns)
+            let cellHeight = geometry.size.height / CGFloat(gridRows)
             
             ZStack {
-                Rectangle()
-                    .fill(Color.clear)
-                    .overlay(alignment: .top) {
-                        EventDetailView()
+//                // 배경 grid
+//                ForEach(0..<gridRows, id: \.self) { row in
+//                    ForEach(0..<gridColumns, id: \.self) { col in
+//                        Rectangle()
+//                            .stroke(Color.gray.opacity(0.3), lineWidth: 0.5)
+//                            .frame(width: cellWidth, height: cellHeight)
+//                            .position(
+//                                x: CGFloat(col) * cellWidth + cellWidth / 2,
+//                                y: CGFloat(row) * cellHeight + cellHeight / 2
+//                            )
+//                    }
+//                }
+                
+                VStack(spacing: 0) {
+                    // row 1
+                    HStack(spacing: 0) {
+                        HStack(spacing: 0) {
+                            Text(dateModel.selectedDate.toString().hyphenToDot())
+                                .font(.system(size: 21))
+                                .bold()
+                                .padding(.horizontal)
+                                .contentTransition(.identity)
+                            Spacer()
+                        }
+                        .frame(
+                            width: 4.0 * cellWidth,
+                            height: 1.0 * cellHeight
+                        )
+//                        .background(Color.black.opacity(0.1))
+                        
+                        HStack(spacing: 8) {
+                            Button {
+                                dateModel.setThisMonth()
+                            } label: {
+                                Image(systemName: "square")
+                                    .frame(width: cellWidth * 0.8, height: cellHeight * 0.8)
+                                    .font(.caption)
+                                    .foregroundStyle(Color.white)
+                                    .bold()
+                                    .background(WidgetTheme(rawValue: viewModel.themeColor)!.color)
+                            }
+                            .clipShape(Circle())
+                            
+                            HStack(spacing: 0) {
+                                Button {
+                                    dateModel.setPriorMonth()
+                                } label: {
+                                    Image(systemName: "lessthan")
+                                        .frame(width: cellWidth * 0.6, height: cellHeight * 0.7)
+                                        .font(.caption)
+                                        .foregroundStyle(Color.white)
+                                        .bold()
+                                        .padding(.horizontal, 8)
+                                        .background(WidgetTheme(rawValue: viewModel.themeColor)!.color)
+                                }
+                                
+                                Rectangle()
+                                    .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
+                                    .frame(width: 1, height: cellHeight * 0.7)
+                                    .overlay {
+                                        Rectangle()
+                                            .fill(Color.white)
+                                            .frame(width: 1, height: cellHeight * 0.4)
+                                    }
+                                
+                                Button {
+                                    dateModel.setNextMonth()
+                                } label: {
+                                    Image(systemName: "greaterthan")
+                                        .frame(width: cellWidth * 0.6, height: cellHeight * 0.7)
+                                        .font(.caption)
+                                        .foregroundStyle(Color.white)
+                                        .bold()
+                                        .padding(.horizontal, 8)
+                                        .background(WidgetTheme(rawValue: viewModel.themeColor)!.color)
+                                }
+                            }
+                            .clipShape(Capsule())
+                        }
+                        .frame(
+                            width: 3.0 * cellWidth,
+                            height: 1.0 * cellHeight
+                        )
+                        
                     }
+                    
+                    // 날짜
+                    LazyVGrid(columns: CalendarColumns, spacing: 0) {
+                        if let days = CalendarBuilder.generateMonth(for: dateModel.selectedDate) {
+                            ForEach(0..<days.count, id: \.self) { index in
+                                let day = days[index]
+                                if day.isInCurrentMonth {
+                                    CalendarDateView(dateDate: day.date, date: day.date.get(component: .day), index: index, viewModel: viewModel)
+                                        .frame(width: cellWidth, height: cellHeight)
+                                    //                                        .aspectRatio(contentMode: .fill)
+                                } else {
+                                    Rectangle()
+                                        .fill(Color.clear)
+                                        .frame(width: cellWidth, height: cellHeight)
+                                }
+                            }
+                        }
+                    }
+                    
+                    // 이벤트 디테일
+                    EventDetailView(cellWidth: cellWidth, cellHeight: cellHeight)
+                }
+                
             }
         }
-        .padding(.horizontal, 5)
-        .padding(.vertical, 20)
-        
-        .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 }
 

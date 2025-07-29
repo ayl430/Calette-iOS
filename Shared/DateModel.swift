@@ -67,13 +67,22 @@ class DateModel: ObservableObject {
     }
     
     /// 최대로 만들 수 있는 event detail view의 수
-    ///
-    /// - for: 기준이 될 날짜
-    /// - firstWeekday: 1이면 일요일 시작, 2면 월요일 시작
     func maxEventDetailViewLines() -> Int {        
         guard let thisMonthDays = CalendarBuilder.generateMonth(for: selectedDate) else { return 0 }
         
         let thisMonthDaysLines = thisMonthDays.count / 7
-        return thisMonthDaysLines == 6 ? 1 : 2
+        
+        let num: Int
+        switch thisMonthDaysLines {
+        case 4:
+            num = 3
+        case 5:
+            num = 2
+        case 6:
+            num = 1
+        default:
+            num = 1
+        }
+        return num
     }
 }
