@@ -73,8 +73,6 @@
 		D832DA452D4FAD61002B5B13 /* Exceptions for "JustCalendar" folder in "JustCalendarWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Home+Menu/AddEventView.swift",
-				"Home+Menu/EventEditView.swift",
 				"Utils/Extensions/ArrayExtension .swift",
 				Utils/Extensions/DateExtension.swift,
 				Utils/Extensions/StringExtension.swift,
