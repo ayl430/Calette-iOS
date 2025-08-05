@@ -25,6 +25,20 @@ extension Date {
         return formatter.string(from: self)
     }
     
+    func toStringAhmm() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.dateFormat = "a h:mm"
+        return formatter.string(from: self)
+    }
+    
+    func toStringEEE() -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.dateFormat = "EEE"
+        return formatter.string(from: self)
+    }
+    
     /// 해당 날짜 달의 시작 (로컬 달력 기준 해당 날짜 달의 1일 - 값은 GMT)
     var startOfMonth: Date { // -> firstDayOfMonth
         let components = Calendar.current.dateComponents([.year, .month], from: self)

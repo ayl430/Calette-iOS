@@ -28,7 +28,7 @@ struct AddEvent: UIViewControllerRepresentable {
 
         let event = EKEvent(eventStore: eventStore)
         event.startDate = DateModel.shared.selectedDate
-        event.endDate = DateModel.shared.selectedDate
+        event.endDate = DateModel.shared.selectedDate.addingTimeInterval(60 * 60)
         controller.event = event
         
         return controller

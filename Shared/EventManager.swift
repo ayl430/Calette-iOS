@@ -58,6 +58,38 @@ class EventManager: NSObject {
         }
         return eventList
     }
+    
+    /// date의 모든 공휴일 (EKEvent)
+    func fetchAllHolidays(on date: Date) -> [EKEvent] {
+        guard isFullAccess else { return [EKEvent]() }
+        
+        let start = date.startOfDay
+        let end = date.lastOfDay
+        let holidayCalendars = eventStore.calendars(for: .event).filter {
+            $0.title.contains("공휴일") || $0.title.lowercased().contains("holiday")
+        }
+        
+        let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: holidayCalendars)
+        let events = eventStore.events(matching: predicate)
+        
+        return events
+    }
+    
+    /// date의 공휴일을 제외한 모든 이벤트 (EKEvent)
+    func fetchAllNormalEvents(on date: Date) -> [EKEvent] {
+        guard isFullAccess else { return [EKEvent]() }
+        
+        let start = date.startOfDay
+        let end = date.lastOfDay
+        let holidayCalendars = eventStore.calendars(for: .event).filter {
+            !$0.title.contains("공휴일") && !$0.title.lowercased().contains("holiday")
+        }
+        
+        let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: holidayCalendars)
+        let events = eventStore.events(matching: predicate)
+        
+        return events
+    }
 
     // date를 포함한 달에 이벤트가 있는 dates
     func fetchAllEventsThisMonth(date: Date) -> [Date]? {
@@ -104,6 +136,37 @@ class EventManager: NSObject {
 //        
 //        return events.map { $0.startDate }
 //    }
+    
+    func fetchEvent(withId eventId: String) -> EKEvent? {
+        guard isFullAccess else { return EKEvent() }
+        
+        if let event = eventStore.event(withIdentifier: eventId) {
+            return event
+        } else {
+            print("이벤트 \(eventId) 없음")
+            return nil
+        }
+    }
+    
+    func deleteEvent(withId eventId: String) {
+        guard isFullAccess else { return }
+        
+        if let eventToDelete = eventStore.event(withIdentifier: eventId) {
+            do {
+                try eventStore.remove(eventToDelete, span: .thisEvent)
+                print("이벤트 삭제")
+            } catch {
+                print("이벤트 삭제 오류: \(error.localizedDescription)")
+            }
+        } else {
+            print("이벤트 \(eventId) 없음")
+        }
+    }
+
+}
+
+class EKEventManager: ObservableObject {
+    let eventStore = EKEventStore()
 }
 
 struct EventItem {

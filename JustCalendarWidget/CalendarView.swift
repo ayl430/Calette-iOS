@@ -68,7 +68,7 @@ struct CalendarView: View {
                     Rectangle()
                         .fill(Color.clear)
                         .overlay(alignment: .top) {
-                            EventDetailView(cellWidth: 40.0, cellHeight: 40.0)
+                            EventTitleView(cellWidth: 40.0, cellHeight: 40.0)
                         }
                 }
             }

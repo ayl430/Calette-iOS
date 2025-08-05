@@ -73,6 +73,7 @@
 		D832DA452D4FAD61002B5B13 /* Exceptions for "JustCalendar" folder in "JustCalendarWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"Home+Menu/AddEventView.swift",
 				"Utils/Extensions/ArrayExtension .swift",
 				Utils/Extensions/DateExtension.swift,
 				Utils/Extensions/StringExtension.swift,
@@ -90,12 +91,13 @@
 				AppIntents/SelectDateIntent.swift,
 				AppIntents/TodayIntent.swift,
 				CalendarBuilder.swift,
+				Coordinator.swift,
 				DateModel.swift,
 				EventManager.swift,
 				View/CalendarDateView.swift,
 				View/EmptyCalendarDateView.swift,
-				View/EventDetailView.swift,
 				View/EventMarkingView.swift,
+				View/EventTitleView.swift,
 				WidgetSettingModel.swift,
 			);
 			target = D832DA282D4FAB3A002B5B13 /* JustCalendarWidgetExtension */;

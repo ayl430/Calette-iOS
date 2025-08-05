@@ -129,7 +129,11 @@ struct HomeScreenWithWidget: View {
                 .ignoresSafeArea(edges: [.top, .bottom])
                 
                 if showAlertView {
-                    AlertView(showAlertView: $showAlertView)                    
+                    AlertView(message: "일정 추가를 위해 캘린더앱 접근 권한이 필요합니다", tapped: {
+                        if let url = URL(string: UIApplication.openSettingsURLString) {
+                            UIApplication.shared.open(url)
+                        }
+                    }, showAlertView: $showAlertView)
                 }
             }
         }

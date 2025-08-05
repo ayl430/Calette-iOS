@@ -9,6 +9,9 @@ import SwiftUI
 
 @main
 struct JustCalendarApp: App {
+    
+    @StateObject var coordinator: Coordinator = Coordinator()
+    
     var body: some Scene {
         WindowGroup {
             MainView()
@@ -27,6 +30,7 @@ struct JustCalendarApp: App {
                     let query = components?.queryItems?.first(where: { $0.name == "url" })?.value
                     UIApplication.shared.open(URL(string: query ?? "calshow://")!)
                 }
+                .environmentObject(coordinator)
         }
     }
 }

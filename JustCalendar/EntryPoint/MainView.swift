@@ -12,11 +12,25 @@ import SwiftUI
 struct MainView: View {
     @AppStorage(AppSettings.Keys.onboardingKey) var isOnboarding: Bool = true
     
+    @EnvironmentObject var coordinator: Coordinator
+    
     var body: some View {
-        ContentView()
-            .fullScreenCover(isPresented: $isOnboarding) {
-                OnboardingTabView(isOnboarding: $isOnboarding)
+        NavigationStack(path: $coordinator.path) {
+            ZStack {
+                ContentView()
+                    .fullScreenCover(isPresented: $isOnboarding) {
+                        OnboardingTabView(isOnboarding: $isOnboarding)
+                    }
+                    .navigationDestination(for: NavigationStackType.self) { stackViewType in
+                        switch stackViewType {
+                        case .HomeView:
+                            MainView()
+                        case .EventDetailView:
+                            EventDetailView()
+                        }
+                    }
             }
+        }
     }
 }
 

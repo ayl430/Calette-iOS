@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AlertView: View {
+    let message: String
+    let tapped: () -> Void
     
     @Binding var showAlertView: Bool
     
@@ -19,7 +21,7 @@ struct AlertView: View {
                     showAlertView.toggle()
                 }
             VStack(spacing: 20) {
-                Text("일정 추가를 위해 캘린더앱 접근 권한이 필요합니다")
+                Text(message)
                     .font(.subheadline)
                     .multilineTextAlignment(.center)
                     .padding(.top)
@@ -38,9 +40,7 @@ struct AlertView: View {
                     
                     Button {
                         showAlertView.toggle()
-                        if let url = URL(string: UIApplication.openSettingsURLString) {
-                            UIApplication.shared.open(url)
-                        }
+                        tapped()
                     } label: {
                         Text("확인")
                             .foregroundStyle(Color.justDefaultColor)
@@ -61,5 +61,8 @@ struct AlertView: View {
 }
 
 #Preview {
-    AlertView(showAlertView: .constant(true))
+//    AlertView(showAlertView: .constant(true))
+    AlertView(message: "메세지 입니다", tapped: {
+        //
+    }, showAlertView: .constant(true))
 }

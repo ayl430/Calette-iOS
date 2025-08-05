@@ -127,7 +127,7 @@ struct CalendarThemeView: View {
                     }
                     
                     // 이벤트 디테일
-                    EventDetailView(cellWidth: cellWidth, cellHeight: cellHeight)
+                    EventTitleView(cellWidth: cellWidth, cellHeight: cellHeight)
                 }
                 
             }

@@ -66,8 +66,8 @@ class DateModel: ObservableObject {
         return false
     }
     
-    /// 최대로 만들 수 있는 event detail view의 수
-    func maxEventDetailViewLines() -> Int {        
+    /// 최대로 만들 수 있는 event title view의 수
+    func maxEventTitleViewLines() -> Int {
         guard let thisMonthDays = CalendarBuilder.generateMonth(for: selectedDate) else { return 0 }
         
         let thisMonthDaysLines = thisMonthDays.count / 7

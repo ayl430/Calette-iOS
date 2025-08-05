@@ -1,25 +1,27 @@
 //
-//  EventDetailView.swift
+//  EventTitleView.swift
 //  JustCalendar
 //
-//  Created by yeri on 2/3/25.
+//  Created by yeri on 7/30/25.
 //
 
 import SwiftUI
 
-struct EventDetailView: View {
+struct EventTitleView: View {
     
     var cellWidth: CGFloat
     var cellHeight: CGFloat
     
     @ObservedObject private var dateModel = DateModel.shared
     
+    @EnvironmentObject var coordinator: Coordinator
+    
     var body: some View {
-        let events = EventManager.shared.fetchAllEventItems(date: dateModel.selectedDate)
+        let events = EventManager.shared.fetchAllEventItems(date: dateModel.selectedDate) //fetchAllEvents?
         
         VStack(spacing: 0) {
             let eventCount = events.count
-            let maxEventLines = dateModel.maxEventDetailViewLines()
+            let maxEventLines = dateModel.maxEventTitleViewLines()
             
             if eventCount == 0 {
                 noEventView(lines: maxEventLines)
@@ -27,32 +29,6 @@ struct EventDetailView: View {
                 let eventLines = eventCount == 1 ? 1 : (maxEventLines == 1 ? 1 : 2)
                 let emptyLines = maxEventLines - eventLines
                 ForEach(0..<eventLines, id: \.self) { index in
-//                    HStack() {
-//                        Rectangle()
-//                            .fill(events[index].calendarTitle == "대한민국 공휴일" ? Color.red : Color.blue)
-//                            .frame(width: 2, height: cellHeight * 0.3)
-//                            .padding(.leading, 10)
-//                        
-//                        Text(events[index].title ?? "")
-//                            .font(.system(size: 13))
-//                            .foregroundStyle(Color(hex: "#686868"))
-//                            .padding(.leading, 10)
-//                        Spacer()
-//                        if eventCount > 2 && index == 1 {
-//                            ZStack {
-//                                Rectangle()
-//                                    .frame(width: 5, height: 1, alignment: .center)
-//                                Rectangle()
-//                                    .frame(width: 1, height: 5, alignment: .center)
-//                            }
-//                            .padding(.trailing, 10)
-//                        }
-//                    }
-//                    .frame(
-//                        width: 7.0 * cellWidth,
-//                        height: 1.0 * cellHeight
-//                    )
-                    
                     ZStack {
                         HStack() {
                             Rectangle()
@@ -75,13 +51,18 @@ struct EventDetailView: View {
                                 .padding(.trailing, 10)
                             }
                         }
+                        
+                        Button {
+                            coordinator.push(.EventDetailView)
+                        } label: {
+                            Rectangle()
+                        }
+                        .foregroundStyle(Color.clear)
                     }
                     .frame(
                         width: 7.0 * cellWidth,
                         height: 1.0 * cellHeight
                     )
-                    
-                    
                 }
                 
                 if emptyLines != 0 {
@@ -122,6 +103,13 @@ struct EventDetailView: View {
                     .padding(.leading, 15)
                 Spacer()
             }
+            
+            Button {
+                coordinator.push(.EventDetailView)
+            } label: {
+                Rectangle()
+            }
+            .foregroundStyle(Color.clear)
         }
         
         return imageView
