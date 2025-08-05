@@ -61,7 +61,6 @@ struct AlertView: View {
 }
 
 #Preview {
-//    AlertView(showAlertView: .constant(true))
     AlertView(message: "메세지 입니다", tapped: {
         //
     }, showAlertView: .constant(true))

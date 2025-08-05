@@ -21,5 +21,9 @@ extension String {
     
     func hyphenToDot() -> String {
         return self.replacingOccurrences(of: "-", with: ".")
+    }    
+    
+    var byCharWrapping: Self {
+        self.split(separator: "").joined(separator: "\u{200B}")
     }
 }

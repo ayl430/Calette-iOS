@@ -72,7 +72,7 @@ extension Date {
         switch component {
         case .year:
             value = date.year ?? 0
-            case .month:
+        case .month:
             value = date.month ?? 0
         case .day:
             value = date.day ?? 0

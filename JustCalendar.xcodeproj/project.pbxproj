@@ -74,6 +74,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Home+Menu/AddEventView.swift",
+				"Home+Menu/EventEditView.swift",
 				"Utils/Extensions/ArrayExtension .swift",
 				Utils/Extensions/DateExtension.swift,
 				Utils/Extensions/StringExtension.swift,

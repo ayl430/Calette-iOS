@@ -116,7 +116,7 @@ struct CalendarThemeView: View {
                                 if day.isInCurrentMonth {
                                     CalendarDateView(dateDate: day.date, date: day.date.get(component: .day), index: index, viewModel: viewModel)
                                         .frame(width: cellWidth, height: cellHeight)
-                                    //                                        .aspectRatio(contentMode: .fill)
+//                                        .aspectRatio(contentMode: .fill)
                                 } else {
                                     Rectangle()
                                         .fill(Color.clear)

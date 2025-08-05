@@ -90,7 +90,7 @@ class EventManager: NSObject {
         
         return events
     }
-
+    
     // date를 포함한 달에 이벤트가 있는 dates
     func fetchAllEventsThisMonth(date: Date) -> [Date]? {
         guard isFullAccess else { return nil }
@@ -162,7 +162,7 @@ class EventManager: NSObject {
             print("이벤트 \(eventId) 없음")
         }
     }
-
+    
 }
 
 class EKEventManager: ObservableObject {

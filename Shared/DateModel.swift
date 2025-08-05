@@ -56,7 +56,7 @@ class DateModel: ObservableObject {
         return false
     }
     
-    func isHoliday(on date: Date) -> Bool {        
+    func isHoliday(on date: Date) -> Bool {
         if let holidays = EventManager.shared.fetchHolidayEventDates(date: date) {
             if holidays.contains(where: { $0.startOfDay == date.startOfDay }) {
                 return true

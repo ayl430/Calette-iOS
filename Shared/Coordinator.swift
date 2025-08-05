@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// 네비게이션
-
 enum NavigationStackType {
     case HomeView
     case EventDetailView

@@ -17,23 +17,23 @@ struct EventMarkingView: View {
         if dateModel.hasEvent(on: dateDate) {
             if dateModel.isHoliday(on: dateDate) {
                 if EventManager.shared.fetchAllEvents(date: dateDate).count >= 2 {
-                        EventMarkingSubView(isHoliday: true, moreThanTwo: true)
-                    } else {
-                        EventMarkingSubView(isHoliday: true, moreThanTwo: false)
-                    }
+                    EventMarkingSubView(isHoliday: true, moreThanTwo: true)
                 } else {
-                    if EventManager.shared.fetchAllEvents(date: dateDate).count >= 2 {
-                        EventMarkingSubView(isHoliday: false, moreThanTwo: true)
-                    } else {
-                        EventMarkingSubView(isHoliday: false, moreThanTwo: false)
-                    }
+                    EventMarkingSubView(isHoliday: true, moreThanTwo: false)
                 }
             } else {
-                Circle()
-                    .fill(Color.clear)
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 3, height: 3)
+                if EventManager.shared.fetchAllEvents(date: dateDate).count >= 2 {
+                    EventMarkingSubView(isHoliday: false, moreThanTwo: true)
+                } else {
+                    EventMarkingSubView(isHoliday: false, moreThanTwo: false)
+                }
             }
+        } else {
+            Circle()
+                .fill(Color.clear)
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 3, height: 3)
+        }
     }
 }
 
