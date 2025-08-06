@@ -34,7 +34,6 @@ struct CalendarBuilder {
         guard let range = calendar.range(of: .day, in: .month, for: firstDayOfMonth) else { return nil }
         
         let weekday = calendar.component(.weekday, from: firstDayOfMonth) // 일1 ~ 토7
-//        let firstDayOfWeek = WidgetSettingsManager.shared.firstDayOfWeek
         let firstDayOfWeek = WidgetSettingModel().firstDayOfWeek
         let leadingEmpty = (weekday - firstDayOfWeek + 7) % 7
         

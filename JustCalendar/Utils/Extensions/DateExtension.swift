@@ -25,6 +25,13 @@ extension Date {
         return formatter.string(from: self)
     }
     
+    func toStringD() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "d"
+        formatter.timeZone = TimeZone(identifier: "ko_KR")
+        return formatter.string(from: self)
+    }
+    
     func toStringAhmm() -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")

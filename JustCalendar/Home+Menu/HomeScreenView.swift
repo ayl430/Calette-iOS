@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+#Preview {
+    ContentView()
+}
 
 // MARK: - 홈 화면 뷰(앱 아이콘 + 위젯)
 /* 버튼 별 인덱스
@@ -39,7 +42,13 @@ struct HomeScreenWithWidget: View {
                 
                 VStack(spacing: spacing) {
                     // 위젯
-                    LargeWidgetView(height: screenSize.width - spacing * 2)
+                    LargeWidgetView(viewModel: WidgetSettingModel())
+                        .padding()
+                        .background(Color(hex: "EFEFF0"))
+                        .frame(height: screenSize.width - spacing * 2)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .padding(.horizontal, 25)
+                    
                     
 //                    // 아이콘 그리드 //TBD
 //                    LazyVGrid(columns: columns, spacing: spacing) {
@@ -57,7 +66,8 @@ struct HomeScreenWithWidget: View {
 //                        }
 //                    }
 //                    .padding(.horizontal, spacing)
-                    Spacer().padding(.vertical)
+                    Spacer()
+                        .padding(.vertical)
                     
                     // 이벤트 추가
                     HStack {
@@ -84,7 +94,7 @@ struct HomeScreenWithWidget: View {
                     .padding(.vertical, 2)
                     
                     // Dock
-                    HStack(spacing: spacing) {
+                    HStack(spacing: 20) {
                         ForEach(4..<8, id: \.self) { index in
                             let iconIndex = index + 1
                             let appIcon = AppIcon(index: iconIndex, type: AppIconType.name(for: index), image: AppIconType.image(for: index))
@@ -120,7 +130,7 @@ struct HomeScreenWithWidget: View {
                             .clipShape(RoundedRectangle(cornerRadius: 30))
                     )
                     .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 4)
-                    .padding(.bottom, spacing + safeAreaBottomInset())
+                    .padding(.bottom, 20 + safeAreaBottomInset())
                 }
                 .frame(
                     width: geometry.size.width,

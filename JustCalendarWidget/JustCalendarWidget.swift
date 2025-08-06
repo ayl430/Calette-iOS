@@ -44,6 +44,8 @@ struct JustCalendarWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             CalendarView(entry: entry, viewModel: WidgetSettingModel())
+                .padding(2)
+                .background(Color(hex: "EFEFF0"))
                 .containerBackground(.fill.tertiary, for: .widget)
                 .environmentObject(DateModel.shared)
         }
