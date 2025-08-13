@@ -8,8 +8,8 @@
 import AppIntents
 
 struct NextMonthIntent: AppIntent {
-    static var title: LocalizedStringResource = "Next Month"
-    static var description = IntentDescription("Next Month")
+    static var title: LocalizedStringResource = "다음 달"
+    static var description = IntentDescription("다음 달")
     
 //    init() {}
     
@@ -22,8 +22,8 @@ struct NextMonthIntent: AppIntent {
 
 
 struct EmptyIntent: AppIntent {
-    static var title: LocalizedStringResource = "Empty Space"
-    static var description = IntentDescription("Empty Space")
+    static var title: LocalizedStringResource = "빈 탭"
+    static var description = IntentDescription("빈 탭")
     
 //    init() {}
     

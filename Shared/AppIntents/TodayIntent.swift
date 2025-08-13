@@ -8,8 +8,8 @@
 import AppIntents
 
 struct TodayIntent: AppIntent {
-    static var title: LocalizedStringResource = "Go Today"
-    static var description = IntentDescription("Go Today")
+    static var title: LocalizedStringResource = "오늘"
+    static var description = IntentDescription("오늘")
     
     func perform() async throws -> some IntentResult {
         DateModel.shared.setThisMonth()

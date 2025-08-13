@@ -8,8 +8,8 @@
 import AppIntents
 
 struct SelectDateIntent: AppIntent {
-    static var title: LocalizedStringResource = "Select Date"
-    static var description = IntentDescription("Select Date")
+    static var title: LocalizedStringResource = "날짜 선택"
+    static var description = IntentDescription("날짜 선택")
     
     @Parameter(title:"DayValue")
     var dayValue: Int

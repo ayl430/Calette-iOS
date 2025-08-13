@@ -56,7 +56,6 @@
 		D832DA0B2D4FAAC7002B5B13 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		D832DA0D2D4FAAC7002B5B13 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		D832DA292D4FAB3A002B5B13 /* JustCalendarWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JustCalendarWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		D8B5A01C2D5BA187001E385F /* JustCalendarWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JustCalendarWidgetExtension.entitlements; sourceTree = "<group>"; };
 		D8E394D32D47E1C300C47FDC /* JustCalendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JustCalendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8E394E32D47E1C500C47FDC /* JustCalendarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JustCalendarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8E394ED2D47E1C500C47FDC /* JustCalendarUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JustCalendarUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -196,7 +195,6 @@
 		D8E394CA2D47E1C300C47FDC = {
 			isa = PBXGroup;
 			children = (
-				D8B5A01C2D5BA187001E385F /* JustCalendarWidgetExtension.entitlements */,
 				D8E394D52D47E1C300C47FDC /* JustCalendar */,
 				D8389F4F2E1FB2E5004CD9EF /* Shared */,
 				D8E394E62D47E1C500C47FDC /* JustCalendarTests */,

@@ -8,8 +8,8 @@
 import AppIntents
 
 struct PriorMonthIntent: AppIntent {
-    static var title: LocalizedStringResource = "Prior Month" //이건 안 바꿔도 되나
-    static var description = IntentDescription("Prior Month")
+    static var title: LocalizedStringResource = "이전 달"
+    static var description = IntentDescription("이전 달")
     
 //    init() {}
     
