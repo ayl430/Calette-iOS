@@ -1,6 +1,6 @@
 //
 //  WidgetSettingModel.swift
-//  JustCalendar
+//  Calette
 //
 //  Created by yeri on 7/10/25.
 //
@@ -11,13 +11,13 @@ import WidgetKit
 
 class WidgetSettingModel: ObservableObject  {
     
-    @AppStorage(WidgetSettings.Keys.themeColorKey, store: UserDefaults.shared) var color: String = "justDefaultColor"
+    @AppStorage(WidgetSettings.Keys.themeColorKey, store: UserDefaults.shared) var color: String = "caletteDefault"
     @AppStorage(WidgetSettings.Keys.firstDayOfWeekKey, store: UserDefaults.shared) var sunOrMon: Int = 1
     @AppStorage(WidgetSettings.Keys.isLunarCalendarKey, store: UserDefaults.shared) var lunarCalendar: Bool = false
     
     var isOnTheme: Bool {
         get {
-            return !(themeColor.isEmpty || themeColor == WidgetTheme.justDefaultColor.name)
+            return !(themeColor.isEmpty || themeColor == WidgetTheme.caletteDefault.name)
         }
     }
     

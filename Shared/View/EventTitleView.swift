@@ -1,6 +1,6 @@
 //
 //  EventTitleView.swift
-//  JustCalendar
+//  Calette
 //
 //  Created by yeri on 7/30/25.
 //

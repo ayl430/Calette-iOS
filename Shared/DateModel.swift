@@ -1,6 +1,6 @@
 //
 //  DateModel.swift
-//  JustCalendar
+//  Calette
 //
 //  Created by yeri on 2/5/25.
 //

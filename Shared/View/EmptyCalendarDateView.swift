@@ -1,6 +1,6 @@
 //
 //  EmptyCalendarDateView.swift
-//  JustCalendar
+//  Calette
 //
 //  Created by yeri on 7/10/25.
 //

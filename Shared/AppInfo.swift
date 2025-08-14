@@ -1,6 +1,6 @@
 //
 //  AppInfo.swift
-//  JustCalendar
+//  Calette
 //
 //  Created by yeri on 5/7/25.
 //
@@ -35,7 +35,7 @@ enum AppSettings {
 
 
 enum WidgetSettings {
-    static let widgetName = "JustCalendarWidget"
+    static let widgetName = "CaletteWidget"
     
     struct Keys {
         static let themeColorKey = "KEY_themeColor"

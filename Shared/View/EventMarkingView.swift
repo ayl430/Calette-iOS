@@ -1,6 +1,6 @@
 //
 //  EventMarkingView.swift
-//  JustCalendarWidgetExtension
+//  Calette
 //
 //  Created by yeri on 4/16/25.
 //
