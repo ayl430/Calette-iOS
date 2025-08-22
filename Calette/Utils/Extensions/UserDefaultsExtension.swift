@@ -11,7 +11,7 @@ import WidgetKit
 
 public enum AppGroup {
     static let bundleId: String = "com.Yeali.Calette"
-    static let groupId: String = "group.com.Yeali.Calette"
+    static let groupId: String = "group.com.Yeali.Calette.shared"
 }
 
 extension UserDefaults {
@@ -24,7 +24,7 @@ extension UserDefaults {
         
         // 앱과 위젯의 standard userdefaults는 서로 다름
 //        let combined = UserDefaults.standard
-//        let appGroupId = "group.com.Yeali.Calette"
+//        let appGroupId = "group.com.Yeali.Calette.shared"
 //        combined.addSuite(named: appGroupId)
 //        return combined
     }
