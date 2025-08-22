@@ -57,12 +57,14 @@ struct CalendarView: View {
                                     height: 1.0 * cellHeight
                                 )
                             
-                            MoonPhaseView(lunarDay: Int(dateModel.selectedDate.lunarDate.toStringD())!)
-                                .frame(
-                                    width: 1.0 * cellWidth,
-                                    height: 1.0 * cellHeight
-                                )
-                            
+                            if viewModel.isLunarCalendar {
+                                MoonPhaseView(lunarDay: Int(dateModel.selectedDate.lunarDate.toStringD())!)
+                                    .frame(
+                                        width: 1.0 * cellWidth,
+                                        height: 1.0 * cellHeight
+                                    )
+                            }
+
                             Spacer()
                             
                             Button(intent: TodayIntent()) {
@@ -90,7 +92,7 @@ struct CalendarView: View {
                                 ForEach(0..<days.count, id: \.self) { index in
                                     let day = days[index]
                                     if  day.isInCurrentMonth {
-                                        WidgetCalendarDateView(dateDate: day.date, date: day.date.get(component: .day), index: index, viewModel: viewModel)
+                                        WidgetCalendarDateView(dateDate: day.date, index: index, viewModel: viewModel)
                                             .frame(width: cellWidth, height: cellHeight)
                                     } else {
                                         Rectangle()
@@ -113,8 +115,8 @@ struct CalendarView: View {
 #Preview(as: .systemLarge) {
     CaletteWidget()
 } timeline: {
-    CalendarEntry(date: .now, selectedDate: DateModel.shared)
-    CalendarEntry(date: .now, selectedDate: DateModel.shared)
+    CalendarEntry(date: .now, selectedDate: .now)
+    CalendarEntry(date: .now, selectedDate: .now)
 }
 
 

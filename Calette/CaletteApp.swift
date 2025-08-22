@@ -6,16 +6,18 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 @main
 struct CaletteApp: App {
     
     @StateObject var coordinator: Coordinator = Coordinator()
+    @Environment(\.scenePhase) private var scenePhase
     
     var body: some Scene {
         WindowGroup {
             MainView()
-                .onAppear() {                    
+                .onAppear() {
                     if EventManager.shared.isFullAccess {
                         
                     } else {
@@ -23,6 +25,8 @@ struct CaletteApp: App {
                             try? await EventManager.shared.requestFullAccess()
                         }
                     }
+                    
+                    DateModel.shared.setThisMonth()
                 }
                 .onOpenURL { url in
                     guard url.scheme == "widget-deeplink" else { return }
@@ -32,5 +36,19 @@ struct CaletteApp: App {
                 }
                 .environmentObject(coordinator)
         }
+        .onChange(of: scenePhase) { oldScenePhase, newScenePhase in
+            switch newScenePhase {
+            case .active:
+                print("ScenePhase: Active.")
+            case .inactive:
+                print("ScenePhase: Inactive.")
+            case .background:
+                print("ScenePhase: Background.")
+                WidgetCenter.shared.reloadAllTimelines()
+            @unknown default:
+                print("ScenePhase: Unknown.")
+            }
+        }
+        
     }
 }

@@ -39,26 +39,6 @@ class EventManager: NSObject {
         return events
     }
     
-    /// date의 모든 이벤트 (EventItem)
-    func fetchAllEventItems(date: Date) -> [EventItem] {
-        guard isFullAccess else { return [EventItem]() }
-        
-        let events: [EKEvent] = fetchAllEvents(date: date)
-        var eventList = [EventItem]()
-        events.forEach {
-            let title = $0.title
-            let startDate = $0.startDate
-            
-            let calendarTitle = $0.calendar.title
-            let calendarType = $0.calendar.type
-            let allowModification = $0.calendar.allowsContentModifications
-            
-            let value = EventItem(title: title!, date: startDate, calendarTitle: calendarTitle, calendarType: calendarType, allowModification: allowModification)
-            eventList.append(value)
-        }
-        return eventList
-    }
-    
     /// date의 모든 공휴일 (EKEvent)
     func fetchAllHolidays(on date: Date) -> [EKEvent] {
         guard isFullAccess else { return [EKEvent]() }
@@ -167,13 +147,4 @@ class EventManager: NSObject {
 
 class EKEventManager: ObservableObject {
     let eventStore = EKEventStore()
-}
-
-struct EventItem {
-    let title: String?
-    let date: Date?
-    
-    let calendarTitle: String?
-    let calendarType: EKCalendarType?
-    let allowModification: Bool?
 }

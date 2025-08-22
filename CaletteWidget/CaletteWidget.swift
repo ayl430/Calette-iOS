@@ -10,11 +10,11 @@ import SwiftUI
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> CalendarEntry {
-        CalendarEntry(date: Date(), selectedDate: DateModel.shared)
+        CalendarEntry(date: Date(), selectedDate: Date())
     }
     
     func getSnapshot(in context: Context, completion: @escaping (CalendarEntry) -> ()) {
-        let entry = CalendarEntry(date: Date(), selectedDate: DateModel.shared)
+        let entry = CalendarEntry(date: Date(), selectedDate: Date())
         completion(entry)
     }
     
@@ -24,7 +24,7 @@ struct Provider: TimelineProvider {
         let currentDate = Date()
         for hourOffset in 0 ..< 5 {
             let entryDate = Calendar.current.date(byAdding: .second, value: hourOffset, to: currentDate)!
-            let entry = CalendarEntry(date: entryDate, selectedDate: DateModel.shared)
+            let entry = CalendarEntry(date: entryDate, selectedDate: Date())
             entries.append(entry)
         }
         
@@ -35,19 +35,19 @@ struct Provider: TimelineProvider {
 
 struct CalendarEntry: TimelineEntry {
     let date: Date
-    let selectedDate: DateModel
+    let selectedDate: Date
 }
 
 struct CaletteWidget: Widget {
-    let kind: String = "CaletteWidget"
+    let kind: String = WidgetSettings.widgetName
     
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             CalendarView(entry: entry, viewModel: WidgetSettingModel())
                 .padding(2)
-                .background(Color(hex: "EFEFF0"))
+                .background(Color(hex: "EDEDED"))
                 .containerBackground(.fill.tertiary, for: .widget)
-                .environmentObject(DateModel.shared)
+//                .environmentObject(DateModel.shared)
         }
         .supportedFamilies([.systemLarge])
         .configurationDisplayName(AppSettings.widgetName)
@@ -58,6 +58,6 @@ struct CaletteWidget: Widget {
 #Preview(as: .systemLarge) {
     CaletteWidget()
 } timeline: {
-    CalendarEntry(date: .now, selectedDate: DateModel.shared)
-    CalendarEntry(date: .now, selectedDate: DateModel.shared)
+    CalendarEntry(date: .now, selectedDate: .now)
+    CalendarEntry(date: .now, selectedDate: .now)
 }

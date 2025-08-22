@@ -34,6 +34,20 @@ enum AppSettings {
 }
 
 
+public enum AppGroup {
+    static let bundleId: String = "com.Yeali.Calette"
+    static let groupId: String = "group.com.Yeali.Calette.shared"
+}
+
+enum SharedSettings {
+//    static let bundleId: String = "com.Yeali.Calette"
+//    static let groupId: String = "group.com.Yeali.Calette.shared"
+    
+    struct Keys {
+        static let selectedDateKey = "KEY_selectedDate" //value(String)
+    }
+}
+
 enum WidgetSettings {
     static let widgetName = "CaletteWidget"
     

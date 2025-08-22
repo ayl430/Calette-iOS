@@ -19,6 +19,17 @@ extension String {
         }
     }
     
+    func toGMTDate() -> Date? {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.timeZone = TimeZone(identifier: "UTC")
+        if let date = formatter.date(from: self) {
+            return date
+        } else {
+            return nil
+        }
+    }
+    
     func hyphenToDot() -> String {
         return self.replacingOccurrences(of: "-", with: ".")
     }    

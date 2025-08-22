@@ -6,13 +6,17 @@
 //
 
 import AppIntents
+import WidgetKit
 
 struct TodayIntent: AppIntent {
     static var title: LocalizedStringResource = "오늘"
     static var description = IntentDescription("오늘")
     
     func perform() async throws -> some IntentResult {
-        DateModel.shared.setThisMonth()
+        DispatchQueue.main.async {
+            DateModel.shared.setThisMonth()
+            WidgetCenter.shared.reloadAllTimelines()
+        }
         
         return .result()
     }

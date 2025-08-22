@@ -6,24 +6,25 @@
 //
 
 import AppIntents
+import WidgetKit
 
 struct SelectDateIntent: AppIntent {
     static var title: LocalizedStringResource = "날짜 선택"
     static var description = IntentDescription("날짜 선택")
     
-    @Parameter(title:"DayValue")
-    var dayValue: Int
+    @Parameter(title: "Selected Date")
+    var selectedDate: Date
     
     init() {}
     
-    init(dayValue: Int) {
-        self.dayValue = dayValue
+    init(selectedDate: Date) {
+        self.selectedDate = selectedDate
     }
     
     func perform() async throws -> some IntentResult {
-        let startOfMonth = DateModel.shared.selectedDate.startOfMonth
         DispatchQueue.main.async {
-            DateModel.shared.selectedDate = Calendar.current.date(byAdding: DateComponents(day: dayValue - 1), to: startOfMonth)!
+            DateModel.shared.setSelectedDate(date: selectedDate)
+            WidgetCenter.shared.reloadAllTimelines()
         }
         
         return .result()

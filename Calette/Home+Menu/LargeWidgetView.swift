@@ -9,6 +9,7 @@ import SwiftUI
 
 // MARK: - 위젯 뷰 (systemLarge)
 struct LargeWidgetView: View {
+    
     let CalendarColumns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 0, alignment: .center), count: 7)
     
     let gridColumns: Int = 7
@@ -115,7 +116,7 @@ struct LargeWidgetView: View {
                             ForEach(0..<days.count, id: \.self) { index in
                                 let day = days[index]
                                 if day.isInCurrentMonth {
-                                    CalendarDateView(dateDate: day.date, date: day.date.get(component: .day), index: index, viewModel: viewModel)
+                                    CalendarDateView(dateDate: day.date, index: index, viewModel: viewModel)
                                         .frame(width: cellWidth, height: cellHeight)
 //                                        .aspectRatio(contentMode: .fill)
                                 } else {

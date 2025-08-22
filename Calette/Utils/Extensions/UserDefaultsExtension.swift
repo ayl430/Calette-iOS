@@ -7,12 +7,6 @@
 
 import Foundation
 import SwiftUI
-import WidgetKit
-
-public enum AppGroup {
-    static let bundleId: String = "com.Yeali.Calette"
-    static let groupId: String = "group.com.Yeali.Calette.shared"
-}
 
 extension UserDefaults {
     
@@ -53,6 +47,14 @@ extension UserDefaults {
         }
     }
     
+    func getPreference(of key: String) -> Date? {
+        if let value = UserDefaults.shared.value(forKey: key) as? Date {
+            return value
+        } else {
+            return nil
+        }
+    }
+    
     func setPreference(of key: String, value: String) -> Void {
         UserDefaults.shared.set(value, forKey: key)
     }
@@ -62,6 +64,10 @@ extension UserDefaults {
     }
     
     func setPreference(of key: String, value: Int) -> Void {
+        UserDefaults.shared.set(value, forKey: key)
+    }
+    
+    func setPreference(of key: String, value: Date) -> Void {
         UserDefaults.shared.set(value, forKey: key)
     }
 }

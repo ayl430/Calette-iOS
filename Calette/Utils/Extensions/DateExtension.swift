@@ -18,6 +18,13 @@ extension Date {
         return formatter.string(from: self)
     }
     
+    func toGMTString() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.timeZone = TimeZone(identifier: "UTC")
+        return formatter.string(from: self)
+    }
+
     func toStringMdd() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "M.d"
@@ -116,5 +123,9 @@ extension Date {
         components.day = 1
         return Calendar.current.date(byAdding: components, to: startOfDay)!
             .addingTimeInterval(-0.0000000000000001)
+    }
+    
+    var isThisMnoth: Bool {
+        return self.startOfMonth == Date().startOfMonth ? true : false
     }
 }

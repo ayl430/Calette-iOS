@@ -12,7 +12,6 @@ import WidgetKit
 struct CalendarDateView: View {
     
     var dateDate: Date //GMT
-    var date: Int //로컬 day
     var index: Int
     
     @ObservedObject private var dateModel = DateModel.shared
@@ -20,25 +19,20 @@ struct CalendarDateView: View {
     
     var body: some View {
         ZStack {
-            if dateModel.selectedDate.get(component: .day) == date {
+            if dateModel.selectedDate.startOfDay == dateDate.startOfDay {
                 Circle()
                     .fill(Color.selectedDateBG)
             }
-            if Date().toString() == dateDate.toString() {
-                Circle()
-                    .strokeBorder(Color(name: viewModel.themeColor, alpha: 0.3), lineWidth: 2)
-                    .fill(.clear)
-            }
             
             VStack(spacing: 1) {
-                Text("\(date)")
+                Text("\(dateDate.get(component: .day))")
                     .font(.system(size: 14))
                 EventMarkingView(dateDate: dateDate).padding(.bottom, 2)
                 Text("\(dateDate.lunarDate.toStringMdd())")
                     .font(.system(size: 8))
                     .foregroundStyle(
                         viewModel.isLunarCalendar
-                        ? (dateModel.selectedDate.get(component: .day) == date ? Color.lunarDate : Color.clear)
+                        ? (dateModel.selectedDate.startOfDay == dateDate.startOfDay ? Color.lunarDate : Color.clear)
                         : Color.clear
                     )
             }
@@ -49,8 +43,8 @@ struct CalendarDateView: View {
             )
             
             Button {
-                let startOfMonth = dateModel.selectedDate.startOfMonth
-                dateModel.selectedDate = Calendar.current.date(byAdding: DateComponents(day: date - 1), to: startOfMonth)!
+                dateModel.setSelectedDate(date: dateDate)
+                WidgetCenter.shared.reloadAllTimelines()
             } label: {
                 Rectangle()
             }
@@ -64,7 +58,6 @@ struct CalendarDateView: View {
 struct WidgetCalendarDateView: View {
     
     var dateDate: Date //GMT
-    var date: Int //로컬 day
     var index: Int
     
     @ObservedObject private var dateModel = DateModel.shared
@@ -72,25 +65,21 @@ struct WidgetCalendarDateView: View {
     
     var body: some View {
         ZStack {
-            if dateModel.selectedDate.get(component: .day) == date {
+            if dateModel.selectedDate.startOfDay == dateDate.startOfDay {
                 Circle()
                     .fill(Color.selectedDateBG)
             }
-            if Date().toString() == dateDate.toString() {
-                Circle()
-                    .strokeBorder(Color(name: viewModel.themeColor, alpha: 0.3), lineWidth: 2)
-                    .fill(.clear)
-            }
+            //selectedDate의 달이 이달이 아니면 오늘에 circle
             
             VStack(spacing: 1) {
-                Text("\(date)")
+                Text("\(dateDate.get(component: .day))")
                     .font(.system(size: 14))
                 EventMarkingView(dateDate: dateDate).padding(.bottom, 2)
                 Text("\(dateDate.lunarDate.toStringMdd())")
                     .font(.system(size: 8))
                     .foregroundStyle(
                         viewModel.isLunarCalendar
-                        ? (dateModel.selectedDate.get(component: .day) == date ? Color.lunarDate : Color.clear)
+                        ? (dateModel.selectedDate.startOfDay == dateDate.startOfDay ? Color.lunarDate : Color.clear)
                         : Color.clear
                     )
             }
@@ -100,8 +89,7 @@ struct WidgetCalendarDateView: View {
                 : (index % 7 == 6 ? Color(name: viewModel.themeColor) : Color.black)
             )
             
-            
-            Button(intent: SelectDateIntent(dayValue: date)) {
+            Button(intent: SelectDateIntent(selectedDate: dateDate)) {
                 Rectangle()
             }
             .foregroundStyle(Color.clear)

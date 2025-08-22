@@ -13,11 +13,10 @@ struct EventTitleView: View {
     var cellHeight: CGFloat
     
     @ObservedObject private var dateModel = DateModel.shared
-    
     @EnvironmentObject var coordinator: Coordinator
     
     var body: some View {
-        let events = EventManager.shared.fetchAllEventItems(date: dateModel.selectedDate) //fetchAllEvents?
+        let events = EventManager.shared.fetchAllEvents(date: dateModel.selectedDate)
         
         VStack(spacing: 0) {
             let eventCount = events.count
@@ -32,13 +31,13 @@ struct EventTitleView: View {
                     ZStack {
                         HStack() {
                             Rectangle()
-                                .fill(events[index].calendarTitle == "대한민국 공휴일" ? Color.red : Color.blue)
+                                .fill(events[index].calendar.title == "대한민국 공휴일" ? Color.red : Color.blue)
                                 .frame(width: 2, height: cellHeight * 0.3)
                                 .padding(.leading, 10)
                             
                             Text(events[index].title ?? "")
                                 .font(.system(size: 13))
-                                .foregroundStyle(Color(hex: "#686868"))
+                                .foregroundStyle(Color(hex: "686868"))
                                 .padding(.leading, 10)
                             Spacer()
                             if eventCount > 2 && index == 1 {
@@ -135,11 +134,10 @@ struct WidgetEventTitleView: View {
     var cellHeight: CGFloat
     
     @ObservedObject private var dateModel = DateModel.shared
-    
     @EnvironmentObject var coordinator: Coordinator
     
     var body: some View {
-        let events = EventManager.shared.fetchAllEventItems(date: dateModel.selectedDate) //fetchAllEvents?
+        let events = EventManager.shared.fetchAllEvents(date: dateModel.selectedDate)
         
         VStack(spacing: 0) {
             let eventCount = events.count
@@ -153,13 +151,13 @@ struct WidgetEventTitleView: View {
                 ForEach(0..<eventLines, id: \.self) { index in
                     HStack() {
                         Rectangle()
-                            .fill(events[index].calendarTitle == "대한민국 공휴일" ? Color.red : Color.blue)
+                            .fill(events[index].calendar.title == "대한민국 공휴일" ? Color.red : Color.blue)
                             .frame(width: 2, height: cellHeight * 0.3)
                             .padding(.leading, 10)
                         
                         Text(events[index].title ?? "")
                             .font(.system(size: 13))
-                            .foregroundStyle(Color(hex: "#686868"))
+                            .foregroundStyle(Color(hex: "686868"))
                             .padding(.leading, 10)
                         Spacer()
                         if eventCount > 2 && index == 1 {

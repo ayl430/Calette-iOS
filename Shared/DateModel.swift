@@ -12,7 +12,22 @@ class DateModel: ObservableObject {
     
     static let shared = DateModel()
     
-    @Published var selectedDate: Date = Date()
+    @AppStorage(SharedSettings.Keys.selectedDateKey, store: UserDefaults.shared) var storedSelectedDate: String = Date().toGMTString()
+    private var selectedDate: Date {
+        set { storedSelectedDate = newValue.toGMTString() }
+        get {
+            #if WIDGET
+            if let date = storedSelectedDate.toGMTDate() {
+                return date.isThisMnoth ? date : Date()
+            }
+            return Date()
+            #else
+            return storedSelectedDate.toGMTDate() ?? Date()
+            #endif
+        }
+    }
+
+    
     @Published var eventDays: [Date] = []
     
     private init() {
@@ -36,6 +51,13 @@ class DateModel: ObservableObject {
     func setNextMonth() {
         DispatchQueue.main.async {
             self.selectedDate = self.selectedDate.nextMonth.startOfMonth
+            self.setEvent()
+        }
+    }
+    
+    func setSelectedDate(date: Date) {
+        DispatchQueue.main.async {
+            self.selectedDate = date
             self.setEvent()
         }
     }
