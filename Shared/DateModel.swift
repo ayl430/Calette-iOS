@@ -13,7 +13,7 @@ class DateModel: ObservableObject {
     static let shared = DateModel()
     
     @AppStorage(SharedSettings.Keys.selectedDateKey, store: UserDefaults.shared) var storedSelectedDate: String = Date().toGMTString()
-    private var selectedDate: Date {
+    var selectedDate: Date {
         set { storedSelectedDate = newValue.toGMTString() }
         get {
             #if WIDGET
