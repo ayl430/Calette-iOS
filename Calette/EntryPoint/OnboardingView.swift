@@ -17,6 +17,8 @@ struct OnboardingTabView: View {
     var body: some View {
         ZStack {
             Image("imgBackground")
+                .resizable()
+                .scaledToFill()
                 .ignoresSafeArea()
             
             VStack {
@@ -35,21 +37,20 @@ struct OnboardingTabView: View {
                     .clipShape(Capsule())
                     
                 }
-                .padding(.top, 80)
                 
                 TabView(selection: $selectedPage) {
-                    OnboardingCommonView(title: "심플한 캘린더 위젯을 추가해보세요!", imageName: "imgOnboarding1")
+                    OnboardingCommonView(title: "심플한 위젯으로\n하루 일정을 확인해보세요!", imageName: "imgOnboarding1")
                         .tag(0)
                     
-                    OnboardingCommonView(title: "기본 캘린더에 저장된 일정을 \n표시할 수 있어요!", imageName: "imgOnboarding2")
+                    OnboardingCommonView(title: "기본 캘린더에 저장된 이벤트를\n깔끔하게 보여줍니다!", imageName: "imgOnboarding2")
                         .tag(1)
                     
-                    OnboardingLastView(title: "음력 날짜와 함께 일정을\n확인할 수 있어요!", imageName: "imgOnboarding2", isOnboarding: $isOnboarding)
+                    OnboardingLastView(title: "음력도 빠르게\n확인할 수 있어요!", imageName: "imgOnboarding3", isOnboarding: $isOnboarding)
                         .tag(2)
                 }
-                .ignoresSafeArea()
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             }
+            .padding(.top, 100)
         }
     }
 }
@@ -63,10 +64,14 @@ struct OnboardingCommonView: View {
             Text(title)
                 .multilineTextAlignment(.center)
                 .font(.title3)
+                .foregroundStyle(Color.textBlack)
                 .bold()
                 .padding()
             Image(imageName)
-                .padding()
+                .resizable()
+                .scaledToFit()
+                .padding(.bottom)
+                .clipped()
             Spacer()
         }
     }
@@ -83,9 +88,13 @@ struct OnboardingLastView: View {
             Text(title)
                 .multilineTextAlignment(.center)
                 .font(.title3)
+                .foregroundStyle(Color.textBlack)
                 .bold()
                 .padding()
             Image(imageName)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .padding(.horizontal)
             Button {
                 isOnboarding.toggle()
             } label: {
@@ -105,3 +114,6 @@ struct OnboardingLastView: View {
     }
 }
 
+#Preview(body: {
+    OnboardingTabView(isOnboarding: Binding.constant(false))
+})
