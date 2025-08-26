@@ -25,6 +25,7 @@ struct EventEditView: View {
                             .foregroundStyle(Color.blue)
                         VStack(alignment: .leading) {
                             Text(event.title)
+                                .foregroundStyle(Color.textBlack)
                                 .bold()
                                 .padding(.bottom, 2)
                             

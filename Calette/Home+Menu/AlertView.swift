@@ -23,6 +23,7 @@ struct AlertView: View {
             VStack(spacing: 20) {
                 Text(message)
                     .font(.subheadline)
+                    .foregroundStyle(Color.textBlack)
                     .multilineTextAlignment(.center)
                     .padding(.top)
                     .padding(.horizontal)

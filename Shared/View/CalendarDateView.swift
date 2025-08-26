@@ -67,7 +67,7 @@ struct WidgetCalendarDateView: View {
         ZStack {
             if dateModel.selectedDate.startOfDay == dateDate.startOfDay {
                 Circle()
-                    .fill(Color.selectedDateBG)
+                    .fill(Color.bgSelectedDate)
             }
             //selectedDate의 달이 이달이 아니면 오늘에 circle
             
@@ -85,8 +85,8 @@ struct WidgetCalendarDateView: View {
             }
             .foregroundStyle(
                 viewModel.firstDayOfWeek == 1
-                ? (index % 7 == 0 ? Color(name: viewModel.themeColor) : Color.black)
-                : (index % 7 == 6 ? Color(name: viewModel.themeColor) : Color.black)
+                ? (index % 7 == 0 ? Color(name: viewModel.themeColor) : Color.textBlack)
+                : (index % 7 == 6 ? Color(name: viewModel.themeColor) : Color.textBlack)
             )
             
             Button(intent: SelectDateIntent(selectedDate: dateDate)) {

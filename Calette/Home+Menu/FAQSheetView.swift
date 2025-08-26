@@ -33,7 +33,7 @@ struct FAQSheetView: View {
                 }) {
                     Text("닫기")
                         .font(.headline)
-                        .foregroundStyle(Color.secondary)
+                        .foregroundStyle(Color(hex: "5E5E5E"))
                         .padding()
                 }
                 Spacer()
@@ -60,8 +60,10 @@ struct FAQSheetView: View {
                     FAQItemView(faqItem: FAQList.lunar)
                     HStack {
                         Text("버전 정보")
+                            .foregroundStyle(Color.textBlack)
                         Spacer()
                         Text("v\(AppInfo.version)")
+                            .foregroundStyle(Color.textBlack)
                     }
                     .font(.callout)
                     .bold()

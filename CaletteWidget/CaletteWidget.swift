@@ -45,7 +45,7 @@ struct CaletteWidget: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             CalendarView(entry: entry, viewModel: WidgetSettingModel())
                 .padding(2)
-                .background(Color(hex: "EDEDED"))
+//                .background(Color(hex: "EDEDED"))
                 .containerBackground(.fill.tertiary, for: .widget)
 //                .environmentObject(DateModel.shared)
         }

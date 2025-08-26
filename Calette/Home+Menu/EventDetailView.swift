@@ -22,6 +22,7 @@ struct EventDetailView: View {
             VStack {
                 Text(dateModel.selectedDate.toString().hyphenToDot())
                     .font(.largeTitle)
+                    .foregroundStyle(Color.textBlack)
                     .bold()
                 Text("🌙 \(dateModel.selectedDate.lunarDate.toStringMdd())") //
                     .font(.title3)
@@ -31,6 +32,7 @@ struct EventDetailView: View {
             
             if EventManager.shared.fetchAllEvents(date: dateModel.selectedDate).count == 0 {
                 Text("등록된 일정이 없습니다.")
+                    .foregroundStyle(Color.textBlack)
                     .padding(.vertical)
                     .padding(.top).padding(.top).padding(.top)
                 

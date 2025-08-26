@@ -156,16 +156,19 @@ struct SubBubbleView: View {
         VStack {
             if index == 5 {
                 Text("위젯의 테마색을 선택합니다")
+                    .foregroundStyle(Color.textBlack)
                     .padding(.bottom)
                 ColorOptionView(viewModel: WidgetSettingModel())
             } else if index == 6 {
                 Text("위젯의 첫번째 요일을 선택합니다")
+                    .foregroundStyle(Color.textBlack)
                     .frame(width: 235)
                     .padding(.bottom)
                     .multilineTextAlignment(.center)
                 FirstDayOptionView(viewModel: WidgetSettingModel())
             } else if index == 7 {
                 Text("날짜 하단에 음력을 표시합니다")
+                    .foregroundStyle(Color.textBlack)
                     .frame(width: 155)
                     .padding(.bottom, 5)
                     .multilineTextAlignment(.center)
@@ -240,6 +243,7 @@ struct FirstDayOptionView: View {
                     }
                 }
                 Text(index + 1 == 1 ? "일요일" : "월요일")
+                    .foregroundStyle(Color.textBlack)
             }
         }
     }

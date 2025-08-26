@@ -49,6 +49,7 @@ struct CalendarView: View {
                         HStack(spacing: 0) {
                             Text(dateModel.selectedDate.toString().hyphenToDot())
                                 .font(.system(size: 21))
+                                .foregroundStyle(Color.textBlack)
                                 .bold()
                                 .padding(.horizontal)
                                 .contentTransition(.identity)
