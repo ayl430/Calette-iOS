@@ -120,11 +120,10 @@ struct BubbleView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            let spacing: CGFloat = 20
-            let widgetHeight: CGFloat = 160
             let screenSize = geometry.size
-            let gridInfo = IconLayoutCalculator.calculateIconGrid(screenSize: screenSize, spacing: spacing, widgetHeight: widgetHeight)
-            let iconSize = (screenSize.width - spacing * CGFloat(gridInfo.columns + 1)) / CGFloat(gridInfo.columns)
+            let widgetSize = WidgetSizeProvider.size(for: .systemLarge)
+            let spacing = (screenSize.width - widgetSize.width) / 2
+            let iconSize = (widgetSize.width - spacing * 3) / 4
             
             ZStack {
                 VStack(spacing: 0) {

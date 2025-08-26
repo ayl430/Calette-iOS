@@ -21,8 +21,7 @@ struct AppIconView: View {
                 .overlay(
                     Image(icon.image)
                         .resizable()
-                        .scaledToFit()
-                        .padding(size * 0.2)
+                        .frame(width: size * 0.65, height: size * 0.65)
                 )
             
             Text(icon.type)

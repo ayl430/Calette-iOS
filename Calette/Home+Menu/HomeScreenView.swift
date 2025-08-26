@@ -25,11 +25,10 @@ struct HomeScreenWithWidget: View {
     @State var showFaqView: Bool = false
     
     var body: some View {
-        let spacing: CGFloat = 20 //dock의 좌우 여백, 사이 여백
-        let widgetHeight: CGFloat = 160
         let screenSize = UIScreen.main.bounds.size
-        let gridInfo = IconLayoutCalculator.calculateIconGrid(screenSize: screenSize, spacing: spacing, widgetHeight: widgetHeight)
-        let iconSize = (screenSize.width - spacing * CGFloat(gridInfo.columns + 1)) / CGFloat(gridInfo.columns)
+        let widgetSize = WidgetSizeProvider.size(for: .systemLarge)
+        let spacing = (screenSize.width - widgetSize.width) / 2
+        let iconSize = (widgetSize.width - spacing * 3) / 4
         
         ZStack {
             // 배경
@@ -43,9 +42,8 @@ struct HomeScreenWithWidget: View {
                 LargeWidgetView(viewModel: WidgetSettingModel())
                     .padding()
                     .background(Color(hex: "EFEFF0"))
-                    .frame(height: screenSize.width - spacing * 2)
+                    .frame(width: widgetSize.width, height: widgetSize.height)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .padding(.horizontal, 25)
                     .padding(.top, 20 + safeAreaTopInset())
 
                  // 위젯 아래 앱아이콘 추가 //TBD
@@ -93,7 +91,7 @@ struct HomeScreenWithWidget: View {
                 .padding(.vertical, 2)
                 
                 // Dock
-                HStack(spacing: 20) {
+                HStack(spacing: spacing) {
                     ForEach(4..<8, id: \.self) { index in
                         let iconIndex = index + 1
                         let appIcon = AppIcon(index: iconIndex, type: AppIconType.name(for: index), image: AppIconType.image(for: index))
@@ -129,7 +127,7 @@ struct HomeScreenWithWidget: View {
                         .clipShape(RoundedRectangle(cornerRadius: 30))
                 )
                 .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 4)
-                .padding(.bottom, safeAreaBottomInset())
+                .padding(.bottom, safeAreaBottomInset() + 5)
             }
             .frame(
                 width: screenSize.width,

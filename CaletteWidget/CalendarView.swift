@@ -53,7 +53,7 @@ struct CalendarView: View {
                                 .padding(.horizontal)
                                 .contentTransition(.identity)
                                 .frame(
-                                    width: 3.5 * cellWidth,
+                                    width: 4.0 * cellWidth,
                                     height: 1.0 * cellHeight
                                 )
                             
