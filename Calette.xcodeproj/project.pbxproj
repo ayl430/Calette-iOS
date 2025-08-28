@@ -7,34 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D82D67B22E603ACA00F4EBF3 /* KoreanLunarSolarConverter in Frameworks */ = {isa = PBXBuildFile; productRef = D82D67B12E603ACA00F4EBF3 /* KoreanLunarSolarConverter */; };
+		D82D67B42E603AF500F4EBF3 /* KoreanLunarSolarConverter in Frameworks */ = {isa = PBXBuildFile; productRef = D82D67B32E603AF500F4EBF3 /* KoreanLunarSolarConverter */; };
 		D832DA2A2D4FAB3A002B5B13 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D832DA0B2D4FAAC7002B5B13 /* WidgetKit.framework */; };
 		D832DA2B2D4FAB3A002B5B13 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D832DA0D2D4FAAC7002B5B13 /* SwiftUI.framework */; };
 		D832DA362D4FAB3B002B5B13 /* CaletteWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D832DA292D4FAB3A002B5B13 /* CaletteWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		D8ECE3492DBE808F008211FE /* KoreanLunarSolarConverter in Frameworks */ = {isa = PBXBuildFile; productRef = D8ECE3482DBE808F008211FE /* KoreanLunarSolarConverter */; };
-		D8ECE34B2DBE86E9008211FE /* KoreanLunarSolarConverter in Frameworks */ = {isa = PBXBuildFile; productRef = D8ECE34A2DBE86E9008211FE /* KoreanLunarSolarConverter */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D832DA342D4FAB3B002B5B13 /* PBXContainerItemProxy */ = {
+		D82D67B52E603EBC00F4EBF3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D8E394CB2D47E1C300C47FDC /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D832DA282D4FAB3A002B5B13;
-			remoteInfo = JustCalendarWidgetExtension;
+			remoteInfo = CaletteWidgetExtension;
 		};
 		D8E394E42D47E1C500C47FDC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D8E394CB2D47E1C300C47FDC /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D8E394D22D47E1C300C47FDC;
-			remoteInfo = JustCalendar;
+			remoteInfo = Calette;
 		};
 		D8E394EE2D47E1C500C47FDC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D8E394CB2D47E1C300C47FDC /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D8E394D22D47E1C300C47FDC;
-			remoteInfo = JustCalendar;
+			remoteInfo = Calette;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -151,7 +151,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8ECE34B2DBE86E9008211FE /* KoreanLunarSolarConverter in Frameworks */,
+				D82D67B42E603AF500F4EBF3 /* KoreanLunarSolarConverter in Frameworks */,
 				D832DA2B2D4FAB3A002B5B13 /* SwiftUI.framework in Frameworks */,
 				D832DA2A2D4FAB3A002B5B13 /* WidgetKit.framework in Frameworks */,
 			);
@@ -161,7 +161,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8ECE3492DBE808F008211FE /* KoreanLunarSolarConverter in Frameworks */,
+				D82D67B22E603ACA00F4EBF3 /* KoreanLunarSolarConverter in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,9 +235,9 @@
 			);
 			name = CaletteWidgetExtension;
 			packageProductDependencies = (
-				D8ECE34A2DBE86E9008211FE /* KoreanLunarSolarConverter */,
+				D82D67B32E603AF500F4EBF3 /* KoreanLunarSolarConverter */,
 			);
-			productName = JustCalendarWidgetExtension;
+			productName = CaletteWidgetExtension;
 			productReference = D832DA292D4FAB3A002B5B13 /* CaletteWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
@@ -253,7 +253,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				D832DA352D4FAB3B002B5B13 /* PBXTargetDependency */,
+				D82D67B62E603EBC00F4EBF3 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				D8389F4F2E1FB2E5004CD9EF /* Shared */,
@@ -261,9 +261,9 @@
 			);
 			name = Calette;
 			packageProductDependencies = (
-				D8ECE3482DBE808F008211FE /* KoreanLunarSolarConverter */,
+				D82D67B12E603ACA00F4EBF3 /* KoreanLunarSolarConverter */,
 			);
-			productName = JustCalendar;
+			productName = Calette;
 			productReference = D8E394D32D47E1C300C47FDC /* Calette.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -286,7 +286,7 @@
 			name = CaletteTests;
 			packageProductDependencies = (
 			);
-			productName = JustCalendarTests;
+			productName = CaletteTests;
 			productReference = D8E394E32D47E1C500C47FDC /* CaletteTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -309,7 +309,7 @@
 			name = CaletteUITests;
 			packageProductDependencies = (
 			);
-			productName = JustCalendarUITests;
+			productName = CaletteUITests;
 			productReference = D8E394ED2D47E1C500C47FDC /* CaletteUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
@@ -349,7 +349,7 @@
 			mainGroup = D8E394CA2D47E1C300C47FDC;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				D8ECE3472DBE808F008211FE /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */,
+				D82D67B02E603ACA00F4EBF3 /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D8E394D42D47E1C300C47FDC /* Products */;
@@ -427,10 +427,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D832DA352D4FAB3B002B5B13 /* PBXTargetDependency */ = {
+		D82D67B62E603EBC00F4EBF3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D832DA282D4FAB3A002B5B13 /* CaletteWidgetExtension */;
-			targetProxy = D832DA342D4FAB3B002B5B13 /* PBXContainerItemProxy */;
+			targetProxy = D82D67B52E603EBC00F4EBF3 /* PBXContainerItemProxy */;
 		};
 		D8E394E52D47E1C500C47FDC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -470,9 +470,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -501,9 +505,13 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -633,7 +641,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Calette/Calette.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Calette/Preview Content\"";
 				DEVELOPMENT_TEAM = S56X7YG56W;
 				ENABLE_PREVIEWS = YES;
@@ -669,7 +677,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Calette/Calette.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Calette/Preview Content\"";
 				DEVELOPMENT_TEAM = S56X7YG56W;
 				ENABLE_PREVIEWS = YES;
@@ -704,6 +712,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S56X7YG56W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
@@ -722,6 +731,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S56X7YG56W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
@@ -739,6 +749,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S56X7YG56W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
@@ -756,6 +767,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S56X7YG56W;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
@@ -819,7 +831,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		D8ECE3472DBE808F008211FE /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */ = {
+		D82D67B02E603ACA00F4EBF3 /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/swift-man/KoreanLunarSolarConverter.git";
 			requirement = {
@@ -830,14 +842,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		D8ECE3482DBE808F008211FE /* KoreanLunarSolarConverter */ = {
+		D82D67B12E603ACA00F4EBF3 /* KoreanLunarSolarConverter */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D8ECE3472DBE808F008211FE /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */;
+			package = D82D67B02E603ACA00F4EBF3 /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */;
 			productName = KoreanLunarSolarConverter;
 		};
-		D8ECE34A2DBE86E9008211FE /* KoreanLunarSolarConverter */ = {
+		D82D67B32E603AF500F4EBF3 /* KoreanLunarSolarConverter */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D8ECE3472DBE808F008211FE /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */;
+			package = D82D67B02E603ACA00F4EBF3 /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */;
 			productName = KoreanLunarSolarConverter;
 		};
 /* End XCSwiftPackageProductDependency section */
