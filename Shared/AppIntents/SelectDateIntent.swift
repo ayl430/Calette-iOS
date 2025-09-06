@@ -21,11 +21,10 @@ struct SelectDateIntent: AppIntent {
         self.selectedDate = selectedDate
     }
     
+    @MainActor
     func perform() async throws -> some IntentResult {
-        DispatchQueue.main.async {
-            DateModel.shared.setSelectedDate(date: selectedDate)
-            WidgetCenter.shared.reloadAllTimelines()
-        }
+        DateViewModel().setSelectedDate(date: selectedDate)
+//        WidgetCenter.shared.reloadAllTimelines() // 필요한지 체크
         
         return .result()
     }

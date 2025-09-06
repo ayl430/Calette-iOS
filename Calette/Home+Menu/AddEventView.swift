@@ -27,8 +27,8 @@ struct AddEvent: UIViewControllerRepresentable {
         controller.editViewDelegate = context.coordinator
         
         let event = EKEvent(eventStore: eventStore)
-        event.startDate = DateModel.shared.selectedDate
-        event.endDate = DateModel.shared.selectedDate.addingTimeInterval(60 * 60)
+        event.startDate = DateViewModel().selectedDate
+        event.endDate =  DateViewModel().selectedDate.addingTimeInterval(60 * 60)
         controller.event = event
         
         return controller
@@ -47,7 +47,11 @@ struct AddEvent: UIViewControllerRepresentable {
         
         func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
             controller.dismiss(animated: true)
-            DateModel.shared.setEvent()
+            if let startDate = controller.event?.startDate {
+                DateViewModel().setSelectedDate(date: startDate)
+                return
+            }
+            DateViewModel().setEvent()
         }
     }
 }

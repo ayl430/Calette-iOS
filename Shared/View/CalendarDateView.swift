@@ -14,12 +14,12 @@ struct CalendarDateView: View {
     var dateDate: Date //GMT
     var index: Int
     
-    @ObservedObject private var dateModel = DateModel.shared
+    @EnvironmentObject var dateVM: DateViewModel
     @ObservedObject var viewModel: WidgetSettingModel
     
     var body: some View {
         ZStack {
-            if dateModel.selectedDate.startOfDay == dateDate.startOfDay {
+            if dateVM.selectedDate.startOfDay == dateDate.startOfDay {
                 Circle()
                     .fill(Color.selectedDateBG)
             }
@@ -32,7 +32,7 @@ struct CalendarDateView: View {
                     .font(.system(size: 8))
                     .foregroundStyle(
                         viewModel.isLunarCalendar
-                        ? (dateModel.selectedDate.startOfDay == dateDate.startOfDay ? Color.lunarDate : Color.clear)
+                        ? (dateVM.selectedDate.startOfDay == dateDate.startOfDay ? Color.lunarDate : Color.clear)
                         : Color.clear
                     )
             }
@@ -43,8 +43,10 @@ struct CalendarDateView: View {
             )
             
             Button {
-                dateModel.setSelectedDate(date: dateDate)
-                WidgetCenter.shared.reloadAllTimelines()
+                DispatchQueue.main.async {
+                    dateVM.setSelectedDate(date: dateDate)
+                    WidgetCenter.shared.reloadAllTimelines()
+                }
             } label: {
                 Rectangle()
             }
@@ -60,16 +62,15 @@ struct WidgetCalendarDateView: View {
     var dateDate: Date //GMT
     var index: Int
     
-    @ObservedObject private var dateModel = DateModel.shared
+    @ObservedObject var dateVM: DateViewModel
     @ObservedObject var viewModel: WidgetSettingModel
     
     var body: some View {
         ZStack {
-            if dateModel.selectedDate.startOfDay == dateDate.startOfDay {
+            if dateVM.selectedDate.startOfDay == dateDate.startOfDay {
                 Circle()
                     .fill(Color.bgSelectedDate)
             }
-            //selectedDate의 달이 이달이 아니면 오늘에 circle
             
             VStack(spacing: 1) {
                 Text("\(dateDate.get(component: .day))")
@@ -79,7 +80,7 @@ struct WidgetCalendarDateView: View {
                     .font(.system(size: 8))
                     .foregroundStyle(
                         viewModel.isLunarCalendar
-                        ? (dateModel.selectedDate.startOfDay == dateDate.startOfDay ? Color.lunarDate : Color.clear)
+                        ? (dateVM.selectedDate.startOfDay == dateDate.startOfDay ? Color.lunarDate : Color.clear)
                         : Color.clear
                     )
             }

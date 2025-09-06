@@ -143,6 +143,17 @@ class EventManager: NSObject {
         }
     }
     
+    func isHoliday(_ date: Date) -> Bool {
+        let holidaysOnDate = fetchAllHolidays(on: date)
+        let count = holidaysOnDate.count
+        return count > 0
+    }
+    
+    func hasEvent(_ date: Date) -> Bool {
+        let eventsOnDate = fetchAllEvents(date: date)
+        let count = eventsOnDate.count
+        return count > 0
+    }
 }
 
 class EKEventManager: ObservableObject {

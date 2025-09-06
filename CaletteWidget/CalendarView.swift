@@ -16,7 +16,7 @@ struct CalendarView: View {
     let gridColumns: Int = 7
     let gridRows: Int = 8
     
-    @ObservedObject private var dateModel = DateModel.shared
+    @ObservedObject var dateVM: DateViewModel = DateViewModel()
     @ObservedObject var viewModel: WidgetSettingModel
     
     var body: some View {
@@ -47,7 +47,7 @@ struct CalendarView: View {
                     
                     VStack(spacing: 0) {
                         HStack(spacing: 0) {
-                            Text(dateModel.selectedDate.toString().hyphenToDot())
+                            Text(dateVM.selectedDate.toString().hyphenToDot())
                                 .font(.system(size: 21))
                                 .foregroundStyle(Color.textBlack)
                                 .bold()
@@ -59,7 +59,7 @@ struct CalendarView: View {
                                 )
                             
                             if viewModel.isLunarCalendar {
-                                MoonPhaseView(lunarDay: Int(dateModel.selectedDate.lunarDate.toStringD())!)
+                                MoonPhaseView(lunarDay: Int(dateVM.selectedDate.lunarDate.toStringD())!)
                                     .frame(
                                         width: 1.0 * cellWidth,
                                         height: 1.0 * cellHeight
@@ -89,11 +89,11 @@ struct CalendarView: View {
                         )
                         
                         LazyVGrid(columns: CalendarColumns, spacing: 0) {
-                            if let days = CalendarBuilder.generateMonth(for: dateModel.selectedDate) {
+                            if let days = CalendarBuilder.generateMonth(for: dateVM.selectedDate) {
                                 ForEach(0..<days.count, id: \.self) { index in
                                     let day = days[index]
-                                    if  day.isInCurrentMonth {
-                                        WidgetCalendarDateView(dateDate: day.date, index: index, viewModel: viewModel)
+                                    if day.isInCurrentMonth {
+                                        WidgetCalendarDateView(dateDate: day.date, index: index, dateVM: dateVM, viewModel: viewModel)
                                             .frame(width: cellWidth, height: cellHeight)
                                     } else {
                                         Rectangle()
@@ -106,7 +106,7 @@ struct CalendarView: View {
                     }
                 }
                 
-                WidgetEventTitleView(cellWidth: cellWidth, cellHeight: cellHeight)
+                WidgetEventTitleView(cellWidth: cellWidth, cellHeight: cellHeight, dateVM: dateVM)
             }
 //            }//ZStack
         }

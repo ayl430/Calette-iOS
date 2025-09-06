@@ -12,15 +12,15 @@ struct EventTitleView: View {
     var cellWidth: CGFloat
     var cellHeight: CGFloat
     
-    @ObservedObject private var dateModel = DateModel.shared
+    @EnvironmentObject var dateVM: DateViewModel
     @EnvironmentObject var coordinator: Coordinator
     
     var body: some View {
-        let events = EventManager.shared.fetchAllEvents(date: dateModel.selectedDate)
+        let events = EventManager.shared.fetchAllEvents(date: dateVM.selectedDate)
         
         VStack(spacing: 0) {
             let eventCount = events.count
-            let maxEventLines = dateModel.maxEventTitleViewLines()
+            let maxEventLines = dateVM.maxEventTitleViewLines()
             
             if eventCount == 0 {
                 noEventView(lines: maxEventLines)
@@ -133,15 +133,15 @@ struct WidgetEventTitleView: View {
     var cellWidth: CGFloat
     var cellHeight: CGFloat
     
-    @ObservedObject private var dateModel = DateModel.shared
+    @ObservedObject var dateVM: DateViewModel
     @EnvironmentObject var coordinator: Coordinator
     
     var body: some View {
-        let events = EventManager.shared.fetchAllEvents(date: dateModel.selectedDate)
+        let events = EventManager.shared.fetchAllEvents(date: dateVM.selectedDate)
         
         VStack(spacing: 0) {
             let eventCount = events.count
-            let maxEventLines = dateModel.maxEventTitleViewLines()
+            let maxEventLines = dateVM.maxEventTitleViewLines()
             
             if eventCount == 0 {
                 noEventView(lines: maxEventLines)

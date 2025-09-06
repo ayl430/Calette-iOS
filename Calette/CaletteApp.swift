@@ -12,6 +12,8 @@ import WidgetKit
 struct CaletteApp: App {
     
     @StateObject var coordinator: Coordinator = Coordinator()
+    @StateObject var dateVM: DateViewModel = DateViewModel()
+    
     @Environment(\.scenePhase) private var scenePhase
     
     var body: some Scene {
@@ -25,8 +27,6 @@ struct CaletteApp: App {
                             try? await EventManager.shared.requestFullAccess()
                         }
                     }
-                    
-                    DateModel.shared.setThisMonth()
                 }
                 .onOpenURL { url in
                     guard url.scheme == "widget-deeplink" else { return }
@@ -35,6 +35,7 @@ struct CaletteApp: App {
                     UIApplication.shared.open(URL(string: query ?? "calshow://")!)
                 }
                 .environmentObject(coordinator)
+                .environmentObject(dateVM)
         }
         .onChange(of: scenePhase) { oldScenePhase, newScenePhase in
             switch newScenePhase {
@@ -44,7 +45,6 @@ struct CaletteApp: App {
                 print("ScenePhase: Inactive.")
             case .background:
                 print("ScenePhase: Background.")
-                WidgetCenter.shared.reloadAllTimelines()
             @unknown default:
                 print("ScenePhase: Unknown.")
             }

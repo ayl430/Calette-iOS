@@ -10,8 +10,7 @@ import SwiftUI
 struct EventDetailView: View {
     
     @EnvironmentObject var coordinator: Coordinator
-    
-    @ObservedObject private var dateModel = DateModel.shared
+    @EnvironmentObject var dateVM: DateViewModel
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -20,17 +19,17 @@ struct EventDetailView: View {
     var body: some View {
         VStack {
             VStack {
-                Text(dateModel.selectedDate.toString().hyphenToDot())
+                Text(dateVM.selectedDate.toString().hyphenToDot())
                     .font(.largeTitle)
                     .foregroundStyle(Color.textBlack)
                     .bold()
-                Text("🌙 \(dateModel.selectedDate.lunarDate.toStringMdd())") //
+                Text("🌙 \(dateVM.selectedDate.lunarDate.toStringMdd())")
                     .font(.title3)
                     .foregroundStyle(Color(hex: "9C9E9E"))
             }
             .padding()
             
-            if EventManager.shared.fetchAllEvents(date: dateModel.selectedDate).count == 0 {
+            if EventManager.shared.fetchAllEvents(date: dateVM.selectedDate).count == 0 {
                 Text("등록된 일정이 없습니다.")
                     .foregroundStyle(Color.textBlack)
                     .padding(.vertical)
@@ -50,9 +49,9 @@ struct EventDetailView: View {
                 Spacer()
             } else {
                 List {
-                    if dateModel.isHoliday(on: dateModel.selectedDate) {
+                    if EventManager.shared.isHoliday(dateVM.selectedDate) {
                         Section(header: Text("공휴일")) {
-                            let holidays = EventManager.shared.fetchAllHolidays(on: dateModel.selectedDate)
+                            let holidays = EventManager.shared.fetchAllHolidays(on: dateVM.selectedDate)
                             ForEach(holidays, id: \.self) {
                                 let holidayTitle = $0.title ?? "공휴일"
                                 let holidaytime = "하루 종일"
@@ -72,7 +71,7 @@ struct EventDetailView: View {
                     }
                     
                     Section(header: Text("나의 일정")) {
-                        let normalEvents = EventManager.shared.fetchAllNormalEvents(on: dateModel.selectedDate)
+                        let normalEvents = EventManager.shared.fetchAllNormalEvents(on: dateVM.selectedDate)
                         ForEach(normalEvents, id: \.self) {
                             let eventTitle = $0.title ?? "일정"
                             let isAllDay = $0.isAllDay

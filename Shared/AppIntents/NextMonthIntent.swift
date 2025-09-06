@@ -14,7 +14,7 @@ struct NextMonthIntent: AppIntent {
 //    init() {}
     
     func perform() async throws -> some IntentResult {
-        DateModel.shared.setNextMonth()
+        DateViewModel().setNextMonth()
         
         return .result()
     }

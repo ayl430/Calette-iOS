@@ -14,7 +14,7 @@ struct PriorMonthIntent: AppIntent {
 //    init() {}
     
     func perform() async throws -> some IntentResult {
-        DateModel.shared.setPriorMonth()
+        DateViewModel().setPriorMonth()
         
         return .result()
     }    

@@ -1,5 +1,5 @@
 //
-//  DateModel.swift
+//  DateViewModel.swift
 //  Calette
 //
 //  Created by yeri on 2/5/25.
@@ -8,13 +8,14 @@
 import Foundation
 import SwiftUI
 
-class DateModel: ObservableObject {
-    
-    static let shared = DateModel()
+class DateViewModel: ObservableObject {
     
     @AppStorage(SharedSettings.Keys.selectedDateKey, store: UserDefaults.shared) var storedSelectedDate: String = Date().toGMTString()
     var selectedDate: Date {
-        set { storedSelectedDate = newValue.toGMTString() }
+        set {
+            storedSelectedDate = newValue.toGMTString()
+            self.setEvent()
+        }
         get {
             #if WIDGET
             if let date = storedSelectedDate.toGMTDate() {
@@ -26,39 +27,34 @@ class DateModel: ObservableObject {
             #endif
         }
     }
-
     
     @Published var eventDays: [Date] = []
     
-    private init() {
+    init() {
         setEvent()
     }
     
     func setThisMonth() {
         DispatchQueue.main.async {
             self.selectedDate = Date()
-            self.setEvent()
         }
     }
     
     func setPriorMonth() {
         DispatchQueue.main.async {
             self.selectedDate = self.selectedDate.priorMonth.startOfMonth
-            self.setEvent()
         }
     }
     
     func setNextMonth() {
         DispatchQueue.main.async {
             self.selectedDate = self.selectedDate.nextMonth.startOfMonth
-            self.setEvent()
         }
     }
     
     func setSelectedDate(date: Date) {
         DispatchQueue.main.async {
             self.selectedDate = date
-            self.setEvent()
         }
     }
     
@@ -69,23 +65,6 @@ class DateModel: ObservableObject {
                 self.eventDays = days
             }
         }
-    }
-    
-    func hasEvent(on date: Date) -> Bool {
-        if eventDays.contains(where: { $0.startOfDay == date.startOfDay }) {
-            return true
-        }
-        return false
-    }
-    
-    func isHoliday(on date: Date) -> Bool {
-        if let holidays = EventManager.shared.fetchHolidayEventDates(date: date) {
-            if holidays.contains(where: { $0.startOfDay == date.startOfDay }) {
-                return true
-            }
-            return false
-        }
-        return false
     }
     
     /// 최대로 만들 수 있는 event title view의 수

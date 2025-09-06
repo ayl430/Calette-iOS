@@ -11,7 +11,7 @@ struct EventEditView: View {
     let eventId: String
     @State var showAlertView: Bool = false
     
-    @ObservedObject private var dateModel = DateModel.shared
+    @EnvironmentObject var dateVM: DateViewModel
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -29,7 +29,7 @@ struct EventEditView: View {
                                 .bold()
                                 .padding(.bottom, 2)
                             
-                            Text(dateModel.selectedDate.toString().hyphenToDot() + " " + dateModel.selectedDate.toStringEEE())
+                            Text(dateVM.selectedDate.toString().hyphenToDot() + " " + dateVM.selectedDate.toStringEEE())
                                 .font(.footnote)
                                 .foregroundStyle(Color(hex: "8A898E"))
                             Text(event.isAllDay ? "하루 종일" : event.startDate.toStringAhmm() + " - " + event.endDate.toStringAhmm())
@@ -109,7 +109,7 @@ struct EventEditView: View {
                     HStack {
                         Image(systemName: "chevron.left")
                             .foregroundColor(Color.caletteDefault)
-                        Text(dateModel.selectedDate.toString().hyphenToDot())
+                        Text(dateVM.selectedDate.toString().hyphenToDot())
                             .foregroundColor(Color.caletteDefault)
                     }
                 }

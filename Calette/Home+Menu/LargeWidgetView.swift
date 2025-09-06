@@ -15,7 +15,7 @@ struct LargeWidgetView: View {
     let gridColumns: Int = 7
     let gridRows: Int = 8
     
-    @ObservedObject private var dateModel = DateModel.shared
+    @EnvironmentObject var dateVM: DateViewModel
     @ObservedObject var viewModel: WidgetSettingModel
     
     var body: some View {
@@ -41,7 +41,7 @@ struct LargeWidgetView: View {
                     // row 1
                     HStack(spacing: 0) {
                         HStack(spacing: 0) {
-                            Text(dateModel.selectedDate.toString().hyphenToDot())
+                            Text(dateVM.selectedDate.toString().hyphenToDot())
                                 .font(.system(size: 21))
                                 .foregroundStyle(Color.textBlack)
                                 .bold()
@@ -57,7 +57,7 @@ struct LargeWidgetView: View {
                         
                         HStack(spacing: 8) {
                             Button {
-                                dateModel.setThisMonth()
+                                dateVM.setThisMonth()
                             } label: {
                                 Image(systemName: "square")
                                     .frame(width: cellWidth * 0.8, height: cellHeight * 0.8)
@@ -70,7 +70,7 @@ struct LargeWidgetView: View {
                             
                             HStack(spacing: 0) {
                                 Button {
-                                    dateModel.setPriorMonth()
+                                    dateVM.setPriorMonth()
                                 } label: {
                                     Image(systemName: "lessthan")
                                         .frame(width: cellWidth * 0.6, height: cellHeight * 0.7)
@@ -91,7 +91,7 @@ struct LargeWidgetView: View {
                                     }
                                 
                                 Button {
-                                    dateModel.setNextMonth()
+                                    dateVM.setNextMonth()
                                 } label: {
                                     Image(systemName: "greaterthan")
                                         .frame(width: cellWidth * 0.6, height: cellHeight * 0.7)
@@ -113,13 +113,12 @@ struct LargeWidgetView: View {
                     
                     // 날짜
                     LazyVGrid(columns: CalendarColumns, spacing: 0) {
-                        if let days = CalendarBuilder.generateMonth(for: dateModel.selectedDate) {
+                        if let days = CalendarBuilder.generateMonth(for: dateVM.selectedDate) {
                             ForEach(0..<days.count, id: \.self) { index in
                                 let day = days[index]
                                 if day.isInCurrentMonth {
                                     CalendarDateView(dateDate: day.date, index: index, viewModel: viewModel)
                                         .frame(width: cellWidth, height: cellHeight)
-//                                        .aspectRatio(contentMode: .fill)
                                 } else {
                                     Rectangle()
                                         .fill(Color.clear)

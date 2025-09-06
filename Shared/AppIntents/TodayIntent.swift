@@ -12,11 +12,10 @@ struct TodayIntent: AppIntent {
     static var title: LocalizedStringResource = "오늘"
     static var description = IntentDescription("오늘")
     
+    @MainActor
     func perform() async throws -> some IntentResult {
-        DispatchQueue.main.async {
-            DateModel.shared.setThisMonth()
-            WidgetCenter.shared.reloadAllTimelines()
-        }
+        DateViewModel().setThisMonth()
+//        WidgetCenter.shared.reloadAllTimelines()
         
         return .result()
     }

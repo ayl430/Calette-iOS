@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D82D67B22E603ACA00F4EBF3 /* KoreanLunarSolarConverter in Frameworks */ = {isa = PBXBuildFile; productRef = D82D67B12E603ACA00F4EBF3 /* KoreanLunarSolarConverter */; };
-		D82D67B42E603AF500F4EBF3 /* KoreanLunarSolarConverter in Frameworks */ = {isa = PBXBuildFile; productRef = D82D67B32E603AF500F4EBF3 /* KoreanLunarSolarConverter */; };
 		D832DA2A2D4FAB3A002B5B13 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D832DA0B2D4FAAC7002B5B13 /* WidgetKit.framework */; };
 		D832DA2B2D4FAB3A002B5B13 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D832DA0D2D4FAAC7002B5B13 /* SwiftUI.framework */; };
 		D832DA362D4FAB3B002B5B13 /* CaletteWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D832DA292D4FAB3A002B5B13 /* CaletteWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D8419E972E6B5778008A25BD /* KoreanLunarSolarConverter in Frameworks */ = {isa = PBXBuildFile; productRef = D8419E962E6B5778008A25BD /* KoreanLunarSolarConverter */; };
+		D8419E992E6B5782008A25BD /* KoreanLunarSolarConverter in Frameworks */ = {isa = PBXBuildFile; productRef = D8419E982E6B5782008A25BD /* KoreanLunarSolarConverter */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,7 +96,7 @@
 				AppIntents/TodayIntent.swift,
 				CalendarBuilder.swift,
 				Coordinator.swift,
-				DateModel.swift,
+				DateViewModel.swift,
 				EventManager.swift,
 				View/CalendarDateView.swift,
 				View/EmptyCalendarDateView.swift,
@@ -151,7 +151,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D82D67B42E603AF500F4EBF3 /* KoreanLunarSolarConverter in Frameworks */,
+				D8419E992E6B5782008A25BD /* KoreanLunarSolarConverter in Frameworks */,
 				D832DA2B2D4FAB3A002B5B13 /* SwiftUI.framework in Frameworks */,
 				D832DA2A2D4FAB3A002B5B13 /* WidgetKit.framework in Frameworks */,
 			);
@@ -161,7 +161,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D82D67B22E603ACA00F4EBF3 /* KoreanLunarSolarConverter in Frameworks */,
+				D8419E972E6B5778008A25BD /* KoreanLunarSolarConverter in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,7 +235,7 @@
 			);
 			name = CaletteWidgetExtension;
 			packageProductDependencies = (
-				D82D67B32E603AF500F4EBF3 /* KoreanLunarSolarConverter */,
+				D8419E982E6B5782008A25BD /* KoreanLunarSolarConverter */,
 			);
 			productName = CaletteWidgetExtension;
 			productReference = D832DA292D4FAB3A002B5B13 /* CaletteWidgetExtension.appex */;
@@ -261,7 +261,7 @@
 			);
 			name = Calette;
 			packageProductDependencies = (
-				D82D67B12E603ACA00F4EBF3 /* KoreanLunarSolarConverter */,
+				D8419E962E6B5778008A25BD /* KoreanLunarSolarConverter */,
 			);
 			productName = Calette;
 			productReference = D8E394D32D47E1C300C47FDC /* Calette.app */;
@@ -349,7 +349,7 @@
 			mainGroup = D8E394CA2D47E1C300C47FDC;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				D82D67B02E603ACA00F4EBF3 /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */,
+				D8419E952E6B5778008A25BD /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D8E394D42D47E1C300C47FDC /* Products */;
@@ -831,7 +831,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		D82D67B02E603ACA00F4EBF3 /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */ = {
+		D8419E952E6B5778008A25BD /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/swift-man/KoreanLunarSolarConverter.git";
 			requirement = {
@@ -842,14 +842,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		D82D67B12E603ACA00F4EBF3 /* KoreanLunarSolarConverter */ = {
+		D8419E962E6B5778008A25BD /* KoreanLunarSolarConverter */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D82D67B02E603ACA00F4EBF3 /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */;
+			package = D8419E952E6B5778008A25BD /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */;
 			productName = KoreanLunarSolarConverter;
 		};
-		D82D67B32E603AF500F4EBF3 /* KoreanLunarSolarConverter */ = {
+		D8419E982E6B5782008A25BD /* KoreanLunarSolarConverter */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D82D67B02E603ACA00F4EBF3 /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */;
+			package = D8419E952E6B5778008A25BD /* XCRemoteSwiftPackageReference "KoreanLunarSolarConverter" */;
 			productName = KoreanLunarSolarConverter;
 		};
 /* End XCSwiftPackageProductDependency section */

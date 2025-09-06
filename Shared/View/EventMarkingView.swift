@@ -8,14 +8,11 @@
 import SwiftUI
 
 struct EventMarkingView: View {
-    
     var dateDate: Date
     
-    @ObservedObject private var dateModel = DateModel.shared
-    
     var body: some View {
-        if dateModel.hasEvent(on: dateDate) {
-            if dateModel.isHoliday(on: dateDate) {
+        if EventManager.shared.hasEvent(dateDate) {
+            if EventManager.shared.isHoliday(dateDate) {
                 if EventManager.shared.fetchAllEvents(date: dateDate).count >= 2 {
                     EventMarkingSubView(isHoliday: true, moreThanTwo: true)
                 } else {
