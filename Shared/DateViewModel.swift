@@ -10,7 +10,7 @@ import SwiftUI
 
 class DateViewModel: ObservableObject {
     
-    @AppStorage(SharedSettings.Keys.selectedDateKey, store: UserDefaults.shared) var storedSelectedDate: String = Date().toGMTString()
+    @AppStorage(DefaultsKeys.Shared.selectedDateKey, store: UserDefaults.shared) var storedSelectedDate: String = Date().toGMTString()
     var selectedDate: Date {
         set {
             storedSelectedDate = newValue.toGMTString()
@@ -65,25 +65,5 @@ class DateViewModel: ObservableObject {
                 self.eventDays = days
             }
         }
-    }
-    
-    /// 최대로 만들 수 있는 event title view의 수
-    func maxEventTitleViewLines() -> Int {
-        guard let thisMonthDays = CalendarBuilder.generateMonth(for: selectedDate) else { return 0 }
-        
-        let thisMonthDaysLines = thisMonthDays.count / 7
-        
-        let num: Int
-        switch thisMonthDaysLines {
-        case 4:
-            num = 3
-        case 5:
-            num = 2
-        case 6:
-            num = 1
-        default:
-            num = 1
-        }
-        return num
     }
 }

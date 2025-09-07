@@ -24,7 +24,7 @@ struct SelectDateIntent: AppIntent {
     @MainActor
     func perform() async throws -> some IntentResult {
         DateViewModel().setSelectedDate(date: selectedDate)
-//        WidgetCenter.shared.reloadAllTimelines() // 필요한지 체크
+//        WidgetCenter.shared.reloadAllTimelines()
         
         return .result()
     }

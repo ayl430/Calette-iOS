@@ -62,7 +62,7 @@ struct FAQSheetView: View {
                         Text("버전 정보")
                             .foregroundStyle(Color.textBlack)
                         Spacer()
-                        Text("v\(AppInfo.version)")
+                        Text("v\(AppData.version)")
                             .foregroundStyle(Color.textBlack)
                     }
                     .font(.callout)

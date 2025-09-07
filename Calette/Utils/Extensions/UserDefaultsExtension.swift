@@ -13,7 +13,7 @@ extension UserDefaults {
     /// user defaults shared with widget
     static var shared: UserDefaults {
         // 앱의 standard userdefaults를 쓸 때
-        let appGroupID = AppGroup.groupId
+        let appGroupID = AppData.appGroupId
         return UserDefaults(suiteName: appGroupID)!
         
         // 앱과 위젯의 standard userdefaults는 서로 다름

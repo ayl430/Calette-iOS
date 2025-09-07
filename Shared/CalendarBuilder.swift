@@ -34,7 +34,7 @@ struct CalendarBuilder {
         guard let range = calendar.range(of: .day, in: .month, for: firstDayOfMonth) else { return nil }
         
         let weekday = calendar.component(.weekday, from: firstDayOfMonth) // 일1 ~ 토7
-        let firstDayOfWeek = WidgetSettingModel().firstDayOfWeek
+        let firstDayOfWeek = CalendarSettingViewModel().firstDayOfWeek
         let leadingEmpty = (weekday - firstDayOfWeek + 7) % 7
         
         guard let startDate = calendar.date(byAdding: .day, value: -leadingEmpty, to: firstDayOfMonth) else { return nil }
@@ -52,5 +52,25 @@ struct CalendarBuilder {
             
             return CalendarDay(date: date, isInCurrentMonth: isCurrentMonth, hasEvent: hasEvent)
         }
+    }
+    
+    /// 최대로 만들 수 있는 event title view의 수
+    static func maxEventTitleViewLines(date: Date) -> Int {
+        guard let thisMonthDays = CalendarBuilder.generateMonth(for: date) else { return 0 }
+        
+        let thisMonthDaysLines = thisMonthDays.count / 7
+        
+        let num: Int
+        switch thisMonthDaysLines {
+        case 4:
+            num = 3
+        case 5:
+            num = 2
+        case 6:
+            num = 1
+        default:
+            num = 1
+        }
+        return num
     }
 }

@@ -16,7 +16,7 @@ struct LargeWidgetView: View {
     let gridRows: Int = 8
     
     @EnvironmentObject var dateVM: DateViewModel
-    @ObservedObject var viewModel: WidgetSettingModel
+    @ObservedObject var viewModel: CalendarSettingViewModel
     
     var body: some View {
         GeometryReader { geometry in

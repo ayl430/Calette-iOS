@@ -17,7 +17,7 @@ struct CalendarView: View {
     let gridRows: Int = 8
     
     @ObservedObject var dateVM: DateViewModel = DateViewModel()
-    @ObservedObject var viewModel: WidgetSettingModel
+    @ObservedObject var viewModel: CalendarSettingViewModel
     
     var body: some View {
         GeometryReader { geometry in

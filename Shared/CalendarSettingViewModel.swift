@@ -1,5 +1,5 @@
 //
-//  WidgetSettingModel.swift
+//  CalendarSettingViewModel.swift
 //  Calette
 //
 //  Created by yeri on 7/10/25.
@@ -9,11 +9,11 @@ import Foundation
 import SwiftUI
 import WidgetKit
 
-class WidgetSettingModel: ObservableObject  {
+class CalendarSettingViewModel: ObservableObject  {
     
-    @AppStorage(WidgetSettings.Keys.themeColorKey, store: UserDefaults.shared) var color: String = "caletteDefault"
-    @AppStorage(WidgetSettings.Keys.firstDayOfWeekKey, store: UserDefaults.shared) var sunOrMon: Int = 1
-    @AppStorage(WidgetSettings.Keys.isLunarCalendarKey, store: UserDefaults.shared) var lunarCalendar: Bool = false
+    @AppStorage(DefaultsKeys.Shared.themeColorKey, store: UserDefaults.shared) var color: String = "caletteDefault"
+    @AppStorage(DefaultsKeys.Shared.firstDayOfWeekKey, store: UserDefaults.shared) var sunOrMon: Int = 1
+    @AppStorage(DefaultsKeys.Shared.isLunarCalendarKey, store: UserDefaults.shared) var lunarCalendar: Bool = false
     
     var isOnTheme: Bool {
         get {
@@ -27,7 +27,7 @@ class WidgetSettingModel: ObservableObject  {
         }
         set {
             color = newValue
-            reloadWidget(named: WidgetSettings.widgetName)
+            reloadWidget(named: AppData.widgetName)
         }
     }
     
@@ -37,7 +37,7 @@ class WidgetSettingModel: ObservableObject  {
         }
         set {
             sunOrMon = newValue
-            reloadWidget(named: WidgetSettings.widgetName)
+            reloadWidget(named: AppData.widgetName)
         }
     }
     
@@ -47,7 +47,7 @@ class WidgetSettingModel: ObservableObject  {
         }
         set {
             lunarCalendar = newValue
-            reloadWidget(named: WidgetSettings.widgetName)
+            reloadWidget(named: AppData.widgetName)
         }
     }
     

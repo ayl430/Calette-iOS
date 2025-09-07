@@ -1,5 +1,5 @@
 //
-//  MainContentView.swift
+//  ContentView.swift
 //  Calette
 //
 //  Created by yeri on 6/29/25.

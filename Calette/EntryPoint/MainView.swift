@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - 시작 MainView
 // MainView -> (OnboardingTabView) -> ContentView
 struct MainView: View {
-    @AppStorage(AppSettings.Keys.onboardingKey) var isOnboarding: Bool = true
+    @AppStorage(DefaultsKeys.App.onboardingKey) var isOnboarding: Bool = true
     
     @EnvironmentObject var coordinator: Coordinator
     

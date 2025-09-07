@@ -90,19 +90,13 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AppInfo.swift,
-				AppIntents/NextMonthIntent.swift,
-				AppIntents/PriorMonthIntent.swift,
-				AppIntents/SelectDateIntent.swift,
-				AppIntents/TodayIntent.swift,
 				CalendarBuilder.swift,
+				CalendarSettingViewModel.swift,
 				Coordinator.swift,
 				DateViewModel.swift,
 				EventManager.swift,
-				View/CalendarDateView.swift,
 				View/EmptyCalendarDateView.swift,
 				View/EventMarkingView.swift,
-				View/EventTitleView.swift,
-				WidgetSettingModel.swift,
 			);
 			target = D832DA282D4FAB3A002B5B13 /* CaletteWidgetExtension */;
 		};

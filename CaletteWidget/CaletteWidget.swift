@@ -38,18 +38,18 @@ struct CalendarEntry: TimelineEntry {
     let selectedDate: Date
 }
 
-struct CaletteWidget: Widget {    
-    let kind: String = WidgetSettings.widgetName
+struct CaletteWidget: Widget {
+    let kind: String = AppData.widgetName
     
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            CalendarView(entry: entry, viewModel: WidgetSettingModel())
+            CalendarView(entry: entry, viewModel: CalendarSettingViewModel())
                 .padding(2)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
         .supportedFamilies([.systemLarge])
-        .configurationDisplayName(AppSettings.widgetName)
-        .description(AppSettings.widgetDescription)
+        .configurationDisplayName(AppInfo.widgetName)
+        .description(AppInfo.widgetDescription)
     }
 }
 

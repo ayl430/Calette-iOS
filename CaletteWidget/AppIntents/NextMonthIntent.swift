@@ -19,16 +19,3 @@ struct NextMonthIntent: AppIntent {
         return .result()
     }
 }
-
-
-struct EmptyIntent: AppIntent {
-    static var title: LocalizedStringResource = "빈 탭"
-    static var description = IntentDescription("빈 탭")
-    
-//    init() {}
-    
-    func perform() async throws -> some IntentResult {       
-        
-        return .result()
-    }
-}

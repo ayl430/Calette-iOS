@@ -158,21 +158,21 @@ struct SubBubbleView: View {
                 Text("위젯의 테마색을 선택합니다")
                     .foregroundStyle(Color.textBlack)
                     .padding(.bottom)
-                ColorOptionView(viewModel: WidgetSettingModel())
+                ColorOptionView(viewModel: CalendarSettingViewModel())
             } else if index == 6 {
                 Text("위젯의 첫번째 요일을 선택합니다")
                     .foregroundStyle(Color.textBlack)
                     .frame(width: 235)
                     .padding(.bottom)
                     .multilineTextAlignment(.center)
-                FirstDayOptionView(viewModel: WidgetSettingModel())
+                FirstDayOptionView(viewModel: CalendarSettingViewModel())
             } else if index == 7 {
                 Text("날짜 하단에 음력을 표시합니다")
                     .foregroundStyle(Color.textBlack)
                     .frame(width: 155)
                     .padding(.bottom, 5)
                     .multilineTextAlignment(.center)
-                LunarDateOptionView(viewModel: WidgetSettingModel())
+                LunarDateOptionView(viewModel: CalendarSettingViewModel())
             }
         }
         .font(.subheadline)
@@ -196,7 +196,7 @@ struct TrianglePointer: Shape {
 }
 
 struct ColorOptionView: View {
-    @ObservedObject var viewModel: WidgetSettingModel
+    @ObservedObject var viewModel: CalendarSettingViewModel
     
     var body: some View {
         HStack(spacing: 18) {
@@ -222,7 +222,7 @@ struct ColorOptionView: View {
 }
 
 struct FirstDayOptionView: View {
-    @ObservedObject var viewModel: WidgetSettingModel
+    @ObservedObject var viewModel: CalendarSettingViewModel
     
     var body: some View {
         HStack(spacing: 10) {
@@ -250,7 +250,7 @@ struct FirstDayOptionView: View {
 }
 
 struct LunarDateOptionView: View {
-    @ObservedObject var viewModel: WidgetSettingModel
+    @ObservedObject var viewModel: CalendarSettingViewModel
     
     var body: some View {
         Toggle("테마 적용", isOn: $viewModel.isLunarCalendar)
