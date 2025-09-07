@@ -41,11 +41,14 @@ struct CalendarEntry: TimelineEntry {
 struct CaletteWidget: Widget {
     let kind: String = AppData.widgetName
     
+    @StateObject private var calendarSettingVM = CalendarSettingsViewModel()
+    
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
-            CalendarView(entry: entry, viewModel: CalendarSettingViewModel())
+            CalendarView(entry: entry)
                 .padding(2)
                 .containerBackground(.fill.tertiary, for: .widget)
+                .environmentObject(calendarSettingVM)
         }
         .supportedFamilies([.systemLarge])
         .configurationDisplayName(AppInfo.widgetName)

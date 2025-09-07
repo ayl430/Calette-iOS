@@ -91,7 +91,7 @@
 			membershipExceptions = (
 				AppInfo.swift,
 				CalendarBuilder.swift,
-				CalendarSettingViewModel.swift,
+				CalendarSettingsViewModel.swift,
 				Coordinator.swift,
 				DateViewModel.swift,
 				EventManager.swift,

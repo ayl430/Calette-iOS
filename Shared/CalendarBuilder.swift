@@ -34,7 +34,7 @@ struct CalendarBuilder {
         guard let range = calendar.range(of: .day, in: .month, for: firstDayOfMonth) else { return nil }
         
         let weekday = calendar.component(.weekday, from: firstDayOfMonth) // 일1 ~ 토7
-        let firstDayOfWeek = CalendarSettingViewModel().firstDayOfWeek
+        let firstDayOfWeek: Int = UserDefaults.shared.getPreference(of: DefaultsKeys.Shared.firstDayOfWeekKey) ?? 1
         let leadingEmpty = (weekday - firstDayOfWeek + 7) % 7
         
         guard let startDate = calendar.date(byAdding: .day, value: -leadingEmpty, to: firstDayOfMonth) else { return nil }

@@ -158,21 +158,21 @@ struct SubBubbleView: View {
                 Text("위젯의 테마색을 선택합니다")
                     .foregroundStyle(Color.textBlack)
                     .padding(.bottom)
-                ColorOptionView(viewModel: CalendarSettingViewModel())
+                ColorOptionView()
             } else if index == 6 {
                 Text("위젯의 첫번째 요일을 선택합니다")
                     .foregroundStyle(Color.textBlack)
                     .frame(width: 235)
                     .padding(.bottom)
                     .multilineTextAlignment(.center)
-                FirstDayOptionView(viewModel: CalendarSettingViewModel())
+                FirstDayOptionView()
             } else if index == 7 {
                 Text("날짜 하단에 음력을 표시합니다")
                     .foregroundStyle(Color.textBlack)
                     .frame(width: 155)
                     .padding(.bottom, 5)
                     .multilineTextAlignment(.center)
-                LunarDateOptionView(viewModel: CalendarSettingViewModel())
+                LunarDateOptionView()
             }
         }
         .font(.subheadline)
@@ -196,20 +196,20 @@ struct TrianglePointer: Shape {
 }
 
 struct ColorOptionView: View {
-    @ObservedObject var viewModel: CalendarSettingViewModel
+    @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
     
     var body: some View {
         HStack(spacing: 18) {
             ForEach(WidgetTheme.allCases, id: \.self) { theme in
                 Button(action: {
-                    viewModel.themeColor = theme.name
+                    calendarSettingVM.themeColor = theme.name
                 }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 4)
                             .fill(theme.color)
                             .frame(width: 20, height: 20)
                         
-                        if viewModel.themeColor == theme.name {
+                        if calendarSettingVM.themeColor == theme.name {
                             Image(systemName: "checkmark")
                                 .foregroundStyle(.black.opacity(0.7))
                                 .font(.system(size: 13, weight: .bold))
@@ -222,20 +222,20 @@ struct ColorOptionView: View {
 }
 
 struct FirstDayOptionView: View {
-    @ObservedObject var viewModel: CalendarSettingViewModel
+    @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
     
     var body: some View {
         HStack(spacing: 10) {
             ForEach(0..<2) { index in
                 Button(action: {
-                    viewModel.firstDayOfWeek = index + 1
+                    calendarSettingVM.firstDayOfWeek = index + 1
                 }) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 4)
                             .fill(Color(hex: "D9D9D9"))
                             .frame(width: 20, height: 20)
                         
-                        if viewModel.firstDayOfWeek == index + 1 {
+                        if calendarSettingVM.firstDayOfWeek == index + 1 {
                             Image(systemName: "checkmark")
                                 .foregroundStyle(.black.opacity(0.7))
                                 .font(.system(size: 13, weight: .bold))
@@ -250,10 +250,10 @@ struct FirstDayOptionView: View {
 }
 
 struct LunarDateOptionView: View {
-    @ObservedObject var viewModel: CalendarSettingViewModel
+    @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
     
     var body: some View {
-        Toggle("테마 적용", isOn: $viewModel.isLunarCalendar)
+        Toggle("테마 적용", isOn: $calendarSettingVM.isLunarCalendar)
             .tint(WidgetTheme.caletteDefault.color.opacity(0.7))
             .labelsHidden()
             .fixedSize()

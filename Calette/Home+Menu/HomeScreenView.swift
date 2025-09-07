@@ -39,7 +39,7 @@ struct HomeScreenWithWidget: View {
             
             VStack(spacing: spacing) {
                 // 위젯
-                LargeWidgetView(viewModel: CalendarSettingViewModel())
+                LargeWidgetView()
                     .padding()
                     .background(Color(hex: "EFEFF0"))
                     .frame(width: widgetSize.width, height: widgetSize.height)

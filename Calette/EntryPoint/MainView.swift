@@ -14,6 +14,8 @@ struct MainView: View {
     
     @EnvironmentObject var coordinator: Coordinator
     
+    @StateObject private var calendarSettingVM = CalendarSettingsViewModel()
+    
     var body: some View {
         NavigationStack(path: $coordinator.path) {
             ZStack {
@@ -29,6 +31,7 @@ struct MainView: View {
                             EventDetailView()
                         }
                     }
+                    .environmentObject(calendarSettingVM)
             }
         }
     }

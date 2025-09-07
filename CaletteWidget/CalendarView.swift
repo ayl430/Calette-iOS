@@ -17,7 +17,7 @@ struct CalendarView: View {
     let gridRows: Int = 8
     
     @ObservedObject var dateVM: DateViewModel = DateViewModel()
-    @ObservedObject var viewModel: CalendarSettingViewModel
+    @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
     
     var body: some View {
         GeometryReader { geometry in
@@ -58,7 +58,7 @@ struct CalendarView: View {
                                     height: 1.0 * cellHeight
                                 )
                             
-                            if viewModel.isLunarCalendar {
+                            if calendarSettingVM.isLunarCalendar {
                                 MoonPhaseView(lunarDay: Int(dateVM.selectedDate.lunarDate.toStringD())!)
                                     .frame(
                                         width: 1.0 * cellWidth,
@@ -74,7 +74,7 @@ struct CalendarView: View {
                                     .font(.caption)
                                     .foregroundStyle(Color.white)
                                     .bold()
-                                    .background(WidgetTheme(rawValue: viewModel.themeColor)!.color)
+                                    .background(WidgetTheme(rawValue: calendarSettingVM.themeColor)!.color)
                             }
                             .clipShape(Circle())
                             .buttonStyle(.plain)
@@ -93,7 +93,7 @@ struct CalendarView: View {
                                 ForEach(0..<days.count, id: \.self) { index in
                                     let day = days[index]
                                     if day.isInCurrentMonth {
-                                        WidgetCalendarDateView(dateDate: day.date, index: index, dateVM: dateVM, viewModel: viewModel)
+                                        WidgetCalendarDateView(dateDate: day.date, index: index, dateVM: dateVM)
                                             .frame(width: cellWidth, height: cellHeight)
                                     } else {
                                         Rectangle()

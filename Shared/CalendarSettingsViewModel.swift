@@ -1,5 +1,5 @@
 //
-//  CalendarSettingViewModel.swift
+//  CalendarSettingsViewModel.swift
 //  Calette
 //
 //  Created by yeri on 7/10/25.
@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import WidgetKit
 
-class CalendarSettingViewModel: ObservableObject  {
+class CalendarSettingsViewModel: ObservableObject  {
     
     @AppStorage(DefaultsKeys.Shared.themeColorKey, store: UserDefaults.shared) var color: String = "caletteDefault"
     @AppStorage(DefaultsKeys.Shared.firstDayOfWeekKey, store: UserDefaults.shared) var sunOrMon: Int = 1

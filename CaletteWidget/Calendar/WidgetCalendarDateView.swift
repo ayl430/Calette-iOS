@@ -13,7 +13,7 @@ struct WidgetCalendarDateView: View {
     var index: Int
     
     @ObservedObject var dateVM: DateViewModel
-    @ObservedObject var viewModel: CalendarSettingViewModel
+    @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
     
     var body: some View {
         ZStack {
@@ -29,15 +29,15 @@ struct WidgetCalendarDateView: View {
                 Text("\(dateDate.lunarDate.toStringMdd())")
                     .font(.system(size: 8))
                     .foregroundStyle(
-                        viewModel.isLunarCalendar
+                        calendarSettingVM.isLunarCalendar
                         ? (dateVM.selectedDate.startOfDay == dateDate.startOfDay ? Color.lunarDate : Color.clear)
                         : Color.clear
                     )
             }
             .foregroundStyle(
-                viewModel.firstDayOfWeek == 1
-                ? (index % 7 == 0 ? Color(name: viewModel.themeColor) : Color.textBlack)
-                : (index % 7 == 6 ? Color(name: viewModel.themeColor) : Color.textBlack)
+                calendarSettingVM.firstDayOfWeek == 1
+                ? (index % 7 == 0 ? Color(name: calendarSettingVM.themeColor) : Color.textBlack)
+                : (index % 7 == 6 ? Color(name: calendarSettingVM.themeColor) : Color.textBlack)
             )
             
             Button(intent: SelectDateIntent(selectedDate: dateDate)) {

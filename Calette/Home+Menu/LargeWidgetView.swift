@@ -16,7 +16,7 @@ struct LargeWidgetView: View {
     let gridRows: Int = 8
     
     @EnvironmentObject var dateVM: DateViewModel
-    @ObservedObject var viewModel: CalendarSettingViewModel
+    @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
     
     var body: some View {
         GeometryReader { geometry in
@@ -64,7 +64,7 @@ struct LargeWidgetView: View {
                                     .font(.caption)
                                     .foregroundStyle(Color.white)
                                     .bold()
-                                    .background(WidgetTheme(rawValue: viewModel.themeColor)!.color)
+                                    .background(WidgetTheme(rawValue: calendarSettingVM.themeColor)!.color)
                             }
                             .clipShape(Circle())
                             
@@ -78,11 +78,11 @@ struct LargeWidgetView: View {
                                         .foregroundStyle(Color.white)
                                         .bold()
                                         .padding(.horizontal, 8)
-                                        .background(WidgetTheme(rawValue: viewModel.themeColor)!.color)
+                                        .background(WidgetTheme(rawValue: calendarSettingVM.themeColor)!.color)
                                 }
                                 
                                 Rectangle()
-                                    .fill(WidgetTheme(rawValue: viewModel.themeColor)!.color)
+                                    .fill(WidgetTheme(rawValue: calendarSettingVM.themeColor)!.color)
                                     .frame(width: 1, height: cellHeight * 0.7)
                                     .overlay {
                                         Rectangle()
@@ -99,7 +99,7 @@ struct LargeWidgetView: View {
                                         .foregroundStyle(Color.white)
                                         .bold()
                                         .padding(.horizontal, 8)
-                                        .background(WidgetTheme(rawValue: viewModel.themeColor)!.color)
+                                        .background(WidgetTheme(rawValue: calendarSettingVM.themeColor)!.color)
                                 }
                             }
                             .clipShape(Capsule())
@@ -117,7 +117,7 @@ struct LargeWidgetView: View {
                             ForEach(0..<days.count, id: \.self) { index in
                                 let day = days[index]
                                 if day.isInCurrentMonth {
-                                    CalendarDateView(dateDate: day.date, index: index, viewModel: viewModel)
+                                    CalendarDateView(dateDate: day.date, index: index)
                                         .frame(width: cellWidth, height: cellHeight)
                                 } else {
                                     Rectangle()
