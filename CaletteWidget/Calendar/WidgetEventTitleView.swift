@@ -11,16 +11,16 @@ struct WidgetEventTitleView: View {
     
     var cellWidth: CGFloat
     var cellHeight: CGFloat
+    var selectedDate: Date
     
-    @ObservedObject var dateVM: DateViewModel
     @EnvironmentObject var coordinator: Coordinator
     
     var body: some View {
-        let events = EventManager.shared.fetchAllEvents(date: dateVM.selectedDate)
+        let events = EventManager.shared.fetchAllEvents(date: selectedDate)
         
         VStack(spacing: 0) {
             let eventCount = events.count
-            let maxEventLines = CalendarBuilder.maxEventTitleViewLines(date: dateVM.selectedDate)
+            let maxEventLines = CalendarBuilder.maxEventTitleViewLines(date: selectedDate)
             
             if eventCount == 0 {
                 noEventView(lines: maxEventLines)

@@ -11,13 +11,13 @@ struct WidgetCalendarDateView: View {
     
     var dateDate: Date //GMT
     var index: Int
+    var selectedDate: Date
     
-    @ObservedObject var dateVM: DateViewModel
     @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
     
     var body: some View {
         ZStack {
-            if dateVM.selectedDate.startOfDay == dateDate.startOfDay {
+            if selectedDate.startOfDay == dateDate.startOfDay {
                 Circle()
                     .fill(Color.bgSelectedDate)
             }
@@ -30,7 +30,7 @@ struct WidgetCalendarDateView: View {
                     .font(.system(size: 8))
                     .foregroundStyle(
                         calendarSettingVM.isLunarCalendar
-                        ? (dateVM.selectedDate.startOfDay == dateDate.startOfDay ? Color.lunarDate : Color.clear)
+                        ? (selectedDate.startOfDay == dateDate.startOfDay ? Color.lunarDate : Color.clear)
                         : Color.clear
                     )
             }

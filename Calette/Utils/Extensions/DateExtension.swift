@@ -125,7 +125,7 @@ extension Date {
             .addingTimeInterval(-0.0000000000000001)
     }
     
-    var isThisMnoth: Bool {
+    var isThisMonth: Bool {
         return self.startOfMonth == Date().startOfMonth ? true : false
     }
 }

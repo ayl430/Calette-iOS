@@ -41,6 +41,8 @@ struct CaletteApp: App {
             switch newScenePhase {
             case .active:
                 print("ScenePhase: Active.")
+                dateVM.checkAndResetIfNeeded()
+                WidgetCenter.shared.reloadAllTimelines()
             case .inactive:
                 print("ScenePhase: Inactive.")
             case .background:

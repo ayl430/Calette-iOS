@@ -19,17 +19,30 @@ struct Provider: TimelineProvider {
     }
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<CalendarEntry>) -> ()) {
-        var entries: [CalendarEntry] = []
-        
+        let dateVM = DateViewModel()
         let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .second, value: hourOffset, to: currentDate)!
-            let entry = CalendarEntry(date: entryDate, selectedDate: Date())
-            entries.append(entry)
+        
+        var selectedDate = dateVM.selectedDate
+        if dateVM.shouldReset(context: .widget) {
+            dateVM.resetToToday()
+            selectedDate = Date()
         }
         
-        let timeline = Timeline(entries: entries, policy: .atEnd)
-        completion(timeline)
+        var entries: [CalendarEntry] = []
+        
+        entries.append(CalendarEntry(date: currentDate, selectedDate: selectedDate))
+        
+        let nextResetDate = dateVM.nextResetDate
+        
+        // 리셋 예약 or 즉시 업데이트
+        if nextResetDate > currentDate {
+            entries.append(CalendarEntry(date: nextResetDate, selectedDate: Date()))
+            let timeline = Timeline(entries: entries, policy: .after(nextResetDate))
+            completion(timeline)
+        } else {
+            let timeline = Timeline(entries: entries, policy: .atEnd)
+            completion(timeline)
+        }
     }
 }
 

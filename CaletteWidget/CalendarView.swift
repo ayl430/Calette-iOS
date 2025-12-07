@@ -16,7 +16,10 @@ struct CalendarView: View {
     let gridColumns: Int = 7
     let gridRows: Int = 8
     
-    @ObservedObject var dateVM: DateViewModel = DateViewModel()
+    var displayDate: Date {
+        return entry.selectedDate
+    }
+    
     @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
     
     var body: some View {
@@ -47,7 +50,7 @@ struct CalendarView: View {
                     
                     VStack(spacing: 0) {
                         HStack(spacing: 0) {
-                            Text(dateVM.selectedDate.toString().hyphenToDot())
+                            Text(displayDate.toString().hyphenToDot())
                                 .font(.system(size: 21))
                                 .foregroundStyle(Color.textBlack)
                                 .bold()
@@ -59,7 +62,7 @@ struct CalendarView: View {
                                 )
                             
                             if calendarSettingVM.isLunarCalendar {
-                                MoonPhaseView(lunarDay: Int(dateVM.selectedDate.lunarDate.toStringD())!)
+                                MoonPhaseView(lunarDay: Int(displayDate.lunarDate.toStringD())!)
                                     .frame(
                                         width: 1.0 * cellWidth,
                                         height: 1.0 * cellHeight
@@ -89,11 +92,11 @@ struct CalendarView: View {
                         )
                         
                         LazyVGrid(columns: CalendarColumns, spacing: 0) {
-                            if let days = CalendarBuilder.generateMonth(for: dateVM.selectedDate) {
+                            if let days = CalendarBuilder.generateMonth(for: displayDate) {
                                 ForEach(0..<days.count, id: \.self) { index in
                                     let day = days[index]
                                     if day.isInCurrentMonth {
-                                        WidgetCalendarDateView(dateDate: day.date, index: index, dateVM: dateVM)
+                                        WidgetCalendarDateView(dateDate: day.date, index: index, selectedDate: displayDate)
                                             .frame(width: cellWidth, height: cellHeight)
                                     } else {
                                         Rectangle()
@@ -106,7 +109,7 @@ struct CalendarView: View {
                     }
                 }
                 
-                WidgetEventTitleView(cellWidth: cellWidth, cellHeight: cellHeight, dateVM: dateVM)
+                WidgetEventTitleView(cellWidth: cellWidth, cellHeight: cellHeight, selectedDate: displayDate)
             }
 //            }//ZStack
         }

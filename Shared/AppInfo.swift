@@ -47,6 +47,7 @@ struct DefaultsKeys {
     /// 앱 + 위젯 (App Group)
     struct Shared {
         static let selectedDateKey = "KEY_selectedDate"
+        static let lastSelectionTimeKey = "KEY_lastSelectionTime"
         
         static let themeColorKey = "KEY_themeColor"
         static let firstDayOfWeekKey = "KEY_firstDayOfWeek"
