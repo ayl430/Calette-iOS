@@ -9,9 +9,12 @@ import SwiftUI
 import EventKit
 import EventKitUI
 
-// MARK: - 일정 추가 sheet 뷰
+// MARK: - 일정 추가/수정 sheet 뷰
 struct AddEvent: UIViewControllerRepresentable {
     typealias UIViewControllerType = EKEventEditViewController
+    
+    var editingEvent: EKEvent? = nil
+    var onComplete: (() -> Void)? = nil
     
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -26,10 +29,15 @@ struct AddEvent: UIViewControllerRepresentable {
         controller.eventStore = eventStore
         controller.editViewDelegate = context.coordinator
         
-        let event = EKEvent(eventStore: eventStore)
-        event.startDate = DateViewModel().selectedDate
-        event.endDate =  DateViewModel().selectedDate.addingTimeInterval(60 * 60)
-        controller.event = event
+        // 수정 or 추가
+        if let existingEvent = editingEvent {
+            controller.event = existingEvent
+        } else {
+            let event = EKEvent(eventStore: eventStore)
+            event.startDate = DateViewModel().selectedDate
+            event.endDate = DateViewModel().selectedDate.addingTimeInterval(60 * 60)
+            controller.event = event
+        }
         
         return controller
     }
@@ -47,6 +55,10 @@ struct AddEvent: UIViewControllerRepresentable {
         
         func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
             controller.dismiss(animated: true)
+            
+            // 완료 콜백 실행 -> setEvent()
+            parent.onComplete?()
+            
             if let startDate = controller.event?.startDate {
                 DateViewModel().setSelectedDate(date: startDate)
                 return

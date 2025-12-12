@@ -11,6 +11,7 @@ import EventKit
 struct EventEditView: View {
     let eventId: String
     @State var showAlertView: Bool = false
+    @State var showEditSheet: Bool = false
     
     @EnvironmentObject var dateVM: DateViewModel
     @Environment(\.presentationMode) var presentationMode
@@ -34,7 +35,7 @@ struct EventEditView: View {
                         detailInfoCard(event: event)
                             .padding(.horizontal)
                         
-                        deleteButton
+                        actionButtons
                             .padding(.horizontal)
                             .padding(.bottom, 30)
                     }
@@ -68,6 +69,13 @@ struct EventEditView: View {
         .overlay {
             if showAlertView {
                 modernAlertView
+            }
+        }
+        .sheet(isPresented: $showEditSheet) {
+            if let event = EventManager.shared.fetchEvent(withId: eventId) {
+                AddEvent(editingEvent: event) {
+                    dateVM.setEvent()  // 새로고침
+                }
             }
         }
     }
@@ -238,47 +246,88 @@ struct EventEditView: View {
         .padding(.vertical, 12)
     }
     
-    // MARK: - 삭제 버튼
+    // MARK: - 액션 버튼
     
-    private var deleteButton: some View {
-        Button {
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                showAlertView.toggle()
-            }
-        } label: {
-            HStack(spacing: 10) {
-                Image(systemName: "trash.fill")
-                    .font(.system(size: 16, weight: .semibold))
-                Text("일정 삭제")
-                    .font(.system(size: 15, weight: .semibold))
-            }
-            .foregroundStyle(
-                LinearGradient(
-                    colors: [Color(hex: "DD6464"), Color(hex: "FF8080")],
-                    startPoint: .leading,
-                    endPoint: .trailing
+    private var actionButtons: some View {
+        HStack(spacing: 12) {
+            // 수정 버튼
+            Button {
+                showEditSheet = true
+            } label: {
+                HStack(spacing: 10) {
+                    Image(systemName: "pencil")
+                        .font(.system(size: 16, weight: .semibold))
+                    Text("수정")
+                        .font(.system(size: 15, weight: .semibold))
+                }
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: [Color(hex: "6B9AFF"), Color(hex: "8EB4FF")],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
                 )
-            )
-            .padding(.horizontal, 24)
-            .padding(.vertical, 12)
-            .background {
-                Capsule()
-                    .fill(.white.opacity(0.9))
-                    .shadow(color: Color(hex: "DD6464").opacity(0.2), radius: 8, x: 0, y: 4)
-                    .overlay {
-                        Capsule()
-                            .strokeBorder(
-                                LinearGradient(
-                                    colors: [Color(hex: "DD6464").opacity(0.3), Color(hex: "FF8080").opacity(0.2)],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                ),
-                                lineWidth: 1.5
-                            )
-                    }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background {
+                    Capsule()
+                        .fill(.white.opacity(0.9))
+                        .shadow(color: Color(hex: "6B9AFF").opacity(0.2), radius: 8, x: 0, y: 4)
+                        .overlay {
+                            Capsule()
+                                .strokeBorder(
+                                    LinearGradient(
+                                        colors: [Color(hex: "6B9AFF").opacity(0.3), Color(hex: "8EB4FF").opacity(0.2)],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    ),
+                                    lineWidth: 1.5
+                                )
+                        }
+                }
             }
+            .buttonStyle(ScaleButtonStyle())
+            
+            // 삭제 버튼
+            Button {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    showAlertView.toggle()
+                }
+            } label: {
+                HStack(spacing: 10) {
+                    Image(systemName: "trash.fill")
+                        .font(.system(size: 16, weight: .semibold))
+                    Text("삭제")
+                        .font(.system(size: 15, weight: .semibold))
+                }
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: [Color(hex: "DD6464"), Color(hex: "FF8080")],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background {
+                    Capsule()
+                        .fill(.white.opacity(0.9))
+                        .shadow(color: Color(hex: "DD6464").opacity(0.2), radius: 8, x: 0, y: 4)
+                        .overlay {
+                            Capsule()
+                                .strokeBorder(
+                                    LinearGradient(
+                                        colors: [Color(hex: "DD6464").opacity(0.3), Color(hex: "FF8080").opacity(0.2)],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    ),
+                                    lineWidth: 1.5
+                                )
+                        }
+                }
+            }
+            .buttonStyle(ScaleButtonStyle())
         }
-        .buttonStyle(ScaleButtonStyle())
     }
     
     // MARK: - 모던 알럿 뷰
