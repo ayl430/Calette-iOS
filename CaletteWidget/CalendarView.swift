@@ -96,7 +96,7 @@ struct CalendarView: View {
                                 ForEach(0..<days.count, id: \.self) { index in
                                     let day = days[index]
                                     if day.isInCurrentMonth {
-                                        WidgetCalendarDateView(dateDate: day.date, index: index, selectedDate: displayDate)
+                                        WidgetCalendarDateView(dateDate: day.date, index: index, selectedDate: displayDate, eventDays: entry.eventDays)
                                             .frame(width: cellWidth, height: cellHeight)
                                     } else {
                                         Rectangle()
@@ -119,8 +119,8 @@ struct CalendarView: View {
 #Preview(as: .systemLarge) {
     CaletteWidget()
 } timeline: {
-    CalendarEntry(date: .now, selectedDate: .now)
-    CalendarEntry(date: .now, selectedDate: .now)
+    CalendarEntry(date: .now, selectedDate: .now, eventDays: [])
+    CalendarEntry(date: .now, selectedDate: .now, eventDays: [])
 }
 
 

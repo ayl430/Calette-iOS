@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct WidgetCalendarDateView: View {
-    
+
     var dateDate: Date //GMT
     var index: Int
     var selectedDate: Date
-    
+    var eventDays: [Date]
+
     @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
     
     var body: some View {
@@ -25,7 +26,8 @@ struct WidgetCalendarDateView: View {
             VStack(spacing: 1) {
                 Text("\(dateDate.get(component: .day))")
                     .font(.system(size: 14))
-                EventMarkingView(dateDate: dateDate).padding(.bottom, 2)
+                EventMarkingView(dateDate: dateDate, eventDays: eventDays)
+                    .padding(.bottom, 2)
                 Text("\(dateDate.lunarDate.toStringMdd())")
                     .font(.system(size: 8))
                     .foregroundStyle(

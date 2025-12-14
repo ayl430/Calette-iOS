@@ -10,11 +10,12 @@ import SwiftUI
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> CalendarEntry {
-        CalendarEntry(date: Date(), selectedDate: Date())
+        CalendarEntry(date: Date(), selectedDate: Date(), eventDays: [])
     }
-    
+
     func getSnapshot(in context: Context, completion: @escaping (CalendarEntry) -> ()) {
-        let entry = CalendarEntry(date: Date(), selectedDate: Date())
+        let eventDays = EventManager.shared.fetchAllEventsThisMonth(date: Date()) ?? []
+        let entry = CalendarEntry(date: Date(), selectedDate: Date(), eventDays: eventDays)
         completion(entry)
     }
     
@@ -29,14 +30,15 @@ struct Provider: TimelineProvider {
         }
         
         var entries: [CalendarEntry] = []
-        
-        entries.append(CalendarEntry(date: currentDate, selectedDate: selectedDate))
-        
+        let eventDays = EventManager.shared.fetchAllEventsThisMonth(date: selectedDate) ?? []
+        entries.append(CalendarEntry(date: currentDate, selectedDate: selectedDate, eventDays: eventDays))
         let nextResetDate = dateVM.nextResetDate
-        
+
         // 리셋 예약 or 즉시 업데이트
         if nextResetDate > currentDate {
-            entries.append(CalendarEntry(date: nextResetDate, selectedDate: Date()))
+            let resetEventDays = EventManager.shared.fetchAllEventsThisMonth(date: Date()) ?? []
+            entries.append(CalendarEntry(date: nextResetDate, selectedDate: Date(), eventDays: resetEventDays))
+            
             let timeline = Timeline(entries: entries, policy: .after(nextResetDate))
             completion(timeline)
         } else {
@@ -49,6 +51,7 @@ struct Provider: TimelineProvider {
 struct CalendarEntry: TimelineEntry {
     let date: Date
     let selectedDate: Date
+    let eventDays: [Date]
 }
 
 struct CaletteWidget: Widget {
@@ -72,6 +75,6 @@ struct CaletteWidget: Widget {
 #Preview(as: .systemLarge) {
     CaletteWidget()
 } timeline: {
-    CalendarEntry(date: .now, selectedDate: .now)
-    CalendarEntry(date: .now, selectedDate: .now)
+    CalendarEntry(date: .now, selectedDate: .now, eventDays: [])
+    CalendarEntry(date: .now, selectedDate: .now, eventDays: [])
 }

@@ -26,7 +26,8 @@ struct CalendarDateView: View {
             VStack(spacing: 1) {
                 Text("\(dateDate.get(component: .day))")
                     .font(.system(size: 14))
-                EventMarkingView(dateDate: dateDate).padding(.bottom, 2)
+                EventMarkingView(dateDate: dateDate, eventDays: dateVM.eventDays)
+                    .padding(.bottom, 2)
                 Text("\(dateDate.lunarDate.toStringMdd())")
                     .font(.system(size: 8))
                     .foregroundStyle(
