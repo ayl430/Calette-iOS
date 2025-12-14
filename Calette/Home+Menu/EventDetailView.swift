@@ -14,7 +14,7 @@ struct EventDetailView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
-    @State var showAddEventView: Bool = false
+    @State var showAddSheet: Bool = false
     
     var body: some View {
         ZStack {
@@ -66,7 +66,7 @@ struct EventDetailView: View {
                 }
             }
         }
-        .sheet(isPresented: $showAddEventView) {
+        .sheet(isPresented: $showAddSheet) {
             AddEvent()
         }
     }
@@ -135,7 +135,7 @@ struct EventDetailView: View {
             VStack(spacing: 8) {
                 Text("등록된 일정이 없습니다")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(Color(hex: "020202"))
+                    .foregroundStyle(Color.textBlack)
                 
                 Text("새로운 일정을 추가해보세요")
                     .font(.system(size: 14))
@@ -173,7 +173,7 @@ struct EventDetailView: View {
                     )
                 Text("공휴일")
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(Color(hex: "020202"))
+                    .foregroundStyle(Color.textBlack)
             }
             .padding(.leading, 4)
             
@@ -206,7 +206,7 @@ struct EventDetailView: View {
                     )
                 Text("나의 일정")
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(Color(hex: "020202"))
+                    .foregroundStyle(Color.textBlack)
             }
             .padding(.leading, 4)
             
@@ -263,7 +263,7 @@ struct EventDetailView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("등록된 일정이 없습니다")
                         .font(.system(size: 15, weight: .medium))
-                        .foregroundStyle(Color(hex: "020202"))
+                        .foregroundStyle(Color.textBlack)
                     
                     Text("일정을 추가해보세요")
                         .font(.system(size: 13))
@@ -334,7 +334,7 @@ struct EventDetailView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(Color(hex: "020202"))
+                    .foregroundStyle(Color.textBlack)
                     .lineLimit(1)
                 
                 HStack(spacing: 4) {
@@ -376,7 +376,7 @@ struct EventDetailView: View {
     private var addEventButton: some View {
         Button {
             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                showAddEventView.toggle()
+                showAddSheet.toggle()
             }
         } label: {
             HStack(spacing: 10) {
@@ -413,24 +413,5 @@ struct EventDetailView: View {
         }
         .buttonStyle(ScaleButtonStyle())
         .padding(.horizontal)
-    }
-}
-
-// MARK: - 커스텀 버튼 스타일
-
-struct ScaleButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: configuration.isPressed)
-    }
-}
-
-struct CardButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
-            .opacity(configuration.isPressed ? 0.9 : 1.0)
-            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: configuration.isPressed)
     }
 }

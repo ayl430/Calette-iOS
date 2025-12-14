@@ -74,7 +74,7 @@ struct EventEditView: View {
         .sheet(isPresented: $showEditSheet) {
             if let event = EventManager.shared.fetchEvent(withId: eventId) {
                 AddEvent(editingEvent: event) {
-                    dateVM.setEvent()  // 새로고침
+                    dateVM.setEvent()
                 }
             }
         }
@@ -147,8 +147,7 @@ struct EventEditView: View {
             infoRow(
                 icon: "bell.fill",
                 title: "알림",
-                value: event.hasAlarms ? alarmsString(event.alarms) : "없음",
-                isLast: false
+                value: event.hasAlarms ? alarmsString(event.alarms) : "없음"
             )
             
             Divider()
@@ -168,7 +167,7 @@ struct EventEditView: View {
         }
     }
     
-    private func infoRow(icon: String, title: String, value: String, isLast: Bool) -> some View {
+    private func infoRow(icon: String, title: String, value: String) -> some View {
         HStack(spacing: 12) {
             ZStack {
                 Circle()
@@ -194,7 +193,7 @@ struct EventEditView: View {
             
             Text(title)
                 .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(Color(hex: "020202"))
+                .foregroundStyle(Color.textBlack)
             
             Spacer()
             
@@ -232,7 +231,7 @@ struct EventEditView: View {
                 }
                 Text(title)
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(Color(hex: "020202"))
+                    .foregroundStyle(Color.textBlack)
                 
                 Spacer()
             }
@@ -357,7 +356,7 @@ struct EventEditView: View {
                 VStack(spacing: 8) {
                     Text("일정 삭제")
                         .font(.system(size: 20, weight: .bold))
-                        .foregroundStyle(Color(hex: "020202"))
+                        .foregroundStyle(Color.textBlack)
                     
                     Text("일정을 삭제하겠습니까?")
                         .font(.system(size: 15))
@@ -406,7 +405,7 @@ struct EventEditView: View {
         }
     }
     
-    // MARK: - Helper Functions
+    // MARK: - 알림 관련 함수
     
     private func alarmsString(_ alarms: [EKAlarm]?) -> String {
         alarms?
@@ -414,7 +413,7 @@ struct EventEditView: View {
             .joined(separator: ", ") ?? "없음"
     }
     
-    func offsetToString(_ offset: TimeInterval?) -> String {
+    private func offsetToString(_ offset: TimeInterval?) -> String {
         guard let offset = offset else {
             return "없음"
         }

@@ -2,68 +2,32 @@
 //  AddEventView.swift
 //  Calette
 //
-//  Created by yeri on 6/29/25.
+//  Created by yeri on 12/13/25.
 //
 
 import SwiftUI
-import EventKit
-import EventKitUI
 
-// MARK: - 일정 추가/수정 sheet 뷰
-struct AddEvent: UIViewControllerRepresentable {
-    typealias UIViewControllerType = EKEventEditViewController
+// MARK: - 일정 추가 뷰
+struct AddEventView: View {
+    let icon: AppIcon
+    let size: CGFloat
+    let tapped: () -> Void
     
-    var editingEvent: EKEvent? = nil
-    var onComplete: (() -> Void)? = nil
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    func makeUIViewController(context: Context) -> EKEventEditViewController {
-        let eventManager = EventManager.shared
-        guard eventManager.isFullAccess else { return EKEventEditViewController() }
-        
-        let eventStore = eventManager.eventStore
-        let controller = EKEventEditViewController()
-        controller.eventStore = eventStore
-        controller.editViewDelegate = context.coordinator
-        
-        // 수정 or 추가
-        if let existingEvent = editingEvent {
-            controller.event = existingEvent
-        } else {
-            let event = EKEvent(eventStore: eventStore)
-            event.startDate = DateViewModel().selectedDate
-            event.endDate = DateViewModel().selectedDate.addingTimeInterval(60 * 60)
-            controller.event = event
+    var body: some View {
+        VStack(spacing: 4) {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.white.opacity(0.9))
+                .frame(width: size * 0.8, height: size * 0.8)
+                .clipShape(.circle)
+                .shadow(color: Color.black.opacity(0.15),radius: 10)
+                .overlay(
+                    Image(icon.image)
+                        .resizable()
+                        .frame(width: size * 0.4, height: size * 0.4)
+                )
         }
-        
-        return controller
-    }
-    
-    func updateUIViewController(_ uiViewController: EKEventEditViewController, context: Context) {
-        
-    }
-    
-    class Coordinator: NSObject, EKEventEditViewDelegate {
-        var parent: AddEvent
-        
-        init(_ parent: AddEvent) {
-            self.parent = parent
-        }
-        
-        func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
-            controller.dismiss(animated: true)
-            
-            // 완료 콜백 실행 -> setEvent()
-            parent.onComplete?()
-            
-            if let startDate = controller.event?.startDate {
-                DateViewModel().setSelectedDate(date: startDate)
-                return
-            }
-            DateViewModel().setEvent()
+        .onTapGesture {
+            tapped()
         }
     }
 }

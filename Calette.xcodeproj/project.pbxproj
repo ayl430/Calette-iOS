@@ -79,10 +79,11 @@
 		D82536272E4DD85F00028273 /* Exceptions for "Calette" folder in "CaletteWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Utils/Extensions/ColorExtension.swift,
 				Utils/Extensions/DateExtension.swift,
 				Utils/Extensions/StringExtension.swift,
-				Utils/Extensions/UIColorExtension.swift,
 				Utils/Extensions/UserDefaultsExtension.swift,
+				Utils/Extensions/ViewExtension.swift,
 			);
 			target = D832DA282D4FAB3A002B5B13 /* CaletteWidgetExtension */;
 		};

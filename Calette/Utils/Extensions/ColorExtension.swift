@@ -1,8 +1,8 @@
 //
-//  UIColorExtension.swift
+//  ColorExtension.swift
 //  Calette
 //
-//  Created by yeri on 2/10/25.
+//  Created by yeri on 12/12/25.
 //
 
 import SwiftUI

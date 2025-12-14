@@ -20,7 +20,7 @@ struct HomeScreenWithWidget: View {
     @Binding var selectedApp: AppIcon?
     @Binding var selectedIndex: Int
     
-    @State var showAddEventView: Bool = false
+    @State var showAddSheet: Bool = false
     @State var showAlertView: Bool = false
     @State var showFaqView: Bool = false
     
@@ -75,7 +75,7 @@ struct HomeScreenWithWidget: View {
                         selectedIndex = 9
                         
                         if EventManager.shared.isFullAccess {
-                            showAddEventView.toggle()
+                            showAddSheet.toggle()
                         } else {
                             showAlertView.toggle()
                         }
@@ -83,7 +83,7 @@ struct HomeScreenWithWidget: View {
                     .anchorPreference(key: AppIconViewPreferenceKey.self, value: .bounds) { anchor in
                         [9: anchor]
                     }
-                    .sheet(isPresented: $showAddEventView) {
+                    .sheet(isPresented: $showAddSheet) {
                         AddEvent()
                     }
                 }
