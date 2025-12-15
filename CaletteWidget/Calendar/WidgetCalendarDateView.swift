@@ -20,7 +20,7 @@ struct WidgetCalendarDateView: View {
         ZStack {
             if selectedDate.startOfDay == dateDate.startOfDay {
                 Circle()
-                    .fill(Color.bgSelectedDate)
+                    .fill(Color.selectedDateBG.dark(Color(hex: "413C38")))
             }
             
             VStack(spacing: 1) {
@@ -32,14 +32,14 @@ struct WidgetCalendarDateView: View {
                     .font(.system(size: 8))
                     .foregroundStyle(
                         calendarSettingVM.isLunarCalendar
-                        ? (selectedDate.startOfDay == dateDate.startOfDay ? Color.lunarDate : Color.clear)
+                        ? (selectedDate.startOfDay == dateDate.startOfDay ? Color.lunarDate.dark(Color(hex: "A89E94")) : Color.clear)
                         : Color.clear
                     )
             }
             .foregroundStyle(
                 calendarSettingVM.firstDayOfWeek == 1
-                ? (index % 7 == 0 ? Color(name: calendarSettingVM.themeColor) : Color.textBlack)
-                : (index % 7 == 6 ? Color(name: calendarSettingVM.themeColor) : Color.textBlack)
+                ? (index % 7 == 0 ? Color(name: calendarSettingVM.themeColor) : Color(hex: "4A4A4A").dark(Color(hex: "D4D0CC")))
+                : (index % 7 == 6 ? Color(name: calendarSettingVM.themeColor) : Color(hex: "4A4A4A").dark(Color(hex: "D4D0CC")))
             )
             
             Button(intent: SelectDateIntent(selectedDate: dateDate)) {

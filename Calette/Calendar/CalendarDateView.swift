@@ -38,8 +38,8 @@ struct CalendarDateView: View {
             }
             .foregroundStyle(
                 calendarSettingVM.firstDayOfWeek == 1
-                ? (index % 7 == 0 ? Color(name: calendarSettingVM.themeColor) : Color.black)
-                : (index % 7 == 6 ? Color(name: calendarSettingVM.themeColor) : Color.black)
+                ? (index % 7 == 0 ? Color(name: calendarSettingVM.themeColor) : Color(hex: "4A4A4A"))
+                : (index % 7 == 6 ? Color(name: calendarSettingVM.themeColor) : Color(hex: "4A4A4A"))
             )
             
             Button {

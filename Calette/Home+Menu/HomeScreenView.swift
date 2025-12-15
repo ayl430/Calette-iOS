@@ -37,13 +37,23 @@ struct HomeScreenWithWidget: View {
                 .scaledToFill()
                 .ignoresSafeArea()
             
+            LinearGradient(
+                colors: [Color(hex: "FEF9B7").opacity(0.4), Color(hex: "FFF4D6").opacity(0.4), Color(hex: "FFE5B4").opacity(0.4)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
+            
             VStack(spacing: spacing) {
                 // 위젯
                 LargeWidgetView()
                     .padding()
-                    .background(Color(hex: "EFEFF0"))
                     .frame(width: widgetSize.width, height: widgetSize.height)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .background {
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color(hex: "FFFFFE"))
+                            .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 5)
+                    }
                     .padding(.top, 20 + safeAreaTopInset())
 
                  // 위젯 아래 앱아이콘 추가 //TBD
@@ -126,7 +136,7 @@ struct HomeScreenWithWidget: View {
                     VisualEffectBlur(blurStyle: .systemUltraThinMaterial)
                         .clipShape(RoundedRectangle(cornerRadius: 30))
                 )
-                .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 4)
+                .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 4)
                 .padding(.bottom, safeAreaBottomInset() + 5)
             }
             .frame(

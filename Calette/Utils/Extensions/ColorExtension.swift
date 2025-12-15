@@ -39,16 +39,25 @@ extension Color {
     }
     
     // 테마색
-    static let caletteDefault = Color(hex: "F7931D")
-    static let caletteYellow = Color(hex: "FFBE0C")
-//    static let caletteOrange = Color(hex: "FB5607")
-    static let calettePink = Color(hex: "FF006E")
-    static let calettePurple = Color(hex: "8338EC")
-    static let caletteBlue = Color(hex: "3986FF")
+    static let caletteDefault = Color(hex: "FF6F4A")
+    static let caletteYellow = Color(hex: "FFAA28")
+    static let calettePink = Color(hex: "FF7088")
+    static let calettePurple = Color(hex: "9F6BE8")
+    static let caletteBlue = Color(hex: "6A8FE8")
     
     // 텍스트, 배경 색
-    static let selectedDateBG = Color(hex: "E1E2E1")
-    static let lunarDate = Color(hex: "7A7A7A")
+    static let textBlack = Color(hex: "0C0C0C") // 2C2C2C
+    static let selectedDateBG = Color(hex: "F3F3F3") // 413C38(다크모드)
+    static let lunarDate = Color(hex: "9C9892") // A89E94(다크모드)
+
+    // 다크모드 지원
+    func dark(_ darkColor: Color) -> Color {
+        Color(UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark
+            ? UIColor(darkColor)
+            : UIColor(self)
+        })
+    }
 }
 
 
@@ -56,7 +65,6 @@ extension Color {
 enum WidgetTheme: String, CaseIterable {
     case caletteDefault
     case caletteYellow
-//    case caletteOrange
     case calettePink
     case calettePurple
     case caletteBlue
@@ -85,17 +93,15 @@ enum WidgetTheme: String, CaseIterable {
     var color: Color {
         switch self {
         case .caletteDefault:
-            return Color(hex: "F7931D")
+            return Color(hex: "FF6F4A")
         case .caletteYellow:
-            return Color(hex: "FFBE0C")
-//        case .CaletteOrange:
-//            return Color(hex: "FB5607")
+            return Color(hex: "FFAA28")
         case .calettePink:
-            return Color(hex: "FF006E")
+            return Color(hex: "FF7088")
         case .calettePurple:
-            return Color(hex: "8338EC")
+            return Color(hex: "9F6BE8")
         case .caletteBlue:
-            return Color(hex: "3986FF")
+            return Color(hex: "6A8FE8")
         }
     }
 }

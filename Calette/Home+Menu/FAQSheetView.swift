@@ -90,6 +90,7 @@ struct FAQItemView: View {
                 HStack {
                     Text(faqItem.title)
                         .font(.callout)
+                        .foregroundStyle(Color.textBlack)
                         .bold()
                     
                     Spacer()

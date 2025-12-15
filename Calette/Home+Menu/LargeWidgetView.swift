@@ -43,7 +43,7 @@ struct LargeWidgetView: View {
                         HStack(spacing: 0) {
                             Text(dateVM.selectedDate.toString().hyphenToDot())
                                 .font(.system(size: 21))
-                                .foregroundStyle(Color.textBlack)
+                                .foregroundStyle(Color(hex: "2E2E2E"))
                                 .bold()
                                 .padding(.horizontal)
                                 .contentTransition(.identity)

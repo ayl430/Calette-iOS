@@ -31,13 +31,13 @@ struct EventTitleView: View {
                     ZStack {
                         HStack() {
                             Rectangle()
-                                .fill(events[index].calendar.title == "대한민국 공휴일" ? Color.red : Color.blue)
+                                .fill(events[index].calendar.title == "대한민국 공휴일" ? Color(hex: "FF7A6B") : Color(hex: "6A8FE8"))
                                 .frame(width: 2, height: cellHeight * 0.3)
                                 .padding(.leading, 10)
-                            
+
                             Text(events[index].title ?? "")
                                 .font(.system(size: 13))
-                                .foregroundStyle(Color(hex: "686868"))
+                                .foregroundStyle(Color(hex: "545354"))
                                 .padding(.leading, 10)
                             Spacer()
                             if eventCount > 2 && index == 1 {

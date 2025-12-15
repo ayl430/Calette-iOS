@@ -26,6 +26,7 @@ struct AppIconView: View {
             
             Text(icon.type)
                 .font(.caption)
+                .foregroundStyle(Color.textBlack)
                 .lineLimit(1)
         }
         .onTapGesture {

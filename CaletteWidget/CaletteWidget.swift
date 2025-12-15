@@ -63,7 +63,7 @@ struct CaletteWidget: Widget {
         StaticConfiguration(kind: kind, provider: Provider()) { entry in
             CalendarView(entry: entry)
                 .padding(2)
-                .containerBackground(.fill.tertiary, for: .widget)
+                .containerBackground(.white.dark(Color(hex: "1C1C1E")), for: .widget)
                 .environmentObject(calendarSettingVM)
         }
         .supportedFamilies([.systemLarge])
