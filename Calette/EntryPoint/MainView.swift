@@ -27,8 +27,8 @@ struct MainView: View {
                         switch stackViewType {
                         case .HomeView:
                             MainView()
-                        case .EventDetailView:
-                            EventDetailView()
+                        case .EventListView:
+                            EventListView()
                         }
                     }
                     .environmentObject(calendarSettingVM)

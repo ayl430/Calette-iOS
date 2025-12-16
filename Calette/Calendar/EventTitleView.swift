@@ -52,7 +52,7 @@ struct EventTitleView: View {
                         }
                         
                         Button {
-                            coordinator.push(.EventDetailView)
+                            coordinator.push(.EventListView)
                         } label: {
                             Rectangle()
                         }
@@ -104,7 +104,7 @@ struct EventTitleView: View {
             }
             
             Button {
-                coordinator.push(.EventDetailView)
+                coordinator.push(.EventListView)
             } label: {
                 Rectangle()
             }

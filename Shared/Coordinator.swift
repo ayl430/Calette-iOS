@@ -9,9 +9,9 @@ import SwiftUI
 
 enum NavigationStackType {
     case HomeView
-    case EventDetailView
+    case EventListView
     
-//    case EventEditView
+//    case EventDetailView
 }
 
 final class Coordinator: ObservableObject {
