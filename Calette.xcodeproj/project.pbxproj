@@ -98,6 +98,7 @@
 				EventManager.swift,
 				View/EmptyCalendarDateView.swift,
 				View/EventMarkingView.swift,
+				WidgetEventModels.swift,
 			);
 			target = D832DA282D4FAB3A002B5B13 /* CaletteWidgetExtension */;
 		};

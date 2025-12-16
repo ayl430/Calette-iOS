@@ -10,35 +10,32 @@ import SwiftUI
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> CalendarEntry {
-        CalendarEntry(date: Date(), selectedDate: Date(), eventDays: [])
+        CalendarEntry(date: Date(), selectedDate: Date(), eventDays: [], dayEventInfos: [:])
     }
 
     func getSnapshot(in context: Context, completion: @escaping (CalendarEntry) -> ()) {
-        let eventDays = EventManager.shared.fetchAllEventsThisMonth(date: Date()) ?? []
-        let entry = CalendarEntry(date: Date(), selectedDate: Date(), eventDays: eventDays)
+        let entry = buildEntry(for: Date(), selectedDate: Date())
         completion(entry)
     }
-    
+
     func getTimeline(in context: Context, completion: @escaping (Timeline<CalendarEntry>) -> ()) {
         let dateVM = DateViewModel()
         let currentDate = Date()
-        
+
         var selectedDate = dateVM.selectedDate
         if dateVM.shouldReset(context: .widget) {
             dateVM.resetToToday()
             selectedDate = Date()
         }
-        
+
         var entries: [CalendarEntry] = []
-        let eventDays = EventManager.shared.fetchAllEventsThisMonth(date: selectedDate) ?? []
-        entries.append(CalendarEntry(date: currentDate, selectedDate: selectedDate, eventDays: eventDays))
+        entries.append(buildEntry(for: currentDate, selectedDate: selectedDate))
         let nextResetDate = dateVM.nextResetDate
 
         // 리셋 예약 or 즉시 업데이트
         if nextResetDate > currentDate {
-            let resetEventDays = EventManager.shared.fetchAllEventsThisMonth(date: Date()) ?? []
-            entries.append(CalendarEntry(date: nextResetDate, selectedDate: Date(), eventDays: resetEventDays))
-            
+            entries.append(buildEntry(for: nextResetDate, selectedDate: Date()))
+
             let timeline = Timeline(entries: entries, policy: .after(nextResetDate))
             completion(timeline)
         } else {
@@ -46,12 +43,42 @@ struct Provider: TimelineProvider {
             completion(timeline)
         }
     }
+
+    /// 이벤트 정보 사전 계산
+    private func buildEntry(for date: Date, selectedDate: Date) -> CalendarEntry {
+        let eventDays = EventManager.shared.fetchAllEventsThisMonth(date: selectedDate) ?? []
+        let monthEventInfos = EventManager.shared.fetchMonthEventInfos(for: selectedDate)
+
+        // 날짜별 이벤트 정보 변환
+        var dayEventInfos: [String: DayEventInfo] = [:]
+        for (dateKey, info) in monthEventInfos {
+            let events = info.events
+            dayEventInfos[dateKey] = DayEventInfo(
+                date: Date(),
+                eventCount: info.eventCount,
+                isHoliday: info.isHoliday,
+                firstEventTitle: events.first?.title,
+                firstEventIsHoliday: events.first?.isHoliday ?? false,
+                secondEventTitle: events.count > 1 ? events[1].title : nil,
+                secondEventIsHoliday: events.count > 1 ? events[1].isHoliday : false
+            )
+        }
+
+        return CalendarEntry(
+            date: date,
+            selectedDate: selectedDate,
+            eventDays: eventDays,
+            dayEventInfos: dayEventInfos
+        )
+    }
 }
 
 struct CalendarEntry: TimelineEntry {
     let date: Date
     let selectedDate: Date
     let eventDays: [Date]
+    /// 날짜별 이벤트 정보 (key: "yyyy-MM-dd")
+    let dayEventInfos: [String: DayEventInfo]
 }
 
 struct CaletteWidget: Widget {
@@ -75,6 +102,5 @@ struct CaletteWidget: Widget {
 #Preview(as: .systemLarge) {
     CaletteWidget()
 } timeline: {
-    CalendarEntry(date: .now, selectedDate: .now, eventDays: [])
-    CalendarEntry(date: .now, selectedDate: .now, eventDays: [])
+    CalendarEntry(date: .now, selectedDate: .now, eventDays: [], dayEventInfos: [:])
 }

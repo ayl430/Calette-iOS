@@ -19,7 +19,9 @@ import SwiftUI
 struct HomeScreenWithWidget: View {
     @Binding var selectedApp: AppIcon?
     @Binding var selectedIndex: Int
-    
+
+    @EnvironmentObject var dateVM: DateViewModel
+
     @State var showAddSheet: Bool = false
     @State var showAlertView: Bool = false
     @State var showFaqView: Bool = false
@@ -94,7 +96,7 @@ struct HomeScreenWithWidget: View {
                         [9: anchor]
                     }
                     .sheet(isPresented: $showAddSheet) {
-                        AddEvent()
+                        AddEvent(dateVM: dateVM)
                     }
                 }
                 .padding(.horizontal, spacing)

@@ -11,25 +11,33 @@ struct EventMarkingView: View {
     var dateDate: Date
     var eventDays: [Date]
     
+    // 위젯에서만 사용
+    var dayEventInfo: DayEventInfo?
+
     private var hasEvent: Bool {
-        eventDays.contains { $0.startOfDay == dateDate.startOfDay }
+        if let info = dayEventInfo {
+            return info.eventCount > 0
+        }
+        return eventDays.contains { $0.startOfDay == dateDate.startOfDay } // 앱
     }
-    
+
+    private var isHoliday: Bool {
+        if let info = dayEventInfo {
+            return info.isHoliday
+        }
+        return EventManager.shared.isHoliday(dateDate)
+    }
+
+    private var eventCount: Int {
+        if let info = dayEventInfo {
+            return info.eventCount
+        }
+        return EventManager.shared.fetchAllEvents(date: dateDate).count
+    }
+
     var body: some View {
         if hasEvent {
-            if EventManager.shared.isHoliday(dateDate) {
-                if EventManager.shared.fetchAllEvents(date: dateDate).count >= 2 {
-                    EventMarkingSubView(isHoliday: true, moreThanTwo: true)
-                } else {
-                    EventMarkingSubView(isHoliday: true, moreThanTwo: false)
-                }
-            } else {
-                if EventManager.shared.fetchAllEvents(date: dateDate).count >= 2 {
-                    EventMarkingSubView(isHoliday: false, moreThanTwo: true)
-                } else {
-                    EventMarkingSubView(isHoliday: false, moreThanTwo: false)
-                }
-            }
+            EventMarkingSubView(isHoliday: isHoliday, moreThanTwo: eventCount >= 2)
         } else {
             Circle()
                 .fill(Color.clear)

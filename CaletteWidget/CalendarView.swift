@@ -27,19 +27,6 @@ struct CalendarView: View {
             let cellWidth = geometry.size.width / CGFloat(gridColumns)
             let cellHeight = geometry.size.height / CGFloat(gridRows)
             
-//            ZStack {
-//                // 배경 grid
-//                ForEach(0..<gridRows, id: \.self) { row in
-//                    ForEach(0..<gridColumns, id: \.self) { col in
-//                        Rectangle()
-//                            .stroke(Color.gray.opacity(0.3), lineWidth: 0.5)
-//                            .frame(width: cellWidth, height: cellHeight)
-//                            .position(
-//                                x: CGFloat(col) * cellWidth + cellWidth / 2,
-//                                y: CGFloat(row) * cellHeight + cellHeight / 2
-//                            )
-//                    }
-//                }
             VStack(spacing: 0) {
                 ZStack {
                     Button(intent: EmptyIntent()) {
@@ -96,8 +83,15 @@ struct CalendarView: View {
                                 ForEach(0..<days.count, id: \.self) { index in
                                     let day = days[index]
                                     if day.isInCurrentMonth {
-                                        WidgetCalendarDateView(dateDate: day.date, index: index, selectedDate: displayDate, eventDays: entry.eventDays)
-                                            .frame(width: cellWidth, height: cellHeight)
+                                        let dateKey = day.date.toString()
+                                        WidgetCalendarDateView(
+                                            dateDate: day.date,
+                                            index: index,
+                                            selectedDate: displayDate,
+                                            eventDays: entry.eventDays,
+                                            dayEventInfo: entry.dayEventInfos[dateKey]
+                                        )
+                                        .frame(width: cellWidth, height: cellHeight)
                                     } else {
                                         Rectangle()
                                             .fill(Color.clear)
@@ -109,9 +103,8 @@ struct CalendarView: View {
                     }
                 }
                 
-                WidgetEventTitleView(cellWidth: cellWidth, cellHeight: cellHeight, selectedDate: displayDate)
+                WidgetEventTitleView(cellWidth: cellWidth, cellHeight: cellHeight, selectedDate: displayDate, dayEventInfos: entry.dayEventInfos)
             }
-//            }//ZStack
         }
     }
 }
@@ -119,8 +112,7 @@ struct CalendarView: View {
 #Preview(as: .systemLarge) {
     CaletteWidget()
 } timeline: {
-    CalendarEntry(date: .now, selectedDate: .now, eventDays: [])
-    CalendarEntry(date: .now, selectedDate: .now, eventDays: [])
+    CalendarEntry(date: .now, selectedDate: .now, eventDays: [], dayEventInfos: [:])
 }
 
 

@@ -13,20 +13,22 @@ struct WidgetCalendarDateView: View {
     var index: Int
     var selectedDate: Date
     var eventDays: [Date]
+    
+    var dayEventInfo: DayEventInfo?
 
     @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
-    
+
     var body: some View {
         ZStack {
             if selectedDate.startOfDay == dateDate.startOfDay {
                 Circle()
                     .fill(Color.selectedDateBG.dark(Color(hex: "413C38")))
             }
-            
+
             VStack(spacing: 1) {
                 Text("\(dateDate.get(component: .day))")
                     .font(.system(size: 14))
-                EventMarkingView(dateDate: dateDate, eventDays: eventDays)
+                EventMarkingView(dateDate: dateDate, eventDays: eventDays, dayEventInfo: dayEventInfo)
                     .padding(.bottom, 2)
                 Text("\(dateDate.lunarDate.toStringMdd())")
                     .font(.system(size: 8))

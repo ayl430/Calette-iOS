@@ -60,7 +60,7 @@ extension Date {
     }
     
     var endOfMonth: Date {
-        return Calendar.current.date(byAdding: DateComponents(month: 1, day: -1), to: self.startOfMonth)!
+        return Calendar.current.date(byAdding: DateComponents(month: 1), to: self.startOfMonth)!
     }
     
     var priorMonth: Date {

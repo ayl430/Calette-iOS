@@ -61,11 +61,11 @@ class EventManager: NSObject {
         
         let start = date.startOfDay
         let end = date.lastOfDay
-        let holidayCalendars = eventStore.calendars(for: .event).filter {
+        let nonHolidayCalendars = eventStore.calendars(for: .event).filter {
             !$0.title.contains("공휴일") && !$0.title.lowercased().contains("holiday")
         }
         
-        let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: holidayCalendars)
+        let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: nonHolidayCalendars)
         let events = eventStore.events(matching: predicate)
         
         return events
@@ -153,6 +153,40 @@ class EventManager: NSObject {
         let eventsOnDate = fetchAllEvents(date: date)
         let count = eventsOnDate.count
         return count > 0
+    }
+
+    // MARK: - 위젯용
+
+    /// 월별 날짜별 이벤트 정보를 한 번에 조회
+    func fetchMonthEventInfos(for date: Date) -> [String: (eventCount: Int, isHoliday: Bool, events: [(title: String, isHoliday: Bool)])] {
+        guard isFullAccess else { return [:] }
+
+        let start = date.startOfMonth
+        let end = date.endOfMonth
+        let calendars = eventStore.calendars(for: .event)
+        let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: calendars)
+        let events = eventStore.events(matching: predicate)
+
+        var result: [String: (eventCount: Int, isHoliday: Bool, events: [(title: String, isHoliday: Bool)])] = [:]
+
+        for event in events {
+            let dateKey = event.startDate.toString()
+            let isHolidayCalendar = event.calendar.title.contains("공휴일") || event.calendar.title.lowercased().contains("holiday")
+            let eventInfo = (title: event.title ?? "", isHoliday: isHolidayCalendar)
+
+            if var existing = result[dateKey] {
+                existing.eventCount += 1
+                if isHolidayCalendar {
+                    existing.isHoliday = true
+                }
+                existing.events.append(eventInfo)
+                result[dateKey] = existing
+            } else {
+                result[dateKey] = (eventCount: 1, isHoliday: isHolidayCalendar, events: [eventInfo])
+            }
+        }
+
+        return result
     }
 }
 

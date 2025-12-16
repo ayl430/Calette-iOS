@@ -8,58 +8,76 @@
 import SwiftUI
 
 struct WidgetEventTitleView: View {
-    
+
     var cellWidth: CGFloat
     var cellHeight: CGFloat
     var selectedDate: Date
     
-    @EnvironmentObject var coordinator: Coordinator
-    
+    // 날짜별 이벤트 정보
+    var dayEventInfos: [String: DayEventInfo]
+    // 선택된 날짜의 이벤트 정보
+    private var currentDateEventInfo: DayEventInfo? {
+        let dateKey = selectedDate.toString()
+        return dayEventInfos[dateKey]
+    }
+
     var body: some View {
-        let events = EventManager.shared.fetchAllEvents(date: selectedDate)
-        
         VStack(spacing: 0) {
-            let eventCount = events.count
+            let eventCount = currentDateEventInfo?.eventCount ?? 0
             let maxEventLines = CalendarBuilder.maxEventTitleViewLines(date: selectedDate)
-            
+
             if eventCount == 0 {
                 noEventView(lines: maxEventLines)
             } else {
                 let eventLines = eventCount == 1 ? 1 : (maxEventLines == 1 ? 1 : 2)
                 let emptyLines = maxEventLines - eventLines
-                ForEach(0..<eventLines, id: \.self) { index in
-                    HStack() {
-                        Rectangle()
-                            .fill(events[index].calendar.title == "대한민국 공휴일" ? Color(hex: "FF7A6B") : Color(hex: "6A8FE8"))
-                            .frame(width: 2, height: cellHeight * 0.3)
-                            .padding(.leading, 10)
-                        
-                        Text(events[index].title ?? "")
-                            .font(.system(size: 13))
-                            .foregroundStyle(Color(hex: "545354").dark(Color(hex: "C8C2BC")))
-                            .padding(.leading, 10)
-                        Spacer()
-                        if eventCount > 2 && index == 1 {
-                            ZStack {
-                                Rectangle()
-                                    .frame(width: 5, height: 1, alignment: .center)
-                                Rectangle()
-                                    .frame(width: 1, height: 5, alignment: .center)
-                            }
-                            .padding(.trailing, 10)
-                        }
+
+                if let info = currentDateEventInfo {
+                    // 첫 번째 이벤트
+                    if let firstTitle = info.firstEventTitle {
+                        eventRow(title: firstTitle, isHoliday: info.firstEventIsHoliday, showPlus: false)
                     }
-                    .frame(
-                        width: 7.0 * cellWidth,
-                        height: 1.0 * cellHeight
-                    )
+
+                    // 두 번째 이벤트
+                    if eventLines >= 2, let secondTitle = info.secondEventTitle {
+                        eventRow(title: secondTitle, isHoliday: info.secondEventIsHoliday, showPlus: eventCount > 2)
+                    }
                 }
-                
+
                 if emptyLines != 0 {
                     clearView(lines: emptyLines)
                 }
             }
         }
+    }
+
+    @ViewBuilder
+    private func eventRow(title: String, isHoliday: Bool, showPlus: Bool) -> some View {
+        HStack() {
+            Rectangle()
+                .fill(isHoliday ? Color(hex: "FF7A6B") : Color(hex: "6A8FE8"))
+                .frame(width: 2, height: cellHeight * 0.3)
+                .padding(.leading, 10)
+
+            Text(title)
+                .font(.system(size: 13))
+                .foregroundStyle(Color(hex: "545354").dark(Color(hex: "C8C2BC")))
+                .padding(.leading, 10)
+            Spacer()
+            if showPlus {
+                ZStack {
+                    Rectangle()
+                        .frame(width: 5, height: 1, alignment: .center)
+                    Rectangle()
+                        .frame(width: 1, height: 5, alignment: .center)
+                }
+                .padding(.trailing, 10)
+            }
+        }
+        .frame(
+            width: 7.0 * cellWidth,
+            height: 1.0 * cellHeight
+        )
     }
     
     fileprivate func clearView(lines: Int) -> some View {

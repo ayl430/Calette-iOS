@@ -73,9 +73,7 @@ struct EventEditView: View {
         }
         .sheet(isPresented: $showEditSheet) {
             if let event = EventManager.shared.fetchEvent(withId: eventId) {
-                AddEvent(editingEvent: event) {
-                    dateVM.setEvent()
-                }
+                AddEvent(editingEvent: event, dateVM: dateVM)
             }
         }
     }
@@ -367,6 +365,7 @@ struct EventEditView: View {
                     Button {
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                             EventManager.shared.deleteEvent(withId: eventId)
+                            dateVM.setEvent()
                             presentationMode.wrappedValue.dismiss()
                         }
                     } label: {

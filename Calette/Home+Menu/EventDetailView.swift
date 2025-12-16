@@ -67,7 +67,7 @@ struct EventDetailView: View {
             }
         }
         .sheet(isPresented: $showAddSheet) {
-            AddEvent()
+            AddEvent(dateVM: dateVM)
         }
     }
     

@@ -12,54 +12,52 @@ import EventKitUI
 // MARK: - 일정 추가/수정 sheet 뷰
 struct AddEvent: UIViewControllerRepresentable {
     typealias UIViewControllerType = EKEventEditViewController
-    
+
     var editingEvent: EKEvent? = nil
-    var onComplete: (() -> Void)? = nil
-    
+    @ObservedObject var dateVM: DateViewModel
+
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
-    
+
     func makeUIViewController(context: Context) -> EKEventEditViewController {
         let eventManager = EventManager.shared
         guard eventManager.isFullAccess else { return EKEventEditViewController() }
-        
+
         let eventStore = eventManager.eventStore
         let controller = EKEventEditViewController()
         controller.eventStore = eventStore
         controller.editViewDelegate = context.coordinator
-        
+
         // 수정 or 추가
         if let existingEvent = editingEvent {
             controller.event = existingEvent
         } else {
             let event = EKEvent(eventStore: eventStore)
-            event.startDate = DateViewModel().selectedDate
-            event.endDate = DateViewModel().selectedDate.addingTimeInterval(60 * 60)
+            event.startDate = dateVM.selectedDate
+            event.endDate = dateVM.selectedDate.addingTimeInterval(60 * 60)
             controller.event = event
         }
-        
+
         return controller
     }
-    
+
     func updateUIViewController(_ uiViewController: EKEventEditViewController, context: Context) {
-        
+
     }
-    
+
     class Coordinator: NSObject, EKEventEditViewDelegate {
         var parent: AddEvent
-        
+
         init(_ parent: AddEvent) {
             self.parent = parent
         }
-        
+
         func eventEditViewController(_ controller: EKEventEditViewController, didCompleteWith action: EKEventEditViewAction) {
             controller.dismiss(animated: true)
-            parent.onComplete?()
             
             if let startDate = controller.event?.startDate {
-                DateViewModel().setSelectedDate(date: startDate)
-                return
+                parent.dateVM.setSelectedDate(date: startDate)
             }
         }
     }
