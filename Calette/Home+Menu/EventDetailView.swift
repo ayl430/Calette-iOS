@@ -119,9 +119,18 @@ struct EventDetailView: View {
                     }
                     
                     HStack(spacing: 4) {
+                        let isAllDay = event.isAllDay
+                        let startTime = event.startDate.toStringAhmm()
+                        let endTime = event.endDate.toStringAhmm()
+                        let isOneDayEvent = event.startDate.startOfDay == event.endDate.startOfDay
+                        let oneDayEventTime = isAllDay ? "하루 종일" : "\(startTime) - \(endTime)"
+                        let notOneDayEventTime = isAllDay
+                        ? "\(event.startDate.toString().hyphenToDot()) - \(event.endDate.toString().hyphenToDot())"
+                        : "\(event.startDate.toString().hyphenToDot()) \(startTime) \n- \(event.endDate.toString().hyphenToDot()) \(endTime)"
+                        
                         Image(systemName: "clock")
                             .font(.system(size: 11))
-                        Text(event.isAllDay ? "하루 종일" : "\(event.startDate.toStringAhmm()) - \(event.endDate.toStringAhmm())")
+                        Text(isOneDayEvent ? oneDayEventTime : notOneDayEventTime)
                             .font(.system(size: 13))
                     }
                 }

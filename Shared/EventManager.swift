@@ -74,48 +74,33 @@ class EventManager: NSObject {
     // date를 포함한 달에 이벤트가 있는 dates
     func fetchAllEventsThisMonth(date: Date) -> [Date]? {
         guard isFullAccess else { return nil }
-        
-        let start = date.startOfMonth
-        let end = date.endOfMonth
+
+        let calendar = Calendar.current
+        let monthStart = date.startOfMonth
+        let monthEnd = date.endOfMonth
         let calendars = eventStore.calendars(for: .event)
-        let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: calendars)
+        let predicate = eventStore.predicateForEvents(withStart: monthStart, end: monthEnd, calendars: calendars)
         let events = eventStore.events(matching: predicate)
-        
-        return events.map { $0.startDate }
-    }
-    
-    // date를 포함한 달에 이벤트가 있는 dates - 공휴일 -> set으로 받기
-    func fetchHolidayEventDates(date: Date) -> [Date]? {
-        guard isFullAccess else { return nil }
-        
-        let start = date.startOfMonth
-        let end = date.endOfMonth
-        let holidayCalendars = eventStore.calendars(for: .event).filter {
-            $0.title.contains("공휴일") || $0.title.lowercased().contains("holiday") //if event?.calendarTitle == "대한민국 공휴일", event?.calendarType == .subscription, ((event?.allowModification!) == false) {
+
+        var eventDates: [Date] = []
+
+        for event in events {
+            // 이벤트의 시작일부터 종료일까지 모든 날짜 추가
+            var currentDate = event.startDate.startOfDay
+            let eventEndDate = event.endDate.startOfDay
+
+            while currentDate <= eventEndDate {
+                // 해당 월에 속하는 날짜만 추가
+                if currentDate >= monthStart && currentDate <= monthEnd {
+                    eventDates.append(currentDate)
+                }
+                guard let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate) else { break }
+                currentDate = nextDate
+            }
         }
-        
-        let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: holidayCalendars)
-        let events = eventStore.events(matching: predicate)
-        
-        return events.map { $0.startDate }
+
+        return eventDates
     }
-    
-//    // date룰 포함한 달에 이벤트가 있는 dates - 일반 이벤트
-//    func fetchEventDates(date: Date) -> [Date]? {
-//        guard isFullAccess else { return nil }
-//        let start = date.startOfMonth
-//        let end = date.endOfMonth
-//        let calendars = eventStore.calendars(for: .event)
-//        let holidayCalendars = calendars.filter {
-//            $0.title.contains("공휴일") || $0.title.lowercased().contains("holiday")
-//        }
-//        let nonHolidayCalendars = calendars.filter { !holidayCalendars.contains($0) }
-//        
-//        let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: nonHolidayCalendars)
-//        let events = eventStore.events(matching: predicate)
-//        
-//        return events.map { $0.startDate }
-//    }
     
     func fetchEvent(withId eventId: String) -> EKEvent? {
         guard isFullAccess else { return EKEvent() }
@@ -155,34 +140,47 @@ class EventManager: NSObject {
         return count > 0
     }
 
-    // MARK: - 위젯용
+    // MARK: - 위젯 only
 
     /// 월별 날짜별 이벤트 정보를 한 번에 조회
     func fetchMonthEventInfos(for date: Date) -> [String: (eventCount: Int, isHoliday: Bool, events: [(title: String, isHoliday: Bool)])] {
         guard isFullAccess else { return [:] }
 
-        let start = date.startOfMonth
-        let end = date.endOfMonth
+        let calendar = Calendar.current
+        let monthStart = date.startOfMonth
+        let monthEnd = date.endOfMonth
         let calendars = eventStore.calendars(for: .event)
-        let predicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: calendars)
+        let predicate = eventStore.predicateForEvents(withStart: monthStart, end: monthEnd, calendars: calendars)
         let events = eventStore.events(matching: predicate)
 
         var result: [String: (eventCount: Int, isHoliday: Bool, events: [(title: String, isHoliday: Bool)])] = [:]
 
         for event in events {
-            let dateKey = event.startDate.toString()
             let isHolidayCalendar = event.calendar.title.contains("공휴일") || event.calendar.title.lowercased().contains("holiday")
             let eventInfo = (title: event.title ?? "", isHoliday: isHolidayCalendar)
 
-            if var existing = result[dateKey] {
-                existing.eventCount += 1
-                if isHolidayCalendar {
-                    existing.isHoliday = true
+            // 이벤트의 시작일부터 종료일까지 모든 날짜에 추가
+            var currentDate = event.startDate.startOfDay
+            let eventEndDate = event.endDate.startOfDay
+
+            while currentDate <= eventEndDate {
+                // 해당 월에 속하는 날짜만 추가
+                if currentDate >= monthStart && currentDate <= monthEnd {
+                    let dateKey = currentDate.toString()
+
+                    if var existing = result[dateKey] {
+                        existing.eventCount += 1
+                        if isHolidayCalendar {
+                            existing.isHoliday = true
+                        }
+                        existing.events.append(eventInfo)
+                        result[dateKey] = existing
+                    } else {
+                        result[dateKey] = (eventCount: 1, isHoliday: isHolidayCalendar, events: [eventInfo])
+                    }
                 }
-                existing.events.append(eventInfo)
-                result[dateKey] = existing
-            } else {
-                result[dateKey] = (eventCount: 1, isHoliday: isHolidayCalendar, events: [eventInfo])
+                guard let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate) else { break }
+                currentDate = nextDate
             }
         }
 

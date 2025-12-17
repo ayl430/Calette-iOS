@@ -219,12 +219,16 @@ struct EventListView: View {
                     let isAllDay = event.isAllDay
                     let startTime = event.startDate.toStringAhmm()
                     let endTime = event.endDate.toStringAhmm()
-                    let eventTime = isAllDay ? "하루 종일" : "\(startTime) - \(endTime)"
+                    let isOneDayEvent = event.startDate.startOfDay == event.endDate.startOfDay
+                    let oneDayEventTime = isAllDay ? "하루 종일" : "\(startTime) - \(endTime)"
+                    let notOneDayEventTime = isAllDay
+                    ? "\(event.startDate.toString().hyphenToDot()) - \(event.endDate.toString().hyphenToDot())"
+                    : "\(event.startDate.toString().hyphenToDot()) \(startTime) \n- \(event.endDate.toString().hyphenToDot()) \(endTime)"
                     
                     if let eventId = event.eventIdentifier {
                         eventCard(
                             title: eventTitle,
-                            time: eventTime,
+                            time: isOneDayEvent ? oneDayEventTime : notOneDayEventTime,
                             colorStart: Color(hex: "6B9AFF"),
                             colorEnd: Color(hex: "8EB4FF"),
                             icon: "calendar",
@@ -233,7 +237,7 @@ struct EventListView: View {
                     } else {
                         eventCard(
                             title: eventTitle,
-                            time: eventTime,
+                            time: isOneDayEvent ? oneDayEventTime : notOneDayEventTime,
                             colorStart: Color(hex: "6B9AFF"),
                             colorEnd: Color(hex: "8EB4FF"),
                             icon: "calendar",
