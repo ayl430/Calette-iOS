@@ -12,5 +12,6 @@ import SwiftUI
 struct CaletteWidgetBundle: WidgetBundle {
     var body: some Widget {
         CaletteWidget()
+        CaletteWidgetSmall()
     }
 }

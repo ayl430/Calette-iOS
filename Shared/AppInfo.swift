@@ -35,6 +35,7 @@ enum AppInfo {
     // 위젯 갤러리에서
     static let widgetName = AppData.appName
     static let widgetDescription = "캘린더와 일정을 빠르게 확인할 수 있어요"
+    static let smallWidgetDescription = "오늘 날짜와 일정을 빠르게 확인할 수 있어요"
 }
 
 
