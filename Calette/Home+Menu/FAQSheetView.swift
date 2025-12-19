@@ -15,7 +15,7 @@ struct FAQItem {
 }
 
 struct FAQList {
-    static let widget = FAQItem(index: 1, title: "위젯은 어떻게 추가하나요?", content: "- 홈 화면의 빈 영역을 길게 터치 → 좌측 상단의 ‘+’ 버튼 선택 → 위젯 추가\n- 홈 화면의 앱 아이콘을 길게 터치 → 위젯 추가 (iOS18 이상인 경우)")
+    static let widget = FAQItem(index: 1, title: "위젯은 어떻게 추가하나요?", content: "홈 화면의 빈 영역을 길게 터치 → 좌측 상단의 ‘+’ 버튼 선택 → 위젯 추가")
     static let marking = FAQItem(index: 2, title: "일정 표시가 되지 않아요", content: "- 일정 데이터는 캘린더 앱에서 가져옵니다\n- 설정 > '\(AppInfo.appName)' > 캘린더로\n 이동하여 전체 접근 설정을 켜주세요")
     static let lunar = FAQItem(index: 3, title: "음력 표시 기준이 궁금해요", content: "음력은 한국천문연구원 데이터를 기준으로 합니다")
 }
