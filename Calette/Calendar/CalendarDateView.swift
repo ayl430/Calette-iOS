@@ -26,6 +26,11 @@ struct CalendarDateView: View {
             VStack(spacing: 1) {
                 Text("\(dateDate.get(component: .day))")
                     .font(.system(size: 14))
+                    .foregroundStyle(
+                        calendarSettingVM.firstDayOfWeek == 1
+                        ? (index % 7 == 0 ? Color(name: calendarSettingVM.themeColor) : Color(hex: "4A4A4A"))
+                        : (index % 7 == 6 ? Color(name: calendarSettingVM.themeColor) : Color(hex: "4A4A4A"))
+                    )
                 EventMarkingView(dateDate: dateDate, eventDays: dateVM.eventDays)
                     .padding(.bottom, 2)
                 Text("\(dateDate.lunarDate.toStringMdd())")
@@ -36,11 +41,6 @@ struct CalendarDateView: View {
                         : Color.clear
                     )
             }
-            .foregroundStyle(
-                calendarSettingVM.firstDayOfWeek == 1
-                ? (index % 7 == 0 ? Color(name: calendarSettingVM.themeColor) : Color(hex: "4A4A4A"))
-                : (index % 7 == 6 ? Color(name: calendarSettingVM.themeColor) : Color(hex: "4A4A4A"))
-            )
             
             Button {
                 DispatchQueue.main.async {

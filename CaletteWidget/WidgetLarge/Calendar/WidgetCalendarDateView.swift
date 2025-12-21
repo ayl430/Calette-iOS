@@ -28,6 +28,11 @@ struct WidgetCalendarDateView: View {
             VStack(spacing: 1) {
                 Text("\(dateDate.get(component: .day))")
                     .font(.system(size: 14))
+                    .foregroundStyle(
+                        calendarSettingVM.firstDayOfWeek == 1
+                        ? (index % 7 == 0 ? Color(name: calendarSettingVM.themeColor) : Color(hex: "4A4A4A").dark(Color(hex: "D4D0CC")))
+                        : (index % 7 == 6 ? Color(name: calendarSettingVM.themeColor) : Color(hex: "4A4A4A").dark(Color(hex: "D4D0CC")))
+                    )
                 EventMarkingView(dateDate: dateDate, eventDays: eventDays, dayEventInfo: dayEventInfo)
                     .padding(.bottom, 2)
                 Text("\(dateDate.lunarDate.toStringMdd())")
@@ -38,11 +43,6 @@ struct WidgetCalendarDateView: View {
                         : Color.clear
                     )
             }
-            .foregroundStyle(
-                calendarSettingVM.firstDayOfWeek == 1
-                ? (index % 7 == 0 ? Color(name: calendarSettingVM.themeColor) : Color(hex: "4A4A4A").dark(Color(hex: "D4D0CC")))
-                : (index % 7 == 6 ? Color(name: calendarSettingVM.themeColor) : Color(hex: "4A4A4A").dark(Color(hex: "D4D0CC")))
-            )
             
             Button(intent: SelectDateIntent(selectedDate: dateDate)) {
                 Rectangle()
