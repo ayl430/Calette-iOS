@@ -98,9 +98,17 @@
 				EventManager.swift,
 				View/EmptyCalendarDateView.swift,
 				View/EventMarkingView.swift,
+				View/MoonPhaseView.swift,
 				WidgetEventModels.swift,
 			);
 			target = D832DA282D4FAB3A002B5B13 /* CaletteWidgetExtension */;
+		};
+		D85E419C2EF847050052C1A8 /* Exceptions for "CaletteWidget" folder in "Calette" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+			);
+			target = D8E394D22D47E1C300C47FDC /* Calette */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -108,6 +116,7 @@
 		D832DA2C2D4FAB3A002B5B13 /* CaletteWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				D85E419C2EF847050052C1A8 /* Exceptions for "CaletteWidget" folder in "Calette" target */,
 				D82536252E4DD84200028273 /* Exceptions for "CaletteWidget" folder in "CaletteWidgetExtension" target */,
 			);
 			path = CaletteWidget;
