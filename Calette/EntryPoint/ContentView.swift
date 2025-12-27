@@ -18,7 +18,7 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            HomeScreenWithWidget(selectedApp: $selectedApp, selectedIndex: $selectedIndex)
+            HomeScreenView(selectedApp: $selectedApp, selectedIndex: $selectedIndex)
                 .coordinateSpace(.named("container"))
                 .overlayPreferenceValue(AppIconViewPreferenceKey.self) { preferences in
                     GeometryReader { geometry in

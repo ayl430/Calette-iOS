@@ -1,14 +1,14 @@
 //
-//  AddEventView.swift
+//  AppStyleMenuView.swift
 //  Calette
 //
-//  Created by yeri on 12/13/25.
+//  Created by yeri on 6/29/25.
 //
 
 import SwiftUI
 
-// MARK: - 일정 추가 뷰
-struct AddEventView: View {
+// MARK: - 아이콘 개별 뷰
+struct AppIconView: View {
     let icon: AppIcon
     let size: CGFloat
     let tapped: () -> Void
@@ -17,13 +17,11 @@ struct AddEventView: View {
         VStack(spacing: 4) {
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color.white.opacity(0.9))
-                .frame(width: size * 0.8, height: size * 0.8)
-                .clipShape(.circle)
-                .shadow(color: Color.black.opacity(0.15),radius: 10)
+                .frame(width: size, height: size)
                 .overlay(
                     Image(icon.image)
                         .resizable()
-                        .frame(width: size * 0.4, height: size * 0.4)
+                        .frame(width: size * 0.65, height: size * 0.65)
                 )
         }
         .onTapGesture {
