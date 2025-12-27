@@ -19,6 +19,7 @@ struct LargeWidgetView: View {
     @State private var isTransitioning: Bool = false
     @State private var contentOpacity: Double = 1.0
     @State private var displayedDate: Date = Date()
+    @State private var hintOffset: CGFloat = 0
 
     var body: some View {
         GeometryReader { geometry in
@@ -96,6 +97,7 @@ struct LargeWidgetView: View {
                     }
                     .frame(height: CGFloat(currentMonthRows) * cellHeight)
                     .tabViewStyle(.page(indexDisplayMode: .never))
+                    .offset(x: hintOffset)
                     .onChange(of: currentPage) { oldValue, newValue in
                         handlePageChange(newValue: newValue)
                     }
@@ -107,6 +109,9 @@ struct LargeWidgetView: View {
         }
         .onAppear {
             displayedDate = dateVM.selectedDate
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .showSwipeHint)) { _ in
+            showSwipeHint()
         }
     }
     
@@ -138,6 +143,26 @@ struct LargeWidgetView: View {
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 isTransitioning = false
+            }
+        }
+    }
+    
+    private func showSwipeHint() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            withAnimation(.easeOut(duration: 0.1)) {
+                hintOffset = -10
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                withAnimation(.easeInOut(duration: 0.15)) {
+                    hintOffset = 10
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                    withAnimation(.easeOut(duration: 0.1)) {
+                        hintOffset = 0
+                    }
+                }
             }
         }
     }

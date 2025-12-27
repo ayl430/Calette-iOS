@@ -8,21 +8,18 @@
 import SwiftUI
 
 // MARK: - 시작 MainView
-// MainView -> (OnboardingTabView) -> ContentView
+// MainView -> (OnboardingView) -> ContentView
 struct MainView: View {
     @AppStorage(DefaultsKeys.App.onboardingKey) var isOnboarding: Bool = true
-    
+
     @EnvironmentObject var coordinator: Coordinator
-    
+
     @StateObject private var calendarSettingVM = CalendarSettingsViewModel()
-    
+
     var body: some View {
         NavigationStack(path: $coordinator.path) {
             ZStack {
                 ContentView()
-                    .fullScreenCover(isPresented: $isOnboarding) {
-                        OnboardingTabView(isOnboarding: $isOnboarding)
-                    }
                     .navigationDestination(for: NavigationStackType.self) { stackViewType in
                         switch stackViewType {
                         case .HomeView:
@@ -32,6 +29,12 @@ struct MainView: View {
                         }
                     }
                     .environmentObject(calendarSettingVM)
+                
+                if isOnboarding {
+                    OnboardingView(isOnboarding: $isOnboarding) {
+                        NotificationCenter.default.post(name: .showSwipeHint, object: nil)
+                    }
+                }
             }
         }
     }

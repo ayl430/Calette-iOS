@@ -55,3 +55,8 @@ struct DefaultsKeys {
         static let isLunarCalendarKey = "KEY_isLunarCalendar"
     }
 }
+
+// MARK: - Notification Names
+extension Notification.Name {
+    static let showSwipeHint = Notification.Name("showSwipeHint")
+}

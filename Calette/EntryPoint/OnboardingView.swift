@@ -7,113 +7,140 @@
 
 import SwiftUI
 
-// MARK: - 온보딩 OnboardingTabView
-struct OnboardingTabView: View {
+struct OnboardingView: View {
     @Binding var isOnboarding: Bool
     
-    private let totalPages = 3
-    @State private var selectedPage = 0
+    @State private var currentStep: Int = 1
+    var onComplete: () -> Void
     
     var body: some View {
-        ZStack {
-            Image("imgBackground")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
+        GeometryReader { geometry in
+            let layout = HomeScreenLayout(
+                screenSize: geometry.size,
+                safeAreaInsets: geometry.safeAreaInsets
+            )
             
-            VStack {
+            ZStack {
+                Color.black.opacity(0.6)
+                    .ignoresSafeArea()                
                 VStack {
-                    HStack(spacing: 8) {
-                        ForEach(0..<totalPages, id: \.self) { index in
-                            Circle()
-                                .frame(width: 6, height: 6)
-                                .foregroundColor(index == selectedPage ? Color.black : Color.black.opacity(0.2))
-                                .opacity(selectedPage == 3 ? 0 : 1)
+                    HStack {
+                        Spacer()
+                        Button {
+                            if currentStep == 1 {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    currentStep = 2
+                                }
+                            } else {
+                                isOnboarding = false
+                                onComplete()
+                            }
+                        } label: {
+                            Text(currentStep == 1 ? "다음 →" : "확인 →")
+                                .font(.headline)
+                                .foregroundStyle(Color(hex: "2E2E2E"))
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 10)
+                                .background(Color.white)
+                                .clipShape(Capsule())
                         }
+                        .padding(.trailing, layout.iconSpacing)
+                        .padding(.top)
                     }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                    .background(Color.white.opacity(0.9))
-                    .clipShape(Capsule())
-                    
+                    Spacer()
                 }
                 
-                TabView(selection: $selectedPage) {
-                    OnboardingCommonView(title: "심플한 위젯으로\n하루 일정을 확인해보세요!", imageName: "imgOnboarding1")
-                        .tag(0)
-                    
-                    OnboardingCommonView(title: "기본 캘린더에 저장된 이벤트를\n깔끔하게 보여줍니다!", imageName: "imgOnboarding2")
-                        .tag(1)
-                    
-                    OnboardingLastView(title: "음력도 빠르게\n확인할 수 있어요!", imageName: "imgOnboarding3", isOnboarding: $isOnboarding)
-                        .tag(2)
+                if currentStep == 1 {
+                    OnboardingStep1View(layout: layout)
+                        .transition(.opacity)
+                } else {
+                    OnboardingStep2View(layout: layout)
+                        .transition(.opacity)
                 }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             }
-            .padding(.top, 100)
         }
     }
 }
 
-struct OnboardingCommonView: View {
-    let title: String
-    let imageName: String
+// MARK: - Onboarding 1
+struct OnboardingStep1View: View {
+    let layout: HomeScreenLayout
     
     var body: some View {
-        VStack() {
-            Text(title)
-                .multilineTextAlignment(.center)
-                .font(.title3)
-                .foregroundStyle(Color.textBlack)
-                .bold()
-                .padding()
-            Image(imageName)
-                .resizable()
-                .scaledToFit()
-                .padding(.bottom)
-                .clipped()
-            Spacer()
-        }
-    }
-}
-
-struct OnboardingLastView: View {
-    let title: String
-    let imageName: String
-    
-    @Binding var isOnboarding: Bool
-    
-    var body: some View {
-        VStack() {
-            Text(title)
-                .multilineTextAlignment(.center)
-                .font(.title3)
-                .foregroundStyle(Color.textBlack)
-                .bold()
-                .padding()
-            Image(imageName)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .padding(.horizontal)
-            Button {
-                isOnboarding.toggle()
-            } label: {
-                Text("앱 시작하기")
+        ZStack(alignment: .bottom) {
+            VStack {
+                Spacer()
+                Text("위젯을 추가하고\n다양한 옵션을 설정해보세요!")
                     .font(.headline)
-                    .foregroundStyle(.white)
-                    .bold()
-                    .padding(.horizontal, 40)
-                    .padding(.vertical, 10)
-                    .background(Color(hex: "DD6464"))
-                    .clipShape(Capsule())
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Color.white)
+                    .multilineTextAlignment(.center)
+                    .padding(.trailing, layout.screenSize.width / 4)
             }
-            .padding(.top)
+            .padding(.bottom, layout.iconSize * 2)
+            
+            HStack(spacing: layout.iconSpacing) {
+                ForEach(0..<4, id: \.self) { index in
+                    Color.clear
+                        .frame(width: layout.iconSize, height: layout.iconSize)
+                        .overlay {
+                            if index < 3 {
+                                DashedCircleView(size: layout.iconSize + 16)
+                            }
+                        }
+                }
+            }
+            .padding(.bottom)
+            .padding(.bottom, 2)
+        }
+    }
+}
+
+// MARK: - Onboarding 2
+struct OnboardingStep2View: View {
+    let layout: HomeScreenLayout
+    
+    var body: some View {
+        VStack {
+            Spacer()
+                .frame(height: layout.widgetSize.height / 2 - layout.iconSize)
+            
+            Image(systemName: "arrow.left.arrow.right")
+                .font(.system(size: 50, weight: .medium))
+                .foregroundStyle(Color.white)
+                .padding(.bottom, 20)
+            
+            Text("캘린더를 스와이프 하여\n날짜를 확인해보세요!")
+                .font(.headline)
+                .fontWeight(.semibold)
+                .foregroundStyle(Color.white)
+                .multilineTextAlignment(.center)
             
             Spacer()
         }
     }
 }
 
-#Preview(body: {
-    OnboardingTabView(isOnboarding: Binding.constant(false))
-})
+// MARK: - 점선 원
+struct DashedCircleView: View {
+    let size: CGFloat
+    
+    var body: some View {
+        Circle()
+            .stroke(
+                Color.white,
+                style: StrokeStyle(
+                    lineWidth: 2,
+                    dash: [6, 4]
+                )
+            )
+            .frame(width: size, height: size)
+    }
+}
+
+#Preview {
+    ZStack {
+        ContentView()
+        OnboardingView(isOnboarding: .constant(true), onComplete: {})
+    }
+}
