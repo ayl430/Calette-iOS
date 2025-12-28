@@ -3,8 +3,9 @@
 🍎 [Calette 다운 받기](https://apps.apple.com/kr/app/calette/id6751405578)
 
 <div>
-<img width="200" alt="Image" src="https://github.com/user-attachments/assets/f6f786c2-92fd-4b1f-9437-3c5410e218c5" />
-<img width="200" alt="Image" src="https://github.com/user-attachments/assets/a1263f85-1f7d-415a-9fc9-887db0a0b2e6" />
-<img width="200" alt="Image" src="https://github.com/user-attachments/assets/3ecc4eb5-f252-4073-906d-e1485cf861c6" />
-<img width="200" alt="Image" src="https://github.com/user-attachments/assets/902e0778-0bc5-4180-b0db-b91ba66bbfc5" />
+<img width="200" alt="Image" src="https://github.com/user-attachments/assets/513fdd23-f59e-4c1d-b527-392b4df64c7e" />
+<img width="200" alt="Image" src="https://github.com/user-attachments/assets/2bb814e7-4e21-4e16-8775-3f8325f289ab" />
+<img width="200" alt="Image" src="https://github.com/user-attachments/assets/6d9e352a-47e8-41fe-96b3-0e6ee2e4e2f8" />
+<img width="200" alt="Image" src="https://github.com/user-attachments/assets/47dede5a-9a52-44ad-bc39-9af4e3bc93c0" />
+<img width="200" alt="Image" src="https://github.com/user-attachments/assets/6b6f8e1f-11c8-48ed-b16f-a693864d4367" />
 </div>
