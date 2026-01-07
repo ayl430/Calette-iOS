@@ -20,10 +20,29 @@ struct CaletteWidgetSmallProvider: AppIntentTimelineProvider {
     }
 
     func timeline(for configuration: SmallWidgetConfigurationIntent, in context: Context) async -> Timeline<CaletteWidgetSmallEntry> {
-        let hasEvent = EventManager.shared.hasEvent(Date())
-        let isHoliday = EventManager.shared.isHoliday(Date())
-        let entry = CaletteWidgetSmallEntry(date: Date(), backgroundColor: configuration.backgroundColor, hasEvent: hasEvent, isHoliday: isHoliday)
-        return Timeline(entries: [entry], policy: .never)
+        var entries: [CaletteWidgetSmallEntry] = []
+        let calendar = Calendar.current
+        let now = Date()
+
+        // 오늘부터 7일간의 엔트리 생성 (자정 기준)
+        for dayOffset in 0..<7 {
+            guard let entryDate = calendar.date(byAdding: .day, value: dayOffset, to: calendar.startOfDay(for: now)) else { continue }
+
+            let hasEvent = EventManager.shared.hasEvent(entryDate)
+            let isHoliday = EventManager.shared.isHoliday(entryDate)
+
+            let entry = CaletteWidgetSmallEntry(
+                date: entryDate,
+                backgroundColor: configuration.backgroundColor,
+                hasEvent: hasEvent,
+                isHoliday: isHoliday
+            )
+            entries.append(entry)
+        }
+
+        // 7일 후 자정에 타임라인 갱신
+        let nextUpdate = calendar.date(byAdding: .day, value: 7, to: calendar.startOfDay(for: now))!
+        return Timeline(entries: entries, policy: .after(nextUpdate))
     }
 }
 
