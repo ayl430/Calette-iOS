@@ -32,8 +32,8 @@ struct WidgetSizeProvider {
     // https://developer.apple.com/design/human-interface-guidelines/widgets
     private static func smallSize(for screen: CGSize) -> CGSize {
         switch screen {
-        case CGSize(width: 440, height: 956):   return CGSize(width: 170, height: 170) // iPhone 16 Pro Max
-        case CGSize(width: 402, height: 874):   return CGSize(width: 158, height: 158) // iPhone 16 Pro
+        case CGSize(width: 440, height: 956):   return CGSize(width: 170, height: 170) // iPhone 16/17 Pro Max
+        case CGSize(width: 402, height: 874):   return CGSize(width: 158, height: 158) // iPhone 16/17, Pro
         case CGSize(width: 430, height: 932):   return CGSize(width: 170, height: 170)
         case CGSize(width: 428, height: 926):   return CGSize(width: 170, height: 170)
         case CGSize(width: 414, height: 896):   return CGSize(width: 169, height: 169)
@@ -44,7 +44,9 @@ struct WidgetSizeProvider {
         case CGSize(width: 375, height: 667):   return CGSize(width: 148, height: 148)
         case CGSize(width: 360, height: 780):   return CGSize(width: 155, height: 155)
         case CGSize(width: 320, height: 568):   return CGSize(width: 141, height: 141)
-        default:                                return CGSize(width: 155, height: 155)
+        default:
+            let side = round(screen.width * 0.4)  // 알 수 없는 기기일 경우 근사치
+            return CGSize(width: side, height: side)
         }
     }
     
@@ -62,7 +64,8 @@ struct WidgetSizeProvider {
         case CGSize(width: 375, height: 667):   return CGSize(width: 321, height: 148)
         case CGSize(width: 360, height: 780):   return CGSize(width: 329, height: 155)
         case CGSize(width: 320, height: 568):   return CGSize(width: 292, height: 141)
-        default:                                return CGSize(width: 329, height: 155)
+        default:
+            return CGSize(width: round(screen.width * 0.86), height: round(screen.width * 0.4))
         }
     }
     
@@ -80,7 +83,8 @@ struct WidgetSizeProvider {
         case CGSize(width: 375, height: 667):   return CGSize(width: 321, height: 324)
         case CGSize(width: 360, height: 780):   return CGSize(width: 329, height: 345)
         case CGSize(width: 320, height: 568):   return CGSize(width: 292, height: 311)
-        default:                                return CGSize(width: 329, height: 345)
+        default:
+            return CGSize(width: round(screen.width * 0.86), height: round(screen.width * 0.4) * 2 + 40)
         }
     }
 }
