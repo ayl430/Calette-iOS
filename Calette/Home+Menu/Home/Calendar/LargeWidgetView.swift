@@ -27,17 +27,16 @@ struct LargeWidgetView: View {
             let cellHeight = geometry.size.height / CGFloat(gridRows)
 
             // 표시용 날짜 기준으로 계산 (전환 중 레이아웃 유지)
-            let baseDate = displayedDate
-            let previousMonth = Calendar.current.date(byAdding: .month, value: -1, to: baseDate.startOfMonth) ?? baseDate
-            let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: baseDate.startOfMonth) ?? baseDate
+            let previousMonth = Calendar.current.date(byAdding: .month, value: -1, to: displayedDate.startOfMonth) ?? displayedDate
+            let nextMonth = Calendar.current.date(byAdding: .month, value: 1, to: displayedDate.startOfMonth) ?? displayedDate
 
             // 현재 달의 캘린더 줄 수 계산 (7 - 이벤트 줄 수)
-            let currentMonthRows = 7 - CalendarBuilder.maxEventTitleViewLines(date: baseDate)
+            let currentMonthRows = 7 - CalendarBuilder.maxEventTitleViewLines(date: displayedDate)
 
             VStack(spacing: 0) {
                 // 날짜 + 오늘 버튼
                 HStack(spacing: 0) {
-                    Text(displayedDate.toString().hyphenToDot())
+                    Text(dateVM.selectedDate.toString().hyphenToDot())
                         .font(.system(size: 21))
                         .foregroundStyle(Color(hex: "2E2E2E"))
                         .bold()
@@ -50,7 +49,7 @@ struct LargeWidgetView: View {
                         )
                     
                     if calendarSettingVM.isLunarCalendar {
-                        MoonPhaseView(lunarDay: Int(displayedDate.lunarDate.toStringD())!)
+                        MoonPhaseView(lunarDay: Int(dateVM.selectedDate.lunarDate.toStringD())!)
                             .frame(
                                 width: 1.0 * cellWidth,
                                 height: 1.0 * cellHeight
@@ -89,7 +88,7 @@ struct LargeWidgetView: View {
                         MonthGridView(targetDate: previousMonth, cellWidth: cellWidth, cellHeight: cellHeight, fixedRows: currentMonthRows)
                             .tag(0)
 
-                        MonthGridView(targetDate: baseDate, cellWidth: cellWidth, cellHeight: cellHeight, fixedRows: currentMonthRows)
+                        MonthGridView(targetDate: displayedDate, cellWidth: cellWidth, cellHeight: cellHeight, fixedRows: currentMonthRows)
                             .tag(1)
 
                         MonthGridView(targetDate: nextMonth, cellWidth: cellWidth, cellHeight: cellHeight, fixedRows: currentMonthRows)
