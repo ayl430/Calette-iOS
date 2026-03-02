@@ -16,7 +16,9 @@ struct EventTitleView: View {
     @EnvironmentObject var coordinator: Coordinator
     
     var body: some View {
-        let events = EventManager.shared.fetchAllEvents(date: dateVM.selectedDate)
+        let holidays = EventManager.shared.fetchAllHolidays(on: dateVM.selectedDate)
+        let normalEvents = EventManager.shared.fetchAllNormalEvents(on: dateVM.selectedDate)
+        let events = holidays + normalEvents
         
         VStack(spacing: 0) {
             let eventCount = events.count

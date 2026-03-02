@@ -64,9 +64,9 @@ struct LargeWidgetView: View {
                             displayedDate = Date()
                         }
                     } label: {
-                        Image(systemName: "square")
-                            .frame(width: cellWidth * 0.8, height: cellHeight * 0.8)
-                            .font(.caption)
+                        Image(systemName: "arrow.clockwise")
+                            .frame(width: cellWidth * 0.7, height: cellHeight * 0.7)
+                            .font(.footnote)
                             .foregroundStyle(Color.white)
                             .bold()
                             .background(WidgetTheme(rawValue: calendarSettingVM.themeColor)!.color)

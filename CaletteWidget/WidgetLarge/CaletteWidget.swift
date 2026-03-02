@@ -52,7 +52,8 @@ struct Provider: TimelineProvider {
         // 날짜별 이벤트 정보 변환
         var dayEventInfos: [String: DayEventInfo] = [:]
         for (dateKey, info) in monthEventInfos {
-            let events = info.events
+            // 공휴일을 먼저 표시
+            let events = info.events.sorted { $0.isHoliday && !$1.isHoliday }
             dayEventInfos[dateKey] = DayEventInfo(
                 date: Date(),
                 eventCount: info.eventCount,
