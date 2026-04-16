@@ -13,5 +13,6 @@ struct CaletteWidgetBundle: WidgetBundle {
     var body: some Widget {
         CaletteWidget()
         CaletteWidgetSmall()
+        PreviousMonthWidget()
     }
 }
