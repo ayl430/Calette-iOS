@@ -39,7 +39,7 @@ struct CalendarDateView: View {
             // 선택된 날짜
             if isSelected {
                 Circle()
-                    .fill(DesignSystem.Gradient.buttonPurple)
+                    .fill(calendarSettingVM.currentTheme.buttonGradient)
                     .overlay {
                         Circle()
                             .fill(DesignSystem.Gradient.buttonHighlight)
@@ -51,7 +51,7 @@ struct CalendarDateView: View {
                             .allowsHitTesting(false)
                     }
                     .shadow(color: DesignSystem.Shadow.card, radius: 3, x: 0, y: 2)
-                    .shadow(color: DesignSystem.Shadow.buttonGlow, radius: 6, x: 0, y: 1)
+                    .shadow(color: calendarSettingVM.currentTheme.glowColor, radius: 6, x: 0, y: 1)
             }
 
             VStack(spacing: 1) {

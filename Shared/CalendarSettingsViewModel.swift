@@ -11,14 +11,18 @@ import WidgetKit
 
 class CalendarSettingsViewModel: ObservableObject  {
     
-    @AppStorage(DefaultsKeys.Shared.themeColorKey, store: UserDefaults.shared) var color: String = "caletteDefault"
+    @AppStorage(DefaultsKeys.Shared.themeColorKey, store: UserDefaults.shared) var color: String = "dustyLavender"
     @AppStorage(DefaultsKeys.Shared.firstDayOfWeekKey, store: UserDefaults.shared) var sunOrMon: Int = 1
     @AppStorage(DefaultsKeys.Shared.isLunarCalendarKey, store: UserDefaults.shared) var lunarCalendar: Bool = false
     
     var isOnTheme: Bool {
         get {
-            return !(themeColor.isEmpty || themeColor == WidgetTheme.caletteDefault.name)
+            return currentTheme != .dustyLavender
         }
+    }
+
+    var currentTheme: WidgetTheme {
+        WidgetTheme(rawValue: themeColor) ?? .dustyLavender
     }
     
     var themeColor: String {

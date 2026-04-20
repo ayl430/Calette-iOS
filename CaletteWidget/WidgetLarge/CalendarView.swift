@@ -64,7 +64,7 @@ struct CalendarView: View {
                                     .font(.footnote)
                                     .foregroundStyle(Color.white)
                                     .bold()
-                                    .background(WidgetTheme(rawValue: calendarSettingVM.themeColor)!.color)
+                                    .background((WidgetTheme(rawValue: calendarSettingVM.themeColor) ?? .dustyLavender).color)
                             }
                             .clipShape(Circle())
                             .buttonStyle(.plain)

@@ -50,13 +50,14 @@ struct AddEventItem: View {
     let icon: AppIcon
     let size: CGFloat
     let tapped: () -> Void
-    
+
+    @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
+
     var body: some View {
         VStack(spacing: 4) {
             ZStack {
-                // Base: 짙은 남보라 그라데이션
                 Circle()
-                    .fill(DesignSystem.Gradient.buttonPurple)
+                    .fill(calendarSettingVM.currentTheme.buttonGradient)
 
                 // 상단 하이라이트 빛 반사
                 Circle()
@@ -75,7 +76,7 @@ struct AddEventItem: View {
             }
             .frame(width: size * 0.8, height: size * 0.8)
             .shadow(color: DesignSystem.Shadow.fab, radius: 8, x: 0, y: 6)
-            .shadow(color: DesignSystem.Shadow.buttonGlow, radius: 12, x: 0, y: 2)
+            .shadow(color: calendarSettingVM.currentTheme.glowColor, radius: 12, x: 0, y: 2)
         }
         .onTapGesture {
             tapped()

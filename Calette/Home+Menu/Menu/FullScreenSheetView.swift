@@ -267,7 +267,7 @@ struct ColorOptionView: View {
     @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
     
     var body: some View {
-        HStack(spacing: 18) {
+        HStack(spacing: 12) {
             ForEach(WidgetTheme.allCases, id: \.self) { theme in
                 Button(action: {
                     calendarSettingVM.themeColor = theme.name
@@ -278,7 +278,7 @@ struct ColorOptionView: View {
                             .strokeBorder(DesignSystem.Colors.border, lineWidth: 1)
                             .frame(width: 20, height: 20)
                         
-                        if calendarSettingVM.themeColor == theme.name {
+                        if calendarSettingVM.currentTheme == theme {
                             Image(systemName: "checkmark")
                                 .foregroundStyle(.black.opacity(0.7))
                                 .font(.system(size: 13, weight: .bold))

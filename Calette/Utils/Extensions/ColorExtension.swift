@@ -22,20 +22,8 @@ extension Color {
     }
     
     init(name: String, alpha: Double = 1.0) {
-        switch name {
-        case "caletteDefault":
-            self = .caletteDefault.opacity(alpha)
-        case "caletteYellow":
-            self = .caletteYellow.opacity(alpha)
-        case "calettePink":
-            self = .calettePink.opacity(alpha)
-        case "calettePurple":
-            self = .calettePurple.opacity(alpha)
-        case "caletteBlue":
-            self = .caletteBlue.opacity(alpha)
-        default:
-            self = .caletteDefault.opacity(alpha)
-        }
+        let resolved = WidgetTheme(rawValue: name) ?? .dustyLavender
+        self = resolved.color.opacity(alpha)
     }
     
     // 테마색
@@ -63,45 +51,56 @@ extension Color {
 
 
 enum WidgetTheme: String, CaseIterable {
-    case caletteDefault
-    case caletteYellow
-    case calettePink
-    case calettePurple
-    case caletteBlue
-    
+    case dustyLavender
+    case softPeach
+    case mintGreen
+    case mutedCoral
+    case deepPurple
+    case midnightBase
+
+    /// 옛 이름(caletteDefault 등) → 새 이름 마이그레이션 포함
     init?(rawValue: String) {
         switch rawValue {
-        case "caletteDefault":
-            self = .caletteDefault
-        case "caletteYellow":
-            self = .caletteYellow
-        case "calettePink":
-            self = .calettePink
-        case "calettePurple":
-            self = .calettePurple
-        case "caletteBlue":
-            self = .caletteBlue
-        default:
-            self = .caletteDefault
+        // 새 이름
+        case "dustyLavender":  self = .dustyLavender
+        case "softPeach":      self = .softPeach
+        case "mintGreen":      self = .mintGreen
+        case "mutedCoral":     self = .mutedCoral
+        case "deepPurple":     self = .deepPurple
+        case "midnightBase":   self = .midnightBase
+        // 옛 이름 → 새 이름 매핑
+        case "caletteDefault": self = .dustyLavender
+        case "caletteYellow":  self = .softPeach
+        case "calettePink":    self = .mutedCoral
+        case "calettePurple":  self = .deepPurple
+        case "caletteBlue":    self = .mintGreen
+        default:               self = .dustyLavender
         }
     }
-    
-    var name: String {
-        self.rawValue
-    }
-    
+
+    var name: String { self.rawValue }
+
     var color: Color {
         switch self {
-        case .caletteDefault:
-            return Color(hex: "FF6F4A")
-        case .caletteYellow:
-            return Color(hex: "FFAA28")
-        case .calettePink:
-            return Color(hex: "FF7088")
-        case .calettePurple:
-            return Color(hex: "9F6BE8")
-        case .caletteBlue:
-            return Color(hex: "6A8FE8")
+        case .dustyLavender: return DesignSystem.Colors.Theme.dustyLavender
+        case .softPeach:     return DesignSystem.Colors.Theme.softPeach
+        case .mintGreen:     return DesignSystem.Colors.Theme.mintGreen
+        case .mutedCoral:    return DesignSystem.Colors.Theme.mutedCoral
+        case .deepPurple:    return DesignSystem.Colors.Theme.deepPurple
+        case .midnightBase:  return DesignSystem.Colors.Theme.midnightBase
         }
+    }
+
+    /// 테마별 버튼 그라데이션
+    var buttonGradient: LinearGradient {
+        LinearGradient(
+            colors: [color.opacity(0.7), color.opacity(0.4)],
+            startPoint: .top, endPoint: .bottom
+        )
+    }
+
+    /// 테마별 글로우 쉐도우 색
+    var glowColor: Color {
+        color.opacity(0.35)
     }
 }

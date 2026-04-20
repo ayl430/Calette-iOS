@@ -66,7 +66,7 @@ struct LargeWidgetView: View {
                     } label: {
                         ZStack {
                             Circle()
-                                .fill(DesignSystem.Gradient.buttonPurple)
+                                .fill(calendarSettingVM.currentTheme.buttonGradient)
 
                             Circle()
                                 .fill(DesignSystem.Gradient.buttonHighlight)
@@ -82,7 +82,7 @@ struct LargeWidgetView: View {
                         }
                         .frame(width: cellWidth * 0.72, height: cellHeight * 0.72)
                         .shadow(color: DesignSystem.Shadow.card, radius: 4, x: 0, y: 3)
-                        .shadow(color: DesignSystem.Shadow.buttonGlow, radius: DesignSystem.Shadow.buttonGlowRadius, x: 0, y: DesignSystem.Shadow.buttonGlowY)
+                        .shadow(color: calendarSettingVM.currentTheme.glowColor, radius: DesignSystem.Shadow.buttonGlowRadius, x: 0, y: DesignSystem.Shadow.buttonGlowY)
                     }
                     .frame(
                         width: 1.0 * cellWidth,
