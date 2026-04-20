@@ -37,10 +37,7 @@ struct HomeScreenLayout {
 // MARK: - 배경 뷰
 struct HomeScreenBackground: View {
     var body: some View {
-        Image("imgBgApp01")
-            .resizable()
-            .scaledToFill()
-            .ignoresSafeArea()
+        CosmicBackgroundView()
     }
 }
 

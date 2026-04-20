@@ -34,13 +34,7 @@ struct EventDetailView: View {
             .padding(.bottom, 40)
         }
         .background {
-            ZStack {
-                Image("imgBgApp01")
-                    .resizable()
-                    .scaledToFill()
-                DesignSystem.Colors.Overlay.dim
-            }
-            .ignoresSafeArea()
+            CosmicBackgroundView()
         }
         .navigationBarBackButtonHidden()
         .toolbar {
