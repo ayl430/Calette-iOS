@@ -17,30 +17,30 @@ struct EventDetailView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        ZStack {
-            LinearGradient(
-                colors: [Color(hex: "FEF9B7"), Color(hex: "FFF4D6"), Color(hex: "FFE5B4")],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
-            
-            ScrollView {
-                VStack(spacing: 24) {
-                    if let event = EventManager.shared.fetchEvent(withId: eventId) {
-                        eventHeaderCard(event: event)
-                            .padding(.horizontal)
-                            .padding(.top)
-                        
-                        detailInfoCard(event: event)
-                            .padding(.horizontal)
-                        
-                        actionButtons
-                            .padding(.horizontal)
-                            .padding(.bottom, 30)
-                    }
+        ScrollView {
+            VStack(spacing: 24) {
+                if let event = EventManager.shared.fetchEvent(withId: eventId) {
+                    eventHeaderCard(event: event)
+                        .padding(.horizontal)
+
+                    detailInfoCard(event: event)
+                        .padding(.horizontal)
+
+                    actionButtons
+                        .padding(.horizontal)
                 }
             }
+            .padding(.top, 20)
+            .padding(.bottom, 40)
+        }
+        .background {
+            ZStack {
+                Image("imgBgApp01")
+                    .resizable()
+                    .scaledToFill()
+                DesignSystem.Colors.Overlay.dim
+            }
+            .ignoresSafeArea()
         }
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -56,13 +56,7 @@ struct EventDetailView: View {
                         Text(dateVM.selectedDate.toString().hyphenToDot())
                             .font(.system(size: 16, weight: .medium))
                     }
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [Color(hex: "DD6464"), Color(hex: "FF8080")],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
+                    .foregroundStyle(DesignSystem.Colors.accent)
                 }
             }
         }
@@ -84,32 +78,20 @@ struct EventDetailView: View {
         HStack(spacing: 16) {
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(hex: "6B9AFF").opacity(0.15), Color(hex: "8EB4FF").opacity(0.08)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+                    .fill(DesignSystem.Colors.accent.opacity(0.15))
                     .frame(width: 60, height: 60)
-                
+
                 Image(systemName: "calendar")
                     .font(.system(size: 28, weight: .semibold))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [Color(hex: "6B9AFF"), Color(hex: "8EB4FF")],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+                    .foregroundStyle(DesignSystem.Colors.accent)
             }
-            
+
             VStack(alignment: .leading, spacing: 6) {
                 Text(event.title)
                     .font(.system(size: 20, weight: .bold))
-                    .foregroundStyle(Color.textBlack)
+                    .foregroundStyle(DesignSystem.Colors.primary)
                     .lineLimit(2)
-                
+
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(spacing: 4) {
                         Image(systemName: "calendar")
@@ -117,7 +99,7 @@ struct EventDetailView: View {
                         Text(dateVM.selectedDate.toString().hyphenToDot() + " " + dateVM.selectedDate.toStringEEE())
                             .font(.system(size: 13))
                     }
-                    
+
                     HStack(spacing: 4) {
                         let isAllDay = event.isAllDay
                         let startTime = event.startDate.toStringAhmm()
@@ -127,26 +109,44 @@ struct EventDetailView: View {
                         let notOneDayEventTime = isAllDay
                         ? "\(event.startDate.toString().hyphenToDot()) - \(event.endDate.toString().hyphenToDot())"
                         : "\(event.startDate.toString().hyphenToDot()) \(startTime) \n- \(event.endDate.toString().hyphenToDot()) \(endTime)"
-                        
+
                         Image(systemName: "clock")
                             .font(.system(size: 11))
                         Text(isOneDayEvent ? oneDayEventTime : notOneDayEventTime)
                             .font(.system(size: 13))
                     }
                 }
-                .foregroundStyle(Color(hex: "8A898E"))
+                .foregroundStyle(DesignSystem.Colors.secondary)
             }
-            
+
             Spacer()
         }
         .padding(20)
-        .background {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(.white.opacity(0.8))
-                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 5)
+        .clipShape(RoundedRectangle(cornerRadius: DesignSystem.Layout.cardRadius))
+        .overlay {
+            RoundedRectangle(cornerRadius: DesignSystem.Layout.cardRadius)
+                .fill(
+                    LinearGradient(
+                        colors: [DesignSystem.Colors.Glass.tintTop, DesignSystem.Colors.Glass.tintBottom],
+                        startPoint: .top, endPoint: .bottom
+                    )
+                )
+                .allowsHitTesting(false)
         }
+        .overlay {
+            RoundedRectangle(cornerRadius: DesignSystem.Layout.cardRadius)
+                .strokeBorder(
+                    LinearGradient(
+                        colors: [DesignSystem.Colors.Glass.borderTop, DesignSystem.Colors.Glass.borderBottom],
+                        startPoint: .top, endPoint: .bottom
+                    ),
+                    lineWidth: 1
+                )
+                .allowsHitTesting(false)
+        }
+        .shadow(color: DesignSystem.Shadow.card, radius: DesignSystem.Shadow.cardRadius, x: 0, y: DesignSystem.Shadow.cardY)
     }
-    
+
     // MARK: - 상세 정보 카드
     
     private func detailInfoCard(event: EKEvent) -> some View {
@@ -167,46 +167,52 @@ struct EventDetailView: View {
             )
         }
         .padding(20)
-        .background {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(.white.opacity(0.8))
-                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 5)
+        .clipShape(RoundedRectangle(cornerRadius: DesignSystem.Layout.cardRadius))
+        .overlay {
+            RoundedRectangle(cornerRadius: DesignSystem.Layout.cardRadius)
+                .fill(
+                    LinearGradient(
+                        colors: [DesignSystem.Colors.Glass.tintTop, DesignSystem.Colors.Glass.tintBottom],
+                        startPoint: .top, endPoint: .bottom
+                    )
+                )
+                .allowsHitTesting(false)
         }
+        .overlay {
+            RoundedRectangle(cornerRadius: DesignSystem.Layout.cardRadius)
+                .strokeBorder(
+                    LinearGradient(
+                        colors: [DesignSystem.Colors.Glass.borderTop, DesignSystem.Colors.Glass.borderBottom],
+                        startPoint: .top, endPoint: .bottom
+                    ),
+                    lineWidth: 1
+                )
+                .allowsHitTesting(false)
+        }
+        .shadow(color: DesignSystem.Shadow.card, radius: DesignSystem.Shadow.cardRadius, x: 0, y: DesignSystem.Shadow.cardY)
     }
-    
+
     private func infoRow(icon: String, title: String, value: String) -> some View {
         HStack(spacing: 12) {
             ZStack {
                 Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(hex: "6B9AFF").opacity(0.15), Color(hex: "8EB4FF").opacity(0.08)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+                    .fill(DesignSystem.Colors.accent.opacity(0.15))
                     .frame(width: 36, height: 36)
-                
+
                 Image(systemName: icon)
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [Color(hex: "6B9AFF"), Color(hex: "8EB4FF")],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+                    .foregroundStyle(DesignSystem.Colors.accent)
             }
             
             Text(title)
                 .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(Color.textBlack)
-            
+                .foregroundStyle(DesignSystem.Colors.primary)
+
             Spacer()
-            
+
             Text(value)
                 .font(.system(size: 15))
-                .foregroundStyle(Color(hex: "8A8A8A"))
+                .foregroundStyle(DesignSystem.Colors.secondary)
                 .multilineTextAlignment(.trailing)
         }
         .padding(.vertical, 12)
@@ -238,7 +244,7 @@ struct EventDetailView: View {
                 }
                 Text(title)
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(Color.textBlack)
+                    .foregroundStyle(DesignSystem.Colors.primary)
                 
                 Spacer()
             }
@@ -266,34 +272,34 @@ struct EventDetailView: View {
                     Text("수정")
                         .font(.system(size: 15, weight: .semibold))
                 }
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [Color(hex: "6B9AFF"), Color(hex: "8EB4FF")],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
+                .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
                 .background {
                     Capsule()
-                        .fill(.white.opacity(0.9))
-                        .shadow(color: Color(hex: "6B9AFF").opacity(0.2), radius: 8, x: 0, y: 4)
-                        .overlay {
-                            Capsule()
-                                .strokeBorder(
-                                    LinearGradient(
-                                        colors: [Color(hex: "6B9AFF").opacity(0.3), Color(hex: "8EB4FF").opacity(0.2)],
-                                        startPoint: .leading,
-                                        endPoint: .trailing
-                                    ),
-                                    lineWidth: 1.5
-                                )
-                        }
+                        .fill(
+                            LinearGradient(
+                                colors: [
+                                    DesignSystem.Colors.accent.opacity(0.6),
+                                    DesignSystem.Colors.accent.opacity(0.3)
+                                ],
+                                startPoint: .top, endPoint: .bottom
+                            )
+                        )
+                }
+                .overlay {
+                    Capsule()
+                        .fill(DesignSystem.Colors.Glass.base)
+                        .allowsHitTesting(false)
+                }
+                .overlay {
+                    Capsule()
+                        .strokeBorder(DesignSystem.Gradient.buttonBorder, lineWidth: 1)
+                        .allowsHitTesting(false)
                 }
             }
             .buttonStyle(ScaleButtonStyle())
-            
+
             // 삭제 버튼
             Button {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
@@ -306,30 +312,23 @@ struct EventDetailView: View {
                     Text("삭제")
                         .font(.system(size: 15, weight: .semibold))
                 }
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [Color(hex: "DD6464"), Color(hex: "FF8080")],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
+                .foregroundStyle(.white.opacity(0.9))
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
                 .background {
                     Capsule()
-                        .fill(.white.opacity(0.9))
-                        .shadow(color: Color(hex: "DD6464").opacity(0.2), radius: 8, x: 0, y: 4)
-                        .overlay {
-                            Capsule()
-                                .strokeBorder(
-                                    LinearGradient(
-                                        colors: [Color(hex: "DD6464").opacity(0.3), Color(hex: "FF8080").opacity(0.2)],
-                                        startPoint: .leading,
-                                        endPoint: .trailing
-                                    ),
-                                    lineWidth: 1.5
-                                )
-                        }
+                        .fill(DesignSystem.Gradient.glassTint)
+                }
+                .overlay {
+                    Capsule()
+                        .strokeBorder(
+                            LinearGradient(
+                                colors: [Color.white.opacity(0.3), Color.white.opacity(0.08)],
+                                startPoint: .top, endPoint: .bottom
+                            ),
+                            lineWidth: 1
+                        )
+                        .allowsHitTesting(false)
                 }
             }
             .buttonStyle(ScaleButtonStyle())
@@ -340,37 +339,38 @@ struct EventDetailView: View {
     
     private var modernAlertView: some View {
         ZStack {
-            Color.black.opacity(0.4)
+            DesignSystem.Colors.Overlay.dimHeavy
                 .ignoresSafeArea()
                 .onTapGesture {
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                         showAlertView = false
                     }
                 }
-            
+
             VStack(spacing: 20) {
                 ZStack {
                     Circle()
-                        .fill(Color.red.opacity(0.1))
+                        .fill(DesignSystem.Colors.holiday.opacity(0.15))
                         .frame(width: 60, height: 60)
-                    
+
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: 28))
-                        .foregroundStyle(Color.red)
+                        .foregroundStyle(DesignSystem.Colors.holiday)
                 }
                 .padding(.top, 8)
-                
+
                 VStack(spacing: 8) {
                     Text("일정 삭제")
                         .font(.system(size: 20, weight: .bold))
-                        .foregroundStyle(Color.textBlack)
-                    
+                        .foregroundStyle(DesignSystem.Colors.primary)
+
                     Text("일정을 삭제하겠습니까?")
                         .font(.system(size: 15))
-                        .foregroundStyle(Color(hex: "8A898E"))
+                        .foregroundStyle(DesignSystem.Colors.secondary)
                 }
-                
+
                 VStack(spacing: 12) {
+                    // 삭제 버튼 (Primary)
                     Button {
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                             EventManager.shared.deleteEvent(withId: eventId)
@@ -380,13 +380,14 @@ struct EventDetailView: View {
                     } label: {
                         Text("삭제")
                             .font(.system(size: 16, weight: .semibold))
-                            .foregroundStyle(.white)
+                            .foregroundStyle(DesignSystem.Colors.background)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 14)
-                            .background(Color.red)
+                            .background(DesignSystem.Colors.holiday)
                             .clipShape(Capsule())
                     }
-                    
+
+                    // 취소 버튼 (Ghost)
                     Button {
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                             showAlertView = false
@@ -394,20 +395,34 @@ struct EventDetailView: View {
                     } label: {
                         Text("취소")
                             .font(.system(size: 16, weight: .medium))
-                            .foregroundStyle(Color(hex: "8A898E"))
+                            .foregroundStyle(DesignSystem.Colors.secondary)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 14)
-                            .background(Color.white)
-                            .clipShape(Capsule())
+                            .background {
+                                Capsule()
+                                    .strokeBorder(DesignSystem.Colors.border, lineWidth: 1.5)
+                            }
                     }
                 }
             }
             .padding(24)
+            .clipShape(RoundedRectangle(cornerRadius: 24))
             .background {
                 RoundedRectangle(cornerRadius: 24)
-                    .fill(.white)
-                    .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 10)
+                    .fill(DesignSystem.Gradient.modalBackground)
+                    .allowsHitTesting(false)
             }
+            .overlay {
+                RoundedRectangle(cornerRadius: 24)
+                    .fill(DesignSystem.Gradient.glassTint)
+                    .allowsHitTesting(false)
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 24)
+                    .strokeBorder(DesignSystem.Gradient.glassBorder, lineWidth: 1)
+                    .allowsHitTesting(false)
+            }
+            .shadow(color: DesignSystem.Shadow.fab, radius: 20, x: 0, y: 10)
             .padding(.horizontal, 40)
             .transition(.scale.combined(with: .opacity))
         }

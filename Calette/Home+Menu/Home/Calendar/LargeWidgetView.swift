@@ -38,7 +38,7 @@ struct LargeWidgetView: View {
                 HStack(spacing: 0) {
                     Text(dateVM.selectedDate.toString().hyphenToDot())
                         .font(.system(size: 21))
-                        .foregroundStyle(Color(hex: "2E2E2E"))
+                        .foregroundStyle(DesignSystem.Colors.primary)
                         .bold()
                         .padding(.horizontal)
                         .contentTransition(.numericText())
@@ -64,14 +64,26 @@ struct LargeWidgetView: View {
                             displayedDate = Date()
                         }
                     } label: {
-                        Image(systemName: "arrow.clockwise")
-                            .frame(width: cellWidth * 0.7, height: cellHeight * 0.7)
-                            .font(.footnote)
-                            .foregroundStyle(Color.white)
-                            .bold()
-                            .background(WidgetTheme(rawValue: calendarSettingVM.themeColor)!.color)
+                        ZStack {
+                            Circle()
+                                .fill(DesignSystem.Gradient.buttonPurple)
+
+                            Circle()
+                                .fill(DesignSystem.Gradient.buttonHighlight)
+                                .allowsHitTesting(false)
+
+                            Circle()
+                                .strokeBorder(DesignSystem.Gradient.buttonBorder, lineWidth: 1)
+                                .allowsHitTesting(false)
+
+                            Image(systemName: "arrow.clockwise")
+                                .font(.system(size: 11, weight: .bold))
+                                .foregroundStyle(.white)
+                        }
+                        .frame(width: cellWidth * 0.72, height: cellHeight * 0.72)
+                        .shadow(color: DesignSystem.Shadow.card, radius: 4, x: 0, y: 3)
+                        .shadow(color: DesignSystem.Shadow.buttonGlow, radius: DesignSystem.Shadow.buttonGlowRadius, x: 0, y: DesignSystem.Shadow.buttonGlowY)
                     }
-                    .clipShape(Circle())
                     .frame(
                         width: 1.0 * cellWidth,
                         height: 1.0 * cellHeight
@@ -96,15 +108,18 @@ struct LargeWidgetView: View {
                     }
                     .frame(height: CGFloat(currentMonthRows) * cellHeight)
                     .tabViewStyle(.page(indexDisplayMode: .never))
+                    .background(ClearPageBackground())
                     .offset(x: hintOffset)
                     .onChange(of: currentPage) { oldValue, newValue in
                         handlePageChange(newValue: newValue)
                     }
-                    
+
                     EventTitleView(cellWidth: cellWidth, cellHeight: cellHeight)
                 }
+                .background(Color.clear)
                 .opacity(contentOpacity)
             }
+            .background(Color.clear)
         }
         .onAppear {
             displayedDate = dateVM.selectedDate

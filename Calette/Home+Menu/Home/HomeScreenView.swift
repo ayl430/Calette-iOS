@@ -37,42 +37,38 @@ struct HomeScreenLayout {
 // MARK: - 배경 뷰
 struct HomeScreenBackground: View {
     var body: some View {
-        ZStack(alignment: .bottom) {
-            Image("imgBackground")
-                .resizable()
-            
-            LinearGradient(
-                colors: [
-                    Color(hex: "FEF9B7").opacity(0.4),
-                    Color(hex: "FFF4D6").opacity(0.4),
-                    Color(hex: "FFE5B4").opacity(0.4)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        }
-        .ignoresSafeArea()
+        Image("imgBgApp01")
+            .resizable()
+            .scaledToFill()
+            .ignoresSafeArea()
     }
 }
 
 // MARK: - 위젯 컨테이너 뷰
 struct WidgetContainer: View {
     let layout: HomeScreenLayout
-    
+
     var body: some View {
         LargeWidgetView()
             .padding()
             .frame(width: layout.widgetSize.width, height: layout.widgetSize.height)
-            .background {
+            .clipShape(RoundedRectangle(cornerRadius: HomeScreenLayout.widgetCornerRadius))
+            .overlay {
                 RoundedRectangle(cornerRadius: HomeScreenLayout.widgetCornerRadius)
-                    .fill(Color(hex: "FFFFFE"))
-                    .shadow(
-                        color: Color.black.opacity(HomeScreenLayout.shadowOpacity),
-                        radius: 10,
-                        x: 0,
-                        y: 5
-                    )
+                    .fill(DesignSystem.Gradient.glassTint)
+                    .allowsHitTesting(false)
             }
+            .overlay {
+                RoundedRectangle(cornerRadius: HomeScreenLayout.widgetCornerRadius)
+                    .strokeBorder(DesignSystem.Gradient.glassBorder, lineWidth: 1)
+                    .allowsHitTesting(false)
+            }
+            .shadow(
+                color: DesignSystem.Shadow.card,
+                radius: DesignSystem.Shadow.cardRadius,
+                x: 0,
+                y: DesignSystem.Shadow.cardY
+            )
     }
 }
 
@@ -99,14 +95,12 @@ struct HomeScreenView: View {
                 safeAreaInsets: geometry.safeAreaInsets
             )
             
-            ZStack() {
-                HomeScreenBackground()
-                
+            ZStack {
                 VStack {
                     WidgetContainer(layout: layout)
-                    
+
                     Spacer()
-                    
+
                     AddEventView(
                         selectedApp: $selectedApp,
                         selectedIndex: $selectedIndex,
@@ -116,7 +110,7 @@ struct HomeScreenView: View {
                     )
                     .padding(.horizontal, layout.horizontalPadding)
                     .padding(.bottom, layout.iconSpacing / 2)
-                    
+
                     DockView(
                         selectedApp: $selectedApp,
                         selectedIndex: $selectedIndex,
@@ -125,8 +119,8 @@ struct HomeScreenView: View {
                     )
                 }
                 .padding(.top)
-                .padding(.bottom, 2)
-                
+                .padding(.bottom, 20)
+
                 if showAlertView {
                     AlertView(
                         message: "일정 추가를 위해 캘린더앱 접근 권한이 필요합니다",
@@ -139,7 +133,7 @@ struct HomeScreenView: View {
                     )
                 }
             }
-            .frame(width: layout.screenSize.width, height: layout.screenSize.height)
+            .background { HomeScreenBackground() }
         }
         .sheet(isPresented: $showFaqView) {
             FAQSheetView {

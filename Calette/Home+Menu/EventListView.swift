@@ -17,30 +17,30 @@ struct EventListView: View {
     @State var showAddSheet: Bool = false
     
     var body: some View {
-        ZStack {
-            LinearGradient(
-                colors: [Color(hex: "FEF9B7"), Color(hex: "FFF4D6"), Color(hex: "FFE5B4")],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
-            
-            ScrollView {
-                VStack(spacing: 20) {
-                    dateHeaderCard
-                        .padding(.horizontal)
-                        .padding(.top)
-                    
-                    if EventManager.shared.fetchAllEvents(date: dateVM.selectedDate).count == 0 {
-                        emptyStateView
-                    } else {
-                        eventsListView
-                    }
-                    
-                    addEventButton
-                        .padding(.bottom, 30)
+        ScrollView {
+            VStack(spacing: 20) {
+                dateHeaderCard
+                    .padding(.horizontal)
+
+                if EventManager.shared.fetchAllEvents(date: dateVM.selectedDate).count == 0 {
+                    emptyStateView
+                } else {
+                    eventsListView
                 }
+
+                addEventButton
             }
+            .padding(.top, 20)
+            .padding(.bottom, 40)
+        }
+        .background {
+            ZStack {
+                Image("imgBgApp01")
+                    .resizable()
+                    .scaledToFill()
+                DesignSystem.Colors.Overlay.dim
+            }
+            .ignoresSafeArea()
         }
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -56,13 +56,7 @@ struct EventListView: View {
                         Text("홈")
                             .font(.system(size: 16, weight: .medium))
                     }
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [Color(hex: "DD6464"), Color(hex: "FF8080")],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
+                    .foregroundStyle(DesignSystem.Colors.accent)
                 }
             }
         }
@@ -78,68 +72,68 @@ struct EventListView: View {
             // 양력 날짜
             Text(dateVM.selectedDate.toString().hyphenToDot())
                 .font(.system(size: 32, weight: .bold, design: .rounded))
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [Color(hex: "DD6464"), Color(hex: "FF8080")],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
+                .foregroundStyle(DesignSystem.Colors.primary)
 
             // 음력 날짜
             HStack(spacing: 6) {
                 Image(systemName: "moon.stars.fill")
                     .font(.system(size: 14))
-                    .foregroundStyle(Color(hex: "9C9E9E"))
+                    .foregroundStyle(DesignSystem.Colors.secondary)
                 Text(dateVM.selectedDate.lunarDate.toStringMdd())
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(Color(hex: "9C9E9E"))
+                    .foregroundStyle(DesignSystem.Colors.secondary)
             }
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 24)
-        .background {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(.white.opacity(0.7))
-                .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 5)
+        .clipShape(RoundedRectangle(cornerRadius: DesignSystem.Layout.cardRadius))
+        .overlay {
+            RoundedRectangle(cornerRadius: DesignSystem.Layout.cardRadius)
+                .fill(
+                    LinearGradient(
+                        colors: [DesignSystem.Colors.Glass.tintTop, DesignSystem.Colors.Glass.tintBottom],
+                        startPoint: .top, endPoint: .bottom
+                    )
+                )
+                .allowsHitTesting(false)
         }
+        .overlay {
+            RoundedRectangle(cornerRadius: DesignSystem.Layout.cardRadius)
+                .strokeBorder(
+                    LinearGradient(
+                        colors: [DesignSystem.Colors.Glass.borderTop, DesignSystem.Colors.Glass.borderBottom],
+                        startPoint: .top, endPoint: .bottom
+                    ),
+                    lineWidth: 1
+                )
+                .allowsHitTesting(false)
+        }
+        .shadow(color: DesignSystem.Shadow.card, radius: DesignSystem.Shadow.cardRadius, x: 0, y: DesignSystem.Shadow.cardY)
     }
-    
+
     // MARK: - 빈 상태 뷰
     
     private var emptyStateView: some View {
         VStack(spacing: 20) {
             ZStack {
                 Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(hex: "FFE5B4").opacity(0.5), Color.white.opacity(0.3)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+                    .fill(DesignSystem.Colors.surface.opacity(0.6))
                     .frame(width: 120, height: 120)
-                
+
                 Image(systemName: "calendar.badge.plus")
                     .font(.system(size: 50))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [Color(hex: "DD6464"), Color(hex: "FF8080")],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+                    .foregroundStyle(DesignSystem.Colors.accent)
             }
             .padding(.top, 40)
-            
+
             VStack(spacing: 8) {
                 Text("등록된 일정이 없습니다")
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(Color.textBlack)
-                
+                    .foregroundStyle(DesignSystem.Colors.primary)
+
                 Text("새로운 일정을 추가해보세요")
                     .font(.system(size: 14))
-                    .foregroundStyle(Color(hex: "8A898E"))
+                    .foregroundStyle(DesignSystem.Colors.secondary)
             }
         }
         .frame(maxWidth: .infinity)
@@ -164,16 +158,10 @@ struct EventListView: View {
             HStack {
                 Image(systemName: "flag.fill")
                     .font(.system(size: 14))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [Color(hex: "FF6B6B"), Color(hex: "FF8E8E")],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
+                    .foregroundStyle(DesignSystem.Colors.holiday)
                 Text("공휴일")
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(Color.textBlack)
+                    .foregroundStyle(DesignSystem.Colors.primary)
             }
             .padding(.leading, 4)
             
@@ -182,9 +170,7 @@ struct EventListView: View {
                 eventCard(
                     title: holiday.title ?? "공휴일",
                     time: "하루 종일",
-                    colorStart: Color(hex: "FF6B6B"),
-                    colorEnd: Color(hex: "FF8E8E"),
-                    icon: "flag.fill",
+                    accentColor: DesignSystem.Colors.holiday,
                     destination: nil
                 )
             }
@@ -197,16 +183,10 @@ struct EventListView: View {
             HStack {
                 Image(systemName: "calendar")
                     .font(.system(size: 14))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [Color(hex: "6B9AFF"), Color(hex: "8EB4FF")],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
+                    .foregroundStyle(DesignSystem.Colors.accent)
                 Text("나의 일정")
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(Color.textBlack)
+                    .foregroundStyle(DesignSystem.Colors.primary)
             }
             .padding(.leading, 4)
             
@@ -229,18 +209,14 @@ struct EventListView: View {
                         eventCard(
                             title: eventTitle,
                             time: isOneDayEvent ? oneDayEventTime : notOneDayEventTime,
-                            colorStart: Color(hex: "6B9AFF"),
-                            colorEnd: Color(hex: "8EB4FF"),
-                            icon: "calendar",
+                            accentColor: DesignSystem.Colors.accent,
                             destination: AnyView(EventDetailView(eventId: eventId))
                         )
                     } else {
                         eventCard(
                             title: eventTitle,
                             time: isOneDayEvent ? oneDayEventTime : notOneDayEventTime,
-                            colorStart: Color(hex: "6B9AFF"),
-                            colorEnd: Color(hex: "8EB4FF"),
-                            icon: "calendar",
+                            accentColor: DesignSystem.Colors.accent,
                             destination: nil
                         )
                     }
@@ -252,52 +228,45 @@ struct EventListView: View {
     // MARK: - 나의 일정 빈 상태
     
     private var emptyMyEventsView: some View {
-        VStack(spacing: 12) {
-            HStack(spacing: 12) {
-                Image(systemName: "calendar.badge.exclamationmark")
-                    .font(.system(size: 24))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [Color(hex: "6B9AFF").opacity(0.5), Color(hex: "8EB4FF").opacity(0.5)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("등록된 일정이 없습니다")
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundStyle(Color.textBlack)
-                    
-                    Text("일정을 추가해보세요")
-                        .font(.system(size: 13))
-                        .foregroundStyle(Color(hex: "8A898E"))
-                }
-                
-                Spacer()
+        HStack(spacing: 12) {
+            Image(systemName: "calendar.badge.exclamationmark")
+                .font(.system(size: 24))
+                .foregroundStyle(DesignSystem.Colors.accent.opacity(0.6))
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("등록된 일정이 없습니다")
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundStyle(DesignSystem.Colors.primary)
+
+                Text("일정을 추가해보세요")
+                    .font(.system(size: 13))
+                    .foregroundStyle(DesignSystem.Colors.secondary)
             }
-            .padding(16)
-            .background {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(hex: "6B9AFF").opacity(0.05), Color(hex: "8EB4FF").opacity(0.03)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
+
+            Spacer()
+        }
+        .padding(DesignSystem.Layout.cardPaddingV)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .overlay {
+            RoundedRectangle(cornerRadius: 16)
+                .fill(
+                    LinearGradient(
+                        colors: [DesignSystem.Colors.Glass.tintTop, DesignSystem.Colors.Glass.tintBottom],
+                        startPoint: .top, endPoint: .bottom
                     )
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 16)
-                            .strokeBorder(
-                                LinearGradient(
-                                    colors: [Color(hex: "6B9AFF").opacity(0.2), Color(hex: "8EB4FF").opacity(0.1)],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                ),
-                                lineWidth: 1
-                            )
-                    }
-            }
+                )
+                .allowsHitTesting(false)
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: 16)
+                .strokeBorder(
+                    LinearGradient(
+                        colors: [DesignSystem.Colors.Glass.borderTop, DesignSystem.Colors.Glass.borderBottom],
+                        startPoint: .top, endPoint: .bottom
+                    ),
+                    lineWidth: 1
+                )
+                .allowsHitTesting(false)
         }
     }
     
@@ -307,64 +276,68 @@ struct EventListView: View {
     private func eventCard(
         title: String,
         time: String,
-        colorStart: Color,
-        colorEnd: Color,
-        icon: String,
+        accentColor: Color,
         destination: AnyView?
     ) -> some View {
-        let content = HStack(spacing: 16) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(
-                        LinearGradient(
-                            colors: [colorStart.opacity(0.15), colorEnd.opacity(0.08)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 50, height: 50)
-                
-                Image(systemName: icon)
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [colorStart, colorEnd],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-            }
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(Color.textBlack)
-                    .lineLimit(1)
-                
-                HStack(spacing: 4) {
-                    Image(systemName: "clock")
-                        .font(.system(size: 11))
-                    Text(time)
-                        .font(.system(size: 13))
+        let content = HStack(spacing: 0) {
+            // 좌측 accent 바
+            Rectangle()
+                .fill(accentColor)
+                .frame(width: DesignSystem.Layout.accentBarWidth)
+
+            // 내용
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title)
+                        .font(DesignSystem.Typography.body1())
+                        .fontWeight(.semibold)
+                        .foregroundStyle(DesignSystem.Colors.primary)
+                        .lineLimit(1)
+
+                    HStack(spacing: 4) {
+                        Image(systemName: "clock")
+                            .font(.system(size: 11))
+                        Text(time)
+                            .font(DesignSystem.Typography.body2())
+                    }
+                    .foregroundStyle(DesignSystem.Colors.secondary)
                 }
-                .foregroundStyle(Color(hex: "8A898E"))
+
+                Spacer()
+
+                if destination != nil {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(DesignSystem.Colors.secondary.opacity(0.6))
+                }
             }
-            
-            Spacer()
-            
-            if destination != nil {
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(Color(hex: "D0D0D0"))
-            }
+            .padding(.horizontal, DesignSystem.Layout.cardPaddingH)
+            .padding(.vertical, DesignSystem.Layout.cardPaddingV)
         }
-        .padding(16)
-        .background {
-            RoundedRectangle(cornerRadius: 16)
-                .fill(.white.opacity(0.8))
-                .shadow(color: Color.black.opacity(0.04), radius: 8, x: 0, y: 4)
+        .clipShape(RoundedRectangle(cornerRadius: DesignSystem.Layout.cardRadius))
+        .overlay {
+            RoundedRectangle(cornerRadius: DesignSystem.Layout.cardRadius)
+                .fill(
+                    LinearGradient(
+                        colors: [DesignSystem.Colors.Glass.tintTop, DesignSystem.Colors.Glass.tintBottom],
+                        startPoint: .top, endPoint: .bottom
+                    )
+                )
+                .allowsHitTesting(false)
         }
-        
+        .overlay {
+            RoundedRectangle(cornerRadius: DesignSystem.Layout.cardRadius)
+                .strokeBorder(
+                    LinearGradient(
+                        colors: [DesignSystem.Colors.Glass.borderTop, DesignSystem.Colors.Glass.borderBottom],
+                        startPoint: .top, endPoint: .bottom
+                    ),
+                    lineWidth: 1
+                )
+                .allowsHitTesting(false)
+        }
+        .shadow(color: DesignSystem.Shadow.card, radius: DesignSystem.Shadow.cardRadius, x: 0, y: DesignSystem.Shadow.cardY)
+
         if let dest = destination {
             NavigationLink(destination: dest) {
                 content
@@ -389,31 +362,32 @@ struct EventListView: View {
                 Text("일정 추가")
                     .font(.system(size: 15, weight: .semibold))
             }
-            .foregroundStyle(
-                LinearGradient(
-                    colors: [Color(hex: "DD6464"), Color(hex: "FF8080")],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-            )
+            .foregroundStyle(.white)
             .padding(.horizontal, 24)
             .padding(.vertical, 12)
             .background {
                 Capsule()
-                    .fill(.white.opacity(0.9))
-                    .shadow(color: Color(hex: "DD6464").opacity(0.2), radius: 8, x: 0, y: 4)
-                    .overlay {
-                        Capsule()
-                            .strokeBorder(
-                                LinearGradient(
-                                    colors: [Color(hex: "DD6464").opacity(0.3), Color(hex: "FF8080").opacity(0.2)],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                ),
-                                lineWidth: 1.5
-                            )
-                    }
+                    .fill(
+                        LinearGradient(
+                            colors: [
+                                DesignSystem.Colors.accent.opacity(0.7),
+                                DesignSystem.Colors.accent.opacity(0.4)
+                            ],
+                            startPoint: .top, endPoint: .bottom
+                        )
+                    )
             }
+            .overlay {
+                Capsule()
+                    .fill(DesignSystem.Colors.Glass.tintTop)
+                    .allowsHitTesting(false)
+            }
+            .overlay {
+                Capsule()
+                    .strokeBorder(DesignSystem.Gradient.buttonBorder, lineWidth: 1)
+                    .allowsHitTesting(false)
+            }
+            .shadow(color: DesignSystem.Colors.accent.opacity(0.3), radius: 12, x: 0, y: 4)
         }
         .buttonStyle(ScaleButtonStyle())
         .padding(.horizontal)

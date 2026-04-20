@@ -29,23 +29,33 @@ struct WidgetEventTitleView: View {
             if eventCount == 0 {
                 noEventView(lines: maxEventLines)
             } else {
-                let eventLines = eventCount == 1 ? 1 : (maxEventLines == 1 ? 1 : 2)
-                let emptyLines = maxEventLines - eventLines
+                let availableEvents = min(eventCount, 2) // DayEventInfo는 최대 2개 보유
+                let hasOverEvent = eventCount > availableEvents
+                let visibleEventCount = min(availableEvents, maxEventLines)
+                let clearLineCount = maxEventLines - visibleEventCount
 
                 if let info = currentDateEventInfo {
                     // 첫 번째 이벤트
-                    if let firstTitle = info.firstEventTitle {
-                        eventRow(title: firstTitle, isHoliday: info.firstEventIsHoliday, showPlus: false)
+                    if visibleEventCount >= 1, let firstTitle = info.firstEventTitle {
+                        eventRow(
+                            title: firstTitle,
+                            isHoliday: info.firstEventIsHoliday,
+                            showPlus: hasOverEvent && visibleEventCount == 1
+                        )
                     }
 
                     // 두 번째 이벤트
-                    if eventLines >= 2, let secondTitle = info.secondEventTitle {
-                        eventRow(title: secondTitle, isHoliday: info.secondEventIsHoliday, showPlus: eventCount > 2)
+                    if visibleEventCount >= 2, let secondTitle = info.secondEventTitle {
+                        eventRow(
+                            title: secondTitle,
+                            isHoliday: info.secondEventIsHoliday,
+                            showPlus: hasOverEvent
+                        )
                     }
                 }
 
-                if emptyLines != 0 {
-                    clearView(lines: emptyLines)
+                if clearLineCount > 0 {
+                    clearView(lines: clearLineCount)
                 }
             }
         }
@@ -55,7 +65,7 @@ struct WidgetEventTitleView: View {
     private func eventRow(title: String, isHoliday: Bool, showPlus: Bool) -> some View {
         HStack() {
             Rectangle()
-                .fill(isHoliday ? Color(hex: "FF7A6B") : Color(hex: "6A8FE8"))
+                .fill(isHoliday ? DesignSystem.Colors.EventBar.holiday : DesignSystem.Colors.EventBar.normal)
                 .frame(width: 2, height: cellHeight * 0.3)
                 .padding(.leading, 10)
 
@@ -105,9 +115,9 @@ struct WidgetEventTitleView: View {
                 )
             
             HStack {
-                Image(systemName: "tree")
+                Image(systemName: "sparkles")
                     .frame(width: 0.5 * cellWidth, height: 0.5 * cellHeight)
-                    .foregroundStyle(Color.gray)
+                    .foregroundStyle(DesignSystem.Colors.primary)
                     .padding(.leading, 15)
                 Spacer()
             }

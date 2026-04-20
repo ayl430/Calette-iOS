@@ -10,9 +10,12 @@ import SwiftUI
 struct EventMarkingView: View {
     var dateDate: Date
     var eventDays: [Date]
-    
+
     // 위젯에서만 사용
     var dayEventInfo: DayEventInfo?
+
+    // + 기호 색상 (날짜 숫자 색과 동일하게 전달, 기본값: primary)
+    var plusColor: Color = DesignSystem.Colors.primary
 
     private var hasEvent: Bool {
         if let info = dayEventInfo {
@@ -37,7 +40,7 @@ struct EventMarkingView: View {
 
     var body: some View {
         if hasEvent {
-            EventMarkingSubView(isHoliday: isHoliday, moreThanTwo: eventCount >= 2)
+            EventMarkingSubView(isHoliday: isHoliday, moreThanTwo: eventCount >= 2, plusColor: plusColor)
         } else {
             Circle()
                 .fill(Color.clear)
@@ -50,18 +53,21 @@ struct EventMarkingView: View {
 struct EventMarkingSubView: View {
     let isHoliday: Bool
     let moreThanTwo: Bool
-    
+    var plusColor: Color = DesignSystem.Colors.primary
+
     var body: some View {
         HStack(spacing: 2) {
             Circle()
-                .fill(isHoliday ? Color.red : Color.blue)
+                .fill(isHoliday ? DesignSystem.Colors.holiday : DesignSystem.Colors.accent)
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 3, height: 3)
             if moreThanTwo {
                 ZStack {
                     Rectangle()
+                        .fill(plusColor)
                         .frame(width: 3, height: 1, alignment: .center)
                     Rectangle()
+                        .fill(plusColor)
                         .frame(width: 1, height: 3, alignment: .center)
                 }
             }

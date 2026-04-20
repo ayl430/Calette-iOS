@@ -71,7 +71,8 @@ enum AppIconType: CaseIterable {
             return "imgDockIcon4"
             
         case .addEvent:
-            return "imgButtonPlus"
+//            return "imgButtonPlus"
+            return "imgButtonPlusW"
         }
     }
     

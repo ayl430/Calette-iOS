@@ -15,7 +15,7 @@ struct AlertView: View {
     
     var body: some View {
         ZStack {
-            Color.black.opacity(0.4)
+            DesignSystem.Colors.Overlay.dim
                 .ignoresSafeArea()
                 .onTapGesture {
                     showAlertView.toggle()
@@ -23,28 +23,28 @@ struct AlertView: View {
             VStack(spacing: 20) {
                 Text(message)
                     .font(.subheadline)
-                    .foregroundStyle(Color.textBlack)
+                    .foregroundStyle(DesignSystem.Colors.primary)
                     .multilineTextAlignment(.center)
                     .padding(.top)
                     .padding(.horizontal)
-                
+
                 HStack {
                     Button {
                         showAlertView.toggle()
                     } label: {
                         Text("취소")
-                            .foregroundStyle(Color(hex: "686868"))
+                            .foregroundStyle(DesignSystem.Colors.secondary)
                             .bold()
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
-                    
+
                     Button {
                         showAlertView.toggle()
                         tapped()
                     } label: {
                         Text("확인")
-                            .foregroundStyle(Color.caletteDefault)
+                            .foregroundStyle(DesignSystem.Colors.accent)
                             .bold()
                     }
                     .frame(maxWidth: .infinity)
@@ -54,8 +54,12 @@ struct AlertView: View {
             }
             .padding()
             .frame(width: UIScreen.main.bounds.width * 0.75)
-            .background(.white)
+            .background(DesignSystem.Colors.surface)
             .cornerRadius(20)
+            .overlay {
+                RoundedRectangle(cornerRadius: 20)
+                    .strokeBorder(DesignSystem.Colors.border, lineWidth: 1)
+            }
             .shadow(radius: 10)
         }
     }

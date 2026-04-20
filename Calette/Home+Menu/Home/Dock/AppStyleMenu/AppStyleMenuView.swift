@@ -15,14 +15,28 @@ struct AppIconView: View {
     
     var body: some View {
         VStack(spacing: 4) {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white.opacity(0.9))
-                .frame(width: size, height: size)
-                .overlay(
-                    Image(icon.image)
-                        .resizable()
-                        .frame(width: size * 0.65, height: size * 0.65)
-                )
+            ZStack {
+                // 글래스 베이스
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(DesignSystem.Colors.Glass.base)
+
+                // 상단 하이라이트
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(DesignSystem.Gradient.buttonHighlight)
+                    .allowsHitTesting(false)
+
+                // 아이콘 이미지
+                Image(icon.image)
+                    .resizable()
+                    .frame(width: size * 0.6, height: size * 0.6)
+
+                // 그라데이션 보더
+                RoundedRectangle(cornerRadius: 12)
+                    .strokeBorder(DesignSystem.Gradient.glassBorder, lineWidth: 1)
+                    .allowsHitTesting(false)
+            }
+            .frame(width: size, height: size)
+            .shadow(color: DesignSystem.Shadow.card, radius: 6, x: 0, y: 3)
         }
         .onTapGesture {
             tapped()

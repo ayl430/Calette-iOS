@@ -38,10 +38,17 @@ struct DockView: View {
             }
         }
         .padding()
-        .background(
-            VisualEffectBlur(blurStyle: .systemUltraThinMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: HomeScreenLayout.dockCornerRadius))
-        )
+        .clipShape(RoundedRectangle(cornerRadius: HomeScreenLayout.dockCornerRadius))
+        .overlay {
+            RoundedRectangle(cornerRadius: HomeScreenLayout.dockCornerRadius)
+                .fill(DesignSystem.Gradient.glassTint)
+                .allowsHitTesting(false)
+        }
+        .overlay {
+            RoundedRectangle(cornerRadius: HomeScreenLayout.dockCornerRadius)
+                .strokeBorder(DesignSystem.Gradient.glassBorder, lineWidth: 1)
+                .allowsHitTesting(false)
+        }
         .shadow(
             color: Color.black.opacity(HomeScreenLayout.dockShadowOpacity),
             radius: 8,

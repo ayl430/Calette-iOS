@@ -27,27 +27,31 @@ struct EventTitleView: View {
             if eventCount == 0 {
                 noEventView(lines: maxEventLines)
             } else {
-                let eventLines = eventCount == 1 ? 1 : (maxEventLines == 1 ? 1 : 2)
-                let emptyLines = maxEventLines - eventLines
-                ForEach(0..<eventLines, id: \.self) { index in
+                let hasOverEvent = eventCount > maxEventLines
+                let visibleEventCount = hasOverEvent ? maxEventLines : eventCount
+                let clearLineCount = maxEventLines - visibleEventCount
+                
+                ForEach(0..<visibleEventCount, id: \.self) { index in
                     ZStack {
                         HStack() {
                             Rectangle()
-                                .fill(events[index].calendar.title == "대한민국 공휴일" ? Color(hex: "FF7A6B") : Color(hex: "6A8FE8"))
+                                .fill(events[index].calendar.title == "대한민국 공휴일" ? DesignSystem.Colors.EventBar.holiday : DesignSystem.Colors.EventBar.normal)
                                 .frame(width: 2, height: cellHeight * 0.3)
                                 .padding(.leading, 10)
 
                             Text(events[index].title ?? "")
                                 .font(.system(size: 13))
-                                .foregroundStyle(Color(hex: "545354"))
+                                .foregroundStyle(DesignSystem.Colors.secondary)
                                 .padding(.leading, 10)
                             Spacer()
-                            if eventCount > 2 && index == 1 {
+                            if hasOverEvent && index == maxEventLines - 1 {
                                 ZStack {
                                     Rectangle()
-                                        .frame(width: 5, height: 1, alignment: .center)
+                                        .fill(DesignSystem.Colors.secondary)
+                                        .frame(width: 8, height: 2, alignment: .center)
                                     Rectangle()
-                                        .frame(width: 1, height: 5, alignment: .center)
+                                        .fill(DesignSystem.Colors.secondary)
+                                        .frame(width: 2, height: 8, alignment: .center)
                                 }
                                 .padding(.trailing, 10)
                             }
@@ -66,8 +70,8 @@ struct EventTitleView: View {
                     )
                 }
                 
-                if emptyLines != 0 {
-                    clearView(lines: emptyLines)
+                if clearLineCount > 0 {
+                    clearView(lines: clearLineCount)
                 }
             }
         }
@@ -98,9 +102,9 @@ struct EventTitleView: View {
                 )
             
             HStack {
-                Image(systemName: "tree")
+                Image(systemName: "sparkles")
                     .frame(width: 0.5 * cellWidth, height: 0.5 * cellHeight)
-                    .foregroundStyle(Color.gray)
+                    .foregroundStyle(DesignSystem.Colors.primary)
                     .padding(.leading, 15)
                 Spacer()
             }

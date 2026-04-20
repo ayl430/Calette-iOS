@@ -33,12 +33,13 @@ struct FAQSheetView: View {
                 }) {
                     Text("닫기")
                         .font(.headline)
-                        .foregroundStyle(Color(hex: "5E5E5E"))
+                        .foregroundStyle(DesignSystem.Colors.secondary)
                         .padding()
                 }
                 Spacer()
                 Text("FAQ")
                     .font(.headline)
+                    .foregroundStyle(DesignSystem.Colors.primary)
                     .padding()
                 Spacer()
                 Button(action: {
@@ -46,7 +47,7 @@ struct FAQSheetView: View {
                 }) {
                     Text("닫기")
                         .font(.headline)
-                        .foregroundStyle(Color.white)
+                        .foregroundStyle(Color.clear)
                         .padding()
                 }
             }
@@ -60,10 +61,10 @@ struct FAQSheetView: View {
                     FAQItemView(faqItem: FAQList.lunar)
                     HStack {
                         Text("버전 정보")
-                            .foregroundStyle(Color.textBlack)
+                            .foregroundStyle(DesignSystem.Colors.primary)
                         Spacer()
                         Text("v\(AppData.version)")
-                            .foregroundStyle(Color.textBlack)
+                            .foregroundStyle(DesignSystem.Colors.primary)
                     }
                     .font(.callout)
                     .bold()
@@ -72,7 +73,7 @@ struct FAQSheetView: View {
                 .padding(.horizontal)
             }
         }
-        .background(Color.white)
+        .background(DesignSystem.Colors.background)
     }
 }
 
@@ -90,7 +91,7 @@ struct FAQItemView: View {
                 HStack {
                     Text(faqItem.title)
                         .font(.callout)
-                        .foregroundStyle(Color.textBlack)
+                        .foregroundStyle(DesignSystem.Colors.primary)
                         .bold()
                     
                     Spacer()
@@ -98,7 +99,7 @@ struct FAQItemView: View {
                     Image(systemName: "chevron.up")
                         .rotationEffect(.degrees(isShowing ? 180 : 0))
                         .animation(.easeInOut(duration: 0.25), value: isShowing)
-                        .foregroundColor(.black)
+                        .foregroundColor(DesignSystem.Colors.primary)
                         .bold()
                 }
                 .contentShape(Rectangle())
@@ -113,7 +114,7 @@ struct FAQItemView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(faqItem.content)
                         .font(.subheadline)
-                        .foregroundStyle(Color(hex: "5E5E5E"))
+                        .foregroundStyle(DesignSystem.Colors.secondary)
                         .padding(.top, 4)
                         .padding(.horizontal)
                     if faqItem.index == 3 {
@@ -122,7 +123,7 @@ struct FAQItemView: View {
                                 Text("한국천문연구원 이동하기")
                             }
                             .font(.footnote)
-                            .foregroundStyle(Color.caletteDefault)
+                            .foregroundStyle(DesignSystem.Colors.accent)
                             .underline()
                             .padding(.top, 4)
                             .padding(.horizontal)
@@ -134,7 +135,7 @@ struct FAQItemView: View {
                 .animation(.easeInOut(duration: 0.25), value: isShowing)
             }
         }
-        .foregroundStyle(Color.black)
+        .foregroundStyle(DesignSystem.Colors.primary)
         .padding()
     }
 }

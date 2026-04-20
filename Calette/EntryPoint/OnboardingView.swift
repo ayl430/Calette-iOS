@@ -38,10 +38,10 @@ struct OnboardingView: View {
                         } label: {
                             Text(currentStep == 1 ? "다음 →" : "확인 →")
                                 .font(.headline)
-                                .foregroundStyle(Color(hex: "2E2E2E"))
+                                .foregroundStyle(DesignSystem.Colors.background)
                                 .padding(.horizontal, 20)
                                 .padding(.vertical, 10)
-                                .background(Color.white)
+                                .background(DesignSystem.Colors.accent)
                                 .clipShape(Capsule())
                         }
                         .padding(.trailing, layout.iconSpacing)

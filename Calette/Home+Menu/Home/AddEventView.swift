@@ -53,16 +53,29 @@ struct AddEventItem: View {
     
     var body: some View {
         VStack(spacing: 4) {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.white.opacity(0.9))
-                .frame(width: size * 0.8, height: size * 0.8)
-                .clipShape(.circle)
-                .shadow(color: Color.black.opacity(0.15),radius: 10)
-                .overlay(
-                    Image(icon.image)
-                        .resizable()
-                        .frame(width: size * 0.4, height: size * 0.4)
-                )
+            ZStack {
+                // Base: 짙은 남보라 그라데이션
+                Circle()
+                    .fill(DesignSystem.Gradient.buttonPurple)
+
+                // 상단 하이라이트 빛 반사
+                Circle()
+                    .fill(DesignSystem.Gradient.buttonHighlight)
+                    .allowsHitTesting(false)
+
+                // 테두리: 상단 밝고 하단 어두운 그라데이션
+                Circle()
+                    .strokeBorder(DesignSystem.Gradient.buttonBorder, lineWidth: 1)
+                    .allowsHitTesting(false)
+
+                // + 아이콘
+                Image(icon.image)
+                    .resizable()
+                    .frame(width: size * 0.4, height: size * 0.4)
+            }
+            .frame(width: size * 0.8, height: size * 0.8)
+            .shadow(color: DesignSystem.Shadow.fab, radius: 8, x: 0, y: 6)
+            .shadow(color: DesignSystem.Shadow.buttonGlow, radius: 12, x: 0, y: 2)
         }
         .onTapGesture {
             tapped()

@@ -95,6 +95,7 @@
 				CalendarSettingsViewModel.swift,
 				Coordinator.swift,
 				DateViewModel.swift,
+				DesignSystem.swift,
 				EventManager.swift,
 				View/EmptyCalendarDateView.swift,
 				View/EventMarkingView.swift,
