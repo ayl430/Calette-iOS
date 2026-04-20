@@ -9,9 +9,10 @@ import SwiftUI
 
 struct OnboardingView: View {
     @Binding var isOnboarding: Bool
-    
+
     @State private var currentStep: Int = 1
     var onComplete: () -> Void
+    @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
     
     var body: some View {
         GeometryReader { geometry in
@@ -41,7 +42,7 @@ struct OnboardingView: View {
                                 .foregroundStyle(DesignSystem.Colors.background)
                                 .padding(.horizontal, 20)
                                 .padding(.vertical, 10)
-                                .background(DesignSystem.Colors.accent)
+                                .background(calendarSettingVM.accentColor)
                                 .clipShape(Capsule())
                         }
                         .padding(.trailing, layout.iconSpacing)

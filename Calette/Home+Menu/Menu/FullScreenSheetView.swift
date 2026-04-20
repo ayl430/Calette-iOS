@@ -327,7 +327,7 @@ struct LunarDateOptionView: View {
     
     var body: some View {
         Toggle("테마 적용", isOn: $calendarSettingVM.isLunarCalendar)
-            .tint(DesignSystem.Colors.accent)
+            .tint(calendarSettingVM.accentColor)
             .labelsHidden()
             .fixedSize()
             .scaleEffect(0.8)

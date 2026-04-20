@@ -30,7 +30,7 @@ struct CalendarDateView: View {
 
     private var dateTextColor: Color {
         if isSelected { return DesignSystem.Colors.background }
-        if isSunday   { return DesignSystem.Colors.accent }
+        if isSunday   { return calendarSettingVM.accentColor }
         return DesignSystem.Colors.primary
     }
 
@@ -59,7 +59,7 @@ struct CalendarDateView: View {
                     .font(.system(size: 14, weight: hasEvent ? .semibold : .light))
                     .foregroundStyle(dateTextColor)
 
-                EventMarkingView(dateDate: dateDate, eventDays: dateVM.eventDays, plusColor: dateTextColor)
+                EventMarkingView(dateDate: dateDate, eventDays: dateVM.eventDays, plusColor: dateTextColor, accentColor: calendarSettingVM.accentColor)
                     .padding(.bottom, 2)
 
                 Text("\(dateDate.lunarDate.toStringMdd())")

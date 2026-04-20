@@ -12,7 +12,8 @@ struct AlertView: View {
     let tapped: () -> Void
     
     @Binding var showAlertView: Bool
-    
+    @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
+
     var body: some View {
         ZStack {
             DesignSystem.Colors.Overlay.dim
@@ -44,7 +45,7 @@ struct AlertView: View {
                         tapped()
                     } label: {
                         Text("확인")
-                            .foregroundStyle(DesignSystem.Colors.accent)
+                            .foregroundStyle(calendarSettingVM.accentColor)
                             .bold()
                     }
                     .frame(maxWidth: .infinity)

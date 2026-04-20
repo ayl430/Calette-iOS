@@ -81,12 +81,12 @@ enum DesignSystem {
             static let softPeach     = Color(hex: "F2C6A0")
             static let mintGreen     = Color(hex: "9ED8C3")
             static let mutedCoral    = Color(hex: "E8A3A3")
-            static let deepPurple    = Color(hex: "6C5CE7")
-            static let midnightBase  = Color(hex: "0D1117")
+            static let slateSilver   = Color(hex: "747D88")
+            static let iceCyan       = Color(hex: "A2D2FF")
 
             static let all: [Color] = [
                 dustyLavender, softPeach, mintGreen,
-                mutedCoral, deepPurple, midnightBase
+                mutedCoral, slateSilver, iceCyan
             ]
         }
     }

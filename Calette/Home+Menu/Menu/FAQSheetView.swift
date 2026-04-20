@@ -80,6 +80,7 @@ struct FAQSheetView: View {
 struct FAQItemView: View {
     @State var isShowing: Bool = false
     let faqItem: FAQItem
+    @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -123,7 +124,7 @@ struct FAQItemView: View {
                                 Text("한국천문연구원 이동하기")
                             }
                             .font(.footnote)
-                            .foregroundStyle(DesignSystem.Colors.accent)
+                            .foregroundStyle(calendarSettingVM.accentColor)
                             .underline()
                             .padding(.top, 4)
                             .padding(.horizontal)

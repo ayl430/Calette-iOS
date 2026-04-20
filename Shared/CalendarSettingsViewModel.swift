@@ -24,6 +24,10 @@ class CalendarSettingsViewModel: ObservableObject  {
     var currentTheme: WidgetTheme {
         WidgetTheme(rawValue: themeColor) ?? .dustyLavender
     }
+
+    var accentColor: Color {
+        currentTheme.color
+    }
     
     var themeColor: String {
         get {

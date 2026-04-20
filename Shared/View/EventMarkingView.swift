@@ -16,6 +16,8 @@ struct EventMarkingView: View {
 
     // + 기호 색상 (날짜 숫자 색과 동일하게 전달, 기본값: primary)
     var plusColor: Color = DesignSystem.Colors.primary
+    // 이벤트 도트 accent 색 (테마색 반영)
+    var accentColor: Color = DesignSystem.Colors.accent
 
     private var hasEvent: Bool {
         if let info = dayEventInfo {
@@ -40,7 +42,7 @@ struct EventMarkingView: View {
 
     var body: some View {
         if hasEvent {
-            EventMarkingSubView(isHoliday: isHoliday, moreThanTwo: eventCount >= 2, plusColor: plusColor)
+            EventMarkingSubView(isHoliday: isHoliday, moreThanTwo: eventCount >= 2, plusColor: plusColor, accentColor: accentColor)
         } else {
             Circle()
                 .fill(Color.clear)
@@ -54,11 +56,12 @@ struct EventMarkingSubView: View {
     let isHoliday: Bool
     let moreThanTwo: Bool
     var plusColor: Color = DesignSystem.Colors.primary
+    var accentColor: Color = DesignSystem.Colors.accent
 
     var body: some View {
         HStack(spacing: 2) {
             Circle()
-                .fill(isHoliday ? DesignSystem.Colors.holiday : DesignSystem.Colors.accent)
+                .fill(isHoliday ? DesignSystem.Colors.holiday : accentColor)
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 3, height: 3)
             if moreThanTwo {

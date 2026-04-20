@@ -33,7 +33,7 @@ struct WidgetCalendarDateView: View {
                         ? (index % 7 == 0 ? Color(name: calendarSettingVM.themeColor) : Color(hex: "4A4A4A").dark(Color(hex: "D4D0CC")))
                         : (index % 7 == 6 ? Color(name: calendarSettingVM.themeColor) : Color(hex: "4A4A4A").dark(Color(hex: "D4D0CC")))
                     )
-                EventMarkingView(dateDate: dateDate, eventDays: eventDays, dayEventInfo: dayEventInfo)
+                EventMarkingView(dateDate: dateDate, eventDays: eventDays, dayEventInfo: dayEventInfo, accentColor: (WidgetTheme(rawValue: calendarSettingVM.themeColor) ?? .dustyLavender).color)
                     .padding(.bottom, 2)
                 Text("\(dateDate.lunarDate.toStringMdd())")
                     .font(.system(size: 8))

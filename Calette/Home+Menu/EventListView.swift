@@ -11,6 +11,7 @@ struct EventListView: View {
     
     @EnvironmentObject var coordinator: Coordinator
     @EnvironmentObject var dateVM: DateViewModel
+    @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -50,7 +51,7 @@ struct EventListView: View {
                         Text("홈")
                             .font(.system(size: 16, weight: .medium))
                     }
-                    .foregroundStyle(DesignSystem.Colors.accent)
+                    .foregroundStyle(calendarSettingVM.accentColor)
                 }
             }
         }
@@ -116,7 +117,7 @@ struct EventListView: View {
 
                 Image(systemName: "calendar.badge.plus")
                     .font(.system(size: 50))
-                    .foregroundStyle(DesignSystem.Colors.accent)
+                    .foregroundStyle(calendarSettingVM.accentColor)
             }
             .padding(.top, 40)
 
@@ -177,7 +178,7 @@ struct EventListView: View {
             HStack {
                 Image(systemName: "calendar")
                     .font(.system(size: 14))
-                    .foregroundStyle(DesignSystem.Colors.accent)
+                    .foregroundStyle(calendarSettingVM.accentColor)
                 Text("나의 일정")
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundStyle(DesignSystem.Colors.primary)
@@ -203,14 +204,14 @@ struct EventListView: View {
                         eventCard(
                             title: eventTitle,
                             time: isOneDayEvent ? oneDayEventTime : notOneDayEventTime,
-                            accentColor: DesignSystem.Colors.accent,
+                            accentColor: calendarSettingVM.accentColor,
                             destination: AnyView(EventDetailView(eventId: eventId))
                         )
                     } else {
                         eventCard(
                             title: eventTitle,
                             time: isOneDayEvent ? oneDayEventTime : notOneDayEventTime,
-                            accentColor: DesignSystem.Colors.accent,
+                            accentColor: calendarSettingVM.accentColor,
                             destination: nil
                         )
                     }
@@ -225,7 +226,7 @@ struct EventListView: View {
         HStack(spacing: 12) {
             Image(systemName: "calendar.badge.exclamationmark")
                 .font(.system(size: 24))
-                .foregroundStyle(DesignSystem.Colors.accent.opacity(0.6))
+                .foregroundStyle(calendarSettingVM.accentColor.opacity(0.6))
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("등록된 일정이 없습니다")
@@ -364,8 +365,8 @@ struct EventListView: View {
                     .fill(
                         LinearGradient(
                             colors: [
-                                DesignSystem.Colors.accent.opacity(0.7),
-                                DesignSystem.Colors.accent.opacity(0.4)
+                                calendarSettingVM.accentColor.opacity(0.7),
+                                calendarSettingVM.accentColor.opacity(0.4)
                             ],
                             startPoint: .top, endPoint: .bottom
                         )
@@ -381,7 +382,7 @@ struct EventListView: View {
                     .strokeBorder(DesignSystem.Gradient.buttonBorder, lineWidth: 1)
                     .allowsHitTesting(false)
             }
-            .shadow(color: DesignSystem.Colors.accent.opacity(0.3), radius: 12, x: 0, y: 4)
+            .shadow(color: calendarSettingVM.accentColor.opacity(0.3), radius: 12, x: 0, y: 4)
         }
         .buttonStyle(ScaleButtonStyle())
         .padding(.horizontal)

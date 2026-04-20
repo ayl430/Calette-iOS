@@ -28,8 +28,7 @@ struct MainView: View {
                             EventListView()
                         }
                     }
-                    .environmentObject(calendarSettingVM)
-                
+
                 if isOnboarding {
                     OnboardingView(isOnboarding: $isOnboarding) {
                         NotificationCenter.default.post(name: .showSwipeHint, object: nil)
@@ -37,6 +36,7 @@ struct MainView: View {
                 }
             }
         }
+        .environmentObject(calendarSettingVM)
     }
 }
 

@@ -14,6 +14,7 @@ struct EventDetailView: View {
     @State var showEditSheet: Bool = false
     
     @EnvironmentObject var dateVM: DateViewModel
+    @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -50,7 +51,7 @@ struct EventDetailView: View {
                         Text(dateVM.selectedDate.toString().hyphenToDot())
                             .font(.system(size: 16, weight: .medium))
                     }
-                    .foregroundStyle(DesignSystem.Colors.accent)
+                    .foregroundStyle(calendarSettingVM.accentColor)
                 }
             }
         }
@@ -72,12 +73,12 @@ struct EventDetailView: View {
         HStack(spacing: 16) {
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(DesignSystem.Colors.accent.opacity(0.15))
+                    .fill(calendarSettingVM.accentColor.opacity(0.15))
                     .frame(width: 60, height: 60)
 
                 Image(systemName: "calendar")
                     .font(.system(size: 28, weight: .semibold))
-                    .foregroundStyle(DesignSystem.Colors.accent)
+                    .foregroundStyle(calendarSettingVM.accentColor)
             }
 
             VStack(alignment: .leading, spacing: 6) {
@@ -190,12 +191,12 @@ struct EventDetailView: View {
         HStack(spacing: 12) {
             ZStack {
                 Circle()
-                    .fill(DesignSystem.Colors.accent.opacity(0.15))
+                    .fill(calendarSettingVM.accentColor.opacity(0.15))
                     .frame(width: 36, height: 36)
 
                 Image(systemName: icon)
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(DesignSystem.Colors.accent)
+                    .foregroundStyle(calendarSettingVM.accentColor)
             }
             
             Text(title)
@@ -217,24 +218,12 @@ struct EventDetailView: View {
             HStack(spacing: 12) {
                 ZStack {
                     Circle()
-                        .fill(
-                            LinearGradient(
-                                colors: [Color(hex: "6B9AFF").opacity(0.15), Color(hex: "8EB4FF").opacity(0.08)],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
+                        .fill(calendarSettingVM.accentColor.opacity(0.15))
                         .frame(width: 36, height: 36)
                     
                     Image(systemName: icon)
                         .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [Color(hex: "6B9AFF"), Color(hex: "8EB4FF")],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
+                        .foregroundStyle(calendarSettingVM.accentColor)
                 }
                 Text(title)
                     .font(.system(size: 16, weight: .medium))
@@ -274,8 +263,8 @@ struct EventDetailView: View {
                         .fill(
                             LinearGradient(
                                 colors: [
-                                    DesignSystem.Colors.accent.opacity(0.6),
-                                    DesignSystem.Colors.accent.opacity(0.3)
+                                    calendarSettingVM.accentColor.opacity(0.6),
+                                    calendarSettingVM.accentColor.opacity(0.3)
                                 ],
                                 startPoint: .top, endPoint: .bottom
                             )

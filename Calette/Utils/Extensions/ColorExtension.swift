@@ -55,8 +55,8 @@ enum WidgetTheme: String, CaseIterable {
     case softPeach
     case mintGreen
     case mutedCoral
-    case deepPurple
-    case midnightBase
+    case slateSilver
+    case iceCyan
 
     /// 옛 이름(caletteDefault 등) → 새 이름 마이그레이션 포함
     init?(rawValue: String) {
@@ -66,13 +66,13 @@ enum WidgetTheme: String, CaseIterable {
         case "softPeach":      self = .softPeach
         case "mintGreen":      self = .mintGreen
         case "mutedCoral":     self = .mutedCoral
-        case "deepPurple":     self = .deepPurple
-        case "midnightBase":   self = .midnightBase
+        case "slateSilver":    self = .slateSilver
+        case "iceCyan":        self = .iceCyan
         // 옛 이름 → 새 이름 매핑
         case "caletteDefault": self = .dustyLavender
         case "caletteYellow":  self = .softPeach
         case "calettePink":    self = .mutedCoral
-        case "calettePurple":  self = .deepPurple
+        case "calettePurple":  self = .slateSilver
         case "caletteBlue":    self = .mintGreen
         default:               self = .dustyLavender
         }
@@ -86,8 +86,8 @@ enum WidgetTheme: String, CaseIterable {
         case .softPeach:     return DesignSystem.Colors.Theme.softPeach
         case .mintGreen:     return DesignSystem.Colors.Theme.mintGreen
         case .mutedCoral:    return DesignSystem.Colors.Theme.mutedCoral
-        case .deepPurple:    return DesignSystem.Colors.Theme.deepPurple
-        case .midnightBase:  return DesignSystem.Colors.Theme.midnightBase
+        case .slateSilver:   return DesignSystem.Colors.Theme.slateSilver
+        case .iceCyan:       return DesignSystem.Colors.Theme.iceCyan
         }
     }
 
