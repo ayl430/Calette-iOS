@@ -11,54 +11,75 @@ import WidgetKit
 struct CaletteWidgetSmallView: View {
     var entry: CaletteWidgetSmallProvider.Entry
 
+    private var accentColor: Color { entry.backgroundColor.color }
+    private var dateColor: Color {
+        entry.isHoliday ? WidgetColor.holiday.color : WidgetColor.primaryText.color
+    }
+
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 24)
-                .fill(WidgetColor.cardBackground.color)
-                .shadow(color: .black.opacity(0.08), radius: 4, y: 2)
-                .padding(10)
-            VStack {
-                HStack(spacing: 36) {
-                    Capsule()
-                        .fill(WidgetColor.ringColor.color)
-                        .frame(width: 8, height: 16)
-                    Capsule()
-                        .fill(WidgetColor.ringColor.color)
-                        .frame(width: 8, height: 16)
+            // 글래스 카드 — 테마색 tint 적용
+            RoundedRectangle(cornerRadius: 20)
+                .fill(accentColor.opacity(0.12))
+                .overlay {
+                    // 상단 밝고 하단 어둡게 — accent 색 그라디언트 tint
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(
+                            LinearGradient(
+                                colors: [accentColor.opacity(0.22), accentColor.opacity(0.04)],
+                                startPoint: .top, endPoint: .bottom
+                            )
+                        )
+                        .allowsHitTesting(false)
                 }
-                .offset(y: 2)
-                Spacer()
-            }
+                .overlay {
+                    // 보더: 상단은 accent 색, 하단은 white 미미하게
+                    RoundedRectangle(cornerRadius: 20)
+                        .strokeBorder(
+                            LinearGradient(
+                                colors: [accentColor.opacity(0.60), Color.white.opacity(0.06)],
+                                startPoint: .top, endPoint: .bottom
+                            ),
+                            lineWidth: 1
+                        )
+                        .allowsHitTesting(false)
+                }
+                .shadow(color: accentColor.opacity(0.18), radius: 8, x: 0, y: 2)
+                .padding(8)
 
-            VStack(spacing: 1) {
+            VStack(spacing: 0) {
+                // 날짜 숫자
                 ZStack(alignment: .topTrailing) {
                     Text(entry.date.toStringD())
-                        .font(.system(size: 50, weight: .bold, design: .rounded))
-                        .foregroundColor(entry.isHoliday ? Color(hex: "E57373") : WidgetColor.dayTextColor.color)
-
+                        .font(.system(size: 52, weight: .bold, design: .rounded))
+                        .foregroundStyle(dateColor)
+                    // 이벤트 도트
                     if entry.hasEvent {
                         Circle()
-                            .fill(Color(hex: "5C8CF0"))
-                            .frame(width: 8, height: 8)
-                            .offset(x: 4, y: 5)
+                            .fill(accentColor)
+                            .frame(width: 7, height: 7)
+                            .shadow(color: accentColor.opacity(0.8), radius: 3, x: 0, y: 0)
+                            .offset(x: 2, y: 4)
                     }
                 }
 
+                // 음력 날짜
                 HStack(spacing: 4) {
                     Image(systemName: "moon.fill")
-                        .font(.system(size: 10, weight: .medium))
-                        .foregroundStyle(WidgetColor.moonIconColor.color)
+                        .font(.system(size: 9, weight: .medium))
+                        .foregroundStyle(accentColor.opacity(0.75))
                     Text(entry.date.lunarDate.toStringMdd())
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundColor(WidgetColor.lunarTextColor.color)
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(WidgetColor.secondaryText.color)
                 }
+                .padding(.bottom, 6)
             }
-            .padding(.top, 6)
+            .padding(.horizontal, 16)
         }
     }
 }
 
 
 #Preview {
-    CaletteWidgetSmallView(entry: CaletteWidgetSmallEntry(date: Date(), backgroundColor: .orange, hasEvent: true, isHoliday: true))
+    CaletteWidgetSmallView(entry: CaletteWidgetSmallEntry(date: Date(), backgroundColor: .dustyLavender, hasEvent: true, isHoliday: false))
 }

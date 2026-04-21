@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CaletteWidgetSmallProvider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> CaletteWidgetSmallEntry {
-        CaletteWidgetSmallEntry(date: Date(), backgroundColor: .orange, hasEvent: false, isHoliday: false)
+        CaletteWidgetSmallEntry(date: Date(), backgroundColor: .dustyLavender, hasEvent: false, isHoliday: false)
     }
 
     func snapshot(for configuration: SmallWidgetConfigurationIntent, in context: Context) async -> CaletteWidgetSmallEntry {
@@ -59,7 +59,13 @@ struct CaletteWidgetSmall: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: SmallWidgetConfigurationIntent.self, provider: CaletteWidgetSmallProvider()) { entry in
             CaletteWidgetSmallView(entry: entry)
-                .containerBackground(entry.backgroundColor.color.dark(entry.backgroundColor.color), for: .widget)
+                .containerBackground(
+                    LinearGradient(
+                        colors: [Color(hex: "1A1530"), Color(hex: "0D0D14")],
+                        startPoint: .top, endPoint: .bottom
+                    ),
+                    for: .widget
+                )
         }
         .supportedFamilies([.systemSmall])
         .configurationDisplayName(AppInfo.widgetName)
@@ -70,5 +76,5 @@ struct CaletteWidgetSmall: Widget {
 #Preview(as: .systemSmall) {
     CaletteWidgetSmall()
 } timeline: {
-    CaletteWidgetSmallEntry(date: .now, backgroundColor: .orange, hasEvent: true, isHoliday: false)
+    CaletteWidgetSmallEntry(date: .now, backgroundColor: .dustyLavender, hasEvent: true, isHoliday: false)
 }

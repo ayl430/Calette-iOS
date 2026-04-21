@@ -10,8 +10,8 @@ import AppIntents
 
 struct SmallWidgetConfigurationIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource = "위젯 설정"
-    static var description = IntentDescription("위젯의 배경 색상을 설정합니다.")
+    static var description = IntentDescription("위젯의 테마 색상을 설정합니다.")
 
-    @Parameter(title: "배경 색상", default: .orange)
+    @Parameter(title: "테마 색상", default: .dustyLavender)
     var backgroundColor: WidgetBackgroundColor
 }

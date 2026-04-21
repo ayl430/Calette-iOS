@@ -80,7 +80,7 @@ struct PreviousMonthWidgetView: View {
         let actualIndex = firstDayOfWeek == 1 ? index % 7 : (index % 7 + 1) % 7
 
         if actualIndex == 0 { // 일요일
-            return Color(hex: "E57373")
+            return Color(hex: "FF6370")
         } else if actualIndex == 6 { // 토요일
             return Color(hex: "AEAEB2").dark(Color(hex: "8E8E93"))
         } else {
