@@ -61,7 +61,7 @@ struct CaletteWidgetSmall: Widget {
             CaletteWidgetSmallView(entry: entry)
                 .containerBackground(
                     LinearGradient(
-                        colors: [Color(hex: "1A1530"), Color(hex: "0D0D14")],
+                        colors: [Color(hex: "231A3D"), Color(hex: "0D0D14")],
                         startPoint: .top, endPoint: .bottom
                     ),
                     for: .widget

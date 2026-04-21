@@ -35,16 +35,16 @@ struct PreviousMonthWidgetView: View {
             VStack(spacing: 4) {
                 // 월 헤더
                 HStack {
-                    Text("\(entry.previousMonth.get(component: .month))월")
+                    Text("\(entry.displayMonth.get(component: .month))월")
                         .font(.system(size: 15, weight: .semibold))
-                        .foregroundStyle(Color(hex: "4A4A4A").dark(Color(hex: "E5E5E5")))
+                        .foregroundStyle(Color(hex: "F0EDF8"))
                     Spacer()
                 }
                 .frame(height: headerHeight)
                 .padding(.horizontal, 4)
 
                 // 날짜 그리드
-                if let days = CalendarBuilder.generateMonth(for: entry.previousMonth, firstWeekday: firstDayOfWeek) {
+                if let days = CalendarBuilder.generateMonth(for: entry.displayMonth, firstWeekday: firstDayOfWeek) {
                     LazyVGrid(columns: columns, spacing: rowSpacing) {
                         ForEach(0..<days.count, id: \.self) { index in
                             let day = days[index]
@@ -58,8 +58,6 @@ struct PreviousMonthWidgetView: View {
                     }
                 }
             }
-//            .padding(.vertical, verticalPadding)
-//            .padding(.horizontal, horizontalPadding)
             .frame(width: geometry.size.width, height: geometry.size.height)
         }
     }
@@ -82,18 +80,18 @@ struct PreviousMonthWidgetView: View {
         if actualIndex == 0 { // 일요일
             return Color(hex: "FF6370")
         } else if actualIndex == 6 { // 토요일
-            return Color(hex: "AEAEB2").dark(Color(hex: "8E8E93"))
+            return Color(hex: "7A7590")
         } else {
-            return Color(hex: "4A4A4A").dark(Color(hex: "E5E5E5"))
+            return Color(hex: "C8C2D6")
         }
     }
 
     private func calculateRowCount() -> Int {
-        guard let days = CalendarBuilder.generateMonth(for: entry.previousMonth, firstWeekday: firstDayOfWeek) else { return 5 }
+        guard let days = CalendarBuilder.generateMonth(for: entry.displayMonth, firstWeekday: firstDayOfWeek) else { return 5 }
         return days.count / 7
     }
 }
 
 #Preview {
-    PreviousMonthWidgetView(entry: PreviousMonthWidgetEntry(date: Date(), previousMonth: Date().priorMonth, firstDayOfWeek: 1))
+    PreviousMonthWidgetView(entry: PreviousMonthWidgetEntry(date: Date(), displayMonth: Date().priorMonth, firstDayOfWeek: 1))
 }

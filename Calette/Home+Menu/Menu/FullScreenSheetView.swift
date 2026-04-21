@@ -236,12 +236,12 @@ struct SubBubbleView: View {
     var body: some View {
         VStack {
             if index == 5 {
-                Text("위젯의 테마색을 선택합니다")
+                Text("캘린더의 테마색을 선택합니다")
                     .foregroundStyle(DesignSystem.Colors.primary)
                     .padding(.bottom)
                 ColorOptionView()
             } else if index == 6 {
-                Text("위젯의 첫번째 요일을 선택합니다")
+                Text("캘린더의 첫번째 요일을 선택합니다")
                     .foregroundStyle(DesignSystem.Colors.primary)
                     .frame(width: 235)
                     .padding(.bottom)

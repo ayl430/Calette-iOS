@@ -25,9 +25,29 @@ enum FirstDayOfWeek: Int, AppEnum {
     }
 }
 
+// 표시할 달 선택
+enum MonthDisplay: String, AppEnum {
+    case previousMonth
+    case nextMonth
+
+    static var typeDisplayRepresentation: TypeDisplayRepresentation {
+        "표시할 달"
+    }
+
+    static var caseDisplayRepresentations: [MonthDisplay: DisplayRepresentation] {
+        [
+            .previousMonth: DisplayRepresentation(title: "이전 달"),
+            .nextMonth:     DisplayRepresentation(title: "다음 달")
+        ]
+    }
+}
+
 struct PreviousMonthWidgetConfigurationIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource = "위젯 설정"
-    static var description = IntentDescription("이전 달 위젯의 시작 요일을 설정합니다.")
+    static var description = IntentDescription("이전/다음 달 위젯을 설정합니다.")
+
+    @Parameter(title: "표시할 달", default: .previousMonth)
+    var monthDisplay: MonthDisplay
 
     @Parameter(title: "시작 요일", default: .sunday)
     var firstDayOfWeek: FirstDayOfWeek

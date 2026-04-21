@@ -16,6 +16,27 @@ struct CaletteWidgetSmallView: View {
         entry.isHoliday ? WidgetColor.holiday.color : WidgetColor.primaryText.color
     }
 
+    private var calendarRing: some View {
+        RoundedRectangle(cornerRadius: 3)
+            .fill(accentColor.opacity(0.35))
+            .overlay {
+                RoundedRectangle(cornerRadius: 3)
+                    .fill(
+                        LinearGradient(
+                            colors: [Color.white.opacity(0.90), accentColor.opacity(0.70)],
+                            startPoint: .top, endPoint: .bottom
+                        )
+                    )
+                    .allowsHitTesting(false)
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 3)
+                    .strokeBorder(accentColor.opacity(0.50), lineWidth: 0.5)
+                    .allowsHitTesting(false)
+            }
+            .frame(width: 8, height: 16)
+    }
+
     var body: some View {
         ZStack {
             // 글래스 카드 — 테마색 tint 적용
@@ -46,6 +67,16 @@ struct CaletteWidgetSmallView: View {
                 }
                 .shadow(color: accentColor.opacity(0.18), radius: 8, x: 0, y: 2)
                 .padding(8)
+
+            // 캘린더 고리 — 카드 상단 위로 돌출
+            VStack {
+                HStack(spacing: 36) {
+                    calendarRing
+                    calendarRing
+                }
+                .offset(y: 2)
+                Spacer()
+            }
 
             VStack(spacing: 0) {
                 // 날짜 숫자
