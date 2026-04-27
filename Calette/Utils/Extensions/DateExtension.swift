@@ -72,10 +72,11 @@ extension Date {
     }
     
     var lunarDate: Date {
-        let converter  = KoreanSolarToLunarConverter()
-        let lunarDate = try? converter.lunarDate(fromSolar: self)
-        
-        return lunarDate?.date ?? self
+        guard let converter = try? KoreanSolarToLunarConverter(),
+              let lunar = try? converter.lunarDate(fromSolar: self),
+              let date = Calendar.current.date(from: DateComponents(year: lunar.year, month: lunar.month, day: lunar.day))
+        else { return self }
+        return date
     }
     
     /// 해당 날짜의 로컬 날짜

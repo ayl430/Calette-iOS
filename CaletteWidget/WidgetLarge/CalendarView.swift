@@ -51,7 +51,7 @@ struct CalendarView: View {
                             if calendarSettingVM.isLunarCalendar {
                                 MoonPhaseView(lunarDay: Int(displayDate.lunarDate.toStringD())!)
                                     .frame(
-                                        width: 1.0 * cellWidth,
+                                        width: 1.0 * cellHeight,
                                         height: 1.0 * cellHeight
                                     )
                             }
