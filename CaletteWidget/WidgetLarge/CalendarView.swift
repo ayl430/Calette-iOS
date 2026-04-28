@@ -39,7 +39,11 @@ struct CalendarView: View {
                         HStack(spacing: 0) {
                             Text(displayDate.toString().hyphenToDot())
                                 .font(.system(size: 21))
-                                .foregroundStyle(Color(hex: "2E2E2E").dark(Color(hex: "E8E4E0")))
+                                .foregroundStyle(
+                                    entry.designStyle == .cosmic
+                                    ? DesignSystem.Colors.primary
+                                    : Color(hex: "2E2E2E").dark(Color(hex: "E8E4E0"))
+                                )
                                 .bold()
                                 .padding(.horizontal)
                                 .contentTransition(.identity)
@@ -47,9 +51,9 @@ struct CalendarView: View {
                                     width: 4.0 * cellWidth,
                                     height: 1.0 * cellHeight
                                 )
-                            
+
                             if calendarSettingVM.isLunarCalendar {
-                                MoonPhaseView(lunarDay: Int(displayDate.lunarDate.toStringD())!)
+                                MoonPhaseView(lunarDay: Int(displayDate.lunarDate.toStringD())!, isClassic: entry.designStyle == .classic)
                                     .frame(
                                         width: 1.0 * cellHeight,
                                         height: 1.0 * cellHeight
@@ -57,21 +61,47 @@ struct CalendarView: View {
                             }
 
                             Spacer()
-                            
-                            Button(intent: TodayIntent()) {
-                                Image(systemName: "arrow.clockwise")
-                                    .frame(width: cellWidth * 0.7, height: cellHeight * 0.7)
-                                    .font(.footnote)
-                                    .foregroundStyle(Color.white)
-                                    .bold()
-                                    .background((WidgetTheme(rawValue: calendarSettingVM.themeColor) ?? .dustyLavender).color)
+
+                            if entry.designStyle == .cosmic {
+                                Button(intent: TodayIntent()) {
+                                    ZStack {
+                                        Circle()
+                                            .fill((WidgetTheme(rawValue: calendarSettingVM.themeColor) ?? .dustyLavender).buttonGradient)
+                                        Circle()
+                                            .fill(DesignSystem.Gradient.buttonHighlight)
+                                            .allowsHitTesting(false)
+                                        Circle()
+                                            .strokeBorder(DesignSystem.Gradient.buttonBorder, lineWidth: 0.8)
+                                            .allowsHitTesting(false)
+                                        Image(systemName: "arrow.clockwise")
+                                            .font(.system(size: 11, weight: .bold))
+                                            .foregroundStyle(.white)
+                                    }
+                                    .frame(width: cellWidth * 0.72, height: cellHeight * 0.72)
+                                    .shadow(color: DesignSystem.Shadow.card, radius: 3, x: 0, y: 2)
+                                    .shadow(color: (WidgetTheme(rawValue: calendarSettingVM.themeColor) ?? .dustyLavender).glowColor, radius: 6, x: 0, y: 1)
+                                }
+                                .buttonStyle(.plain)
+                                .frame(
+                                    width: 1.0 * cellWidth,
+                                    height: 1.0 * cellHeight
+                                )
+                            } else {
+                                Button(intent: TodayIntent()) {
+                                    Image(systemName: "arrow.clockwise")
+                                        .frame(width: cellWidth * 0.7, height: cellHeight * 0.7)
+                                        .font(.footnote)
+                                        .foregroundStyle(Color.white)
+                                        .bold()
+                                        .background((WidgetTheme(rawValue: calendarSettingVM.themeColor) ?? .dustyLavender).color)
+                                }
+                                .clipShape(Circle())
+                                .buttonStyle(.plain)
+                                .frame(
+                                    width: 1.0 * cellWidth,
+                                    height: 1.0 * cellHeight
+                                )
                             }
-                            .clipShape(Circle())
-                            .buttonStyle(.plain)
-                            .frame(
-                                width: 1.0 * cellWidth,
-                                height: 1.0 * cellHeight
-                            )
                         }
                         .frame(
                             width: 7.0 * cellWidth,
@@ -89,7 +119,8 @@ struct CalendarView: View {
                                             index: index,
                                             selectedDate: displayDate,
                                             eventDays: entry.eventDays,
-                                            dayEventInfo: entry.dayEventInfos[dateKey]
+                                            dayEventInfo: entry.dayEventInfos[dateKey],
+                                            designStyle: entry.designStyle
                                         )
                                         .frame(width: cellWidth, height: cellHeight)
                                     } else {
@@ -103,7 +134,7 @@ struct CalendarView: View {
                     }
                 }
                 
-                WidgetEventTitleView(cellWidth: cellWidth, cellHeight: cellHeight, selectedDate: displayDate, dayEventInfos: entry.dayEventInfos)
+                WidgetEventTitleView(cellWidth: cellWidth, cellHeight: cellHeight, selectedDate: displayDate, dayEventInfos: entry.dayEventInfos, designStyle: entry.designStyle)
             }
         }
     }
@@ -112,5 +143,5 @@ struct CalendarView: View {
 #Preview(as: .systemLarge) {
     CaletteWidget()
 } timeline: {
-    CalendarEntry(date: .now, selectedDate: .now, eventDays: [], dayEventInfos: [:])
+    CalendarEntry(date: .now, selectedDate: .now, eventDays: [], dayEventInfos: [:], designStyle: .cosmic)
 }

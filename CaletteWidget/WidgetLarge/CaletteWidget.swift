@@ -8,17 +8,16 @@
 import WidgetKit
 import SwiftUI
 
-struct Provider: TimelineProvider {
+struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> CalendarEntry {
-        CalendarEntry(date: Date(), selectedDate: Date(), eventDays: [], dayEventInfos: [:])
+        CalendarEntry(date: Date(), selectedDate: Date(), eventDays: [], dayEventInfos: [:], designStyle: .cosmic)
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (CalendarEntry) -> ()) {
-        let entry = buildEntry(for: Date(), selectedDate: Date())
-        completion(entry)
+    func snapshot(for configuration: LargeWidgetConfigurationIntent, in context: Context) async -> CalendarEntry {
+        buildEntry(for: Date(), selectedDate: Date(), designStyle: configuration.designStyle)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<CalendarEntry>) -> ()) {
+    func timeline(for configuration: LargeWidgetConfigurationIntent, in context: Context) async -> Timeline<CalendarEntry> {
         let dateVM = DateViewModel()
         let currentDate = Date()
 
@@ -28,24 +27,24 @@ struct Provider: TimelineProvider {
             selectedDate = Date()
         }
 
+        let designStyle = configuration.designStyle
+
         var entries: [CalendarEntry] = []
-        entries.append(buildEntry(for: currentDate, selectedDate: selectedDate))
+        entries.append(buildEntry(for: currentDate, selectedDate: selectedDate, designStyle: designStyle))
         let nextResetDate = dateVM.nextResetDate
 
         // 리셋 예약 or 즉시 업데이트
         if nextResetDate > currentDate {
-            entries.append(buildEntry(for: nextResetDate, selectedDate: Date()))
+            entries.append(buildEntry(for: nextResetDate, selectedDate: Date(), designStyle: designStyle))
 
-            let timeline = Timeline(entries: entries, policy: .after(nextResetDate))
-            completion(timeline)
+            return Timeline(entries: entries, policy: .after(nextResetDate))
         } else {
-            let timeline = Timeline(entries: entries, policy: .atEnd)
-            completion(timeline)
+            return Timeline(entries: entries, policy: .atEnd)
         }
     }
 
     /// 이벤트 정보 사전 계산
-    private func buildEntry(for date: Date, selectedDate: Date) -> CalendarEntry {
+    private func buildEntry(for date: Date, selectedDate: Date, designStyle: LargeWidgetDesignStyle) -> CalendarEntry {
         let eventDays = EventManager.shared.fetchAllEventsThisMonth(date: selectedDate) ?? []
         let monthEventInfos = EventManager.shared.fetchMonthEventInfos(for: selectedDate)
 
@@ -69,7 +68,8 @@ struct Provider: TimelineProvider {
             date: date,
             selectedDate: selectedDate,
             eventDays: eventDays,
-            dayEventInfos: dayEventInfos
+            dayEventInfos: dayEventInfos,
+            designStyle: designStyle
         )
     }
 }
@@ -80,18 +80,28 @@ struct CalendarEntry: TimelineEntry {
     let eventDays: [Date]
     /// 날짜별 이벤트 정보 (key: "yyyy-MM-dd")
     let dayEventInfos: [String: DayEventInfo]
+    let designStyle: LargeWidgetDesignStyle
 }
 
 struct CaletteWidget: Widget {
     let kind: String = AppData.widgetName
-    
+
     @StateObject private var calendarSettingVM = CalendarSettingsViewModel()
-    
+
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+        AppIntentConfiguration(kind: kind, intent: LargeWidgetConfigurationIntent.self, provider: Provider()) { entry in
             CalendarView(entry: entry)
                 .padding(2)
-                .containerBackground(.white.dark(Color(hex: "1C1C1E")), for: .widget)
+                .containerBackground(for: .widget) {
+                    if entry.designStyle == .cosmic {
+                        LinearGradient(
+                            colors: [Color(hex: "231A3D"), Color(hex: "0D0D14")],
+                            startPoint: .top, endPoint: .bottom
+                        )
+                    } else {
+                        Color.white.dark(Color(hex: "1C1C1E"))
+                    }
+                }
                 .environmentObject(calendarSettingVM)
         }
         .supportedFamilies([.systemLarge])
@@ -103,5 +113,5 @@ struct CaletteWidget: Widget {
 #Preview(as: .systemLarge) {
     CaletteWidget()
 } timeline: {
-    CalendarEntry(date: .now, selectedDate: .now, eventDays: [], dayEventInfos: [:])
+    CalendarEntry(date: .now, selectedDate: .now, eventDays: [], dayEventInfos: [:], designStyle: .cosmic)
 }

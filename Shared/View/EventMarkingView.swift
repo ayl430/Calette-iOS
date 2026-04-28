@@ -61,7 +61,7 @@ struct EventMarkingSubView: View {
     var body: some View {
         HStack(spacing: 2) {
             Circle()
-                .fill(isHoliday ? DesignSystem.Colors.holiday : accentColor)
+                .fill(isHoliday ? DesignSystem.Colors.EventBar.holiday : accentColor)
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 3, height: 3)
             if moreThanTwo {

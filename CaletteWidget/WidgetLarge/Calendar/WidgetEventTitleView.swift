@@ -12,9 +12,10 @@ struct WidgetEventTitleView: View {
     var cellWidth: CGFloat
     var cellHeight: CGFloat
     var selectedDate: Date
-    
+
     // 날짜별 이벤트 정보
     var dayEventInfos: [String: DayEventInfo]
+    var designStyle: LargeWidgetDesignStyle = .cosmic
     // 선택된 날짜의 이벤트 정보
     private var currentDateEventInfo: DayEventInfo? {
         let dateKey = selectedDate.toString()
@@ -71,14 +72,20 @@ struct WidgetEventTitleView: View {
 
             Text(title)
                 .font(.system(size: 13))
-                .foregroundStyle(Color(hex: "545354").dark(Color(hex: "C8C2BC")))
+                .foregroundStyle(
+                    designStyle == .cosmic
+                    ? DesignSystem.Colors.secondary
+                    : Color(hex: "545354").dark(Color(hex: "C8C2BC"))
+                )
                 .padding(.leading, 10)
             Spacer()
             if showPlus {
                 ZStack {
                     Rectangle()
+                        .fill(designStyle == .cosmic ? DesignSystem.Colors.secondary : Color(hex: "545354").dark(Color(hex: "C8C2BC")))
                         .frame(width: 5, height: 1, alignment: .center)
                     Rectangle()
+                        .fill(designStyle == .cosmic ? DesignSystem.Colors.secondary : Color(hex: "545354").dark(Color(hex: "C8C2BC")))
                         .frame(width: 1, height: 5, alignment: .center)
                 }
                 .padding(.trailing, 10)
@@ -117,7 +124,11 @@ struct WidgetEventTitleView: View {
             HStack {
                 Image(systemName: "sparkles")
                     .frame(width: 0.5 * cellWidth, height: 0.5 * cellHeight)
-                    .foregroundStyle(DesignSystem.Colors.primary)
+                    .foregroundStyle(
+                        designStyle == .cosmic
+                        ? DesignSystem.Colors.primary
+                        : Color(hex: "545354").dark(Color(hex: "C8C2BC"))
+                    )
                     .padding(.leading, 15)
                 Spacer()
             }

@@ -56,10 +56,10 @@ struct CalendarDateView: View {
 
             VStack(spacing: 1) {
                 Text("\(dateDate.get(component: .day))")
-                    .font(.system(size: 14, weight: hasEvent ? .semibold : .light))
+                    .font(.system(size: 14, weight: isSelected ? .bold : .semibold))
                     .foregroundStyle(dateTextColor)
 
-                EventMarkingView(dateDate: dateDate, eventDays: dateVM.eventDays, plusColor: dateTextColor, accentColor: calendarSettingVM.accentColor)
+                EventMarkingView(dateDate: dateDate, eventDays: dateVM.eventDays, plusColor: DesignSystem.Colors.primary, accentColor: calendarSettingVM.accentColor)
                     .padding(.bottom, 2)
 
                 Text("\(dateDate.lunarDate.toStringMdd())")
