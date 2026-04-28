@@ -42,7 +42,7 @@ struct CalendarView: View {
                                 .foregroundStyle(
                                     entry.designStyle == .cosmic
                                     ? DesignSystem.Colors.primary
-                                    : Color(hex: "2E2E2E").dark(Color(hex: "E8E4E0"))
+                                    : DesignSystem.Colors.Widget.Classic.title
                                 )
                                 .bold()
                                 .padding(.horizontal)

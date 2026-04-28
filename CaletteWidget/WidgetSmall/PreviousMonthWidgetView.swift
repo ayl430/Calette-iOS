@@ -37,7 +37,7 @@ struct PreviousMonthWidgetView: View {
                 HStack {
                     Text("\(entry.displayMonth.get(component: .month))월")
                         .font(.system(size: 15, weight: .semibold))
-                        .foregroundStyle(Color(hex: "F0EDF8"))
+                        .foregroundStyle(WidgetColor.primaryText.color)
                     Spacer()
                 }
                 .frame(height: headerHeight)
@@ -78,11 +78,11 @@ struct PreviousMonthWidgetView: View {
         let actualIndex = firstDayOfWeek == 1 ? index % 7 : (index % 7 + 1) % 7
 
         if actualIndex == 0 { // 일요일
-            return Color(hex: "FF6370")
+            return WidgetColor.holiday.color
         } else if actualIndex == 6 { // 토요일
-            return Color(hex: "7A7590")
+            return DesignSystem.Colors.Widget.saturday
         } else {
-            return Color(hex: "C8C2D6")
+            return DesignSystem.Colors.Widget.weekday
         }
     }
 

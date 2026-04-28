@@ -52,13 +52,7 @@ struct PreviousMonthWidget: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: PreviousMonthWidgetConfigurationIntent.self, provider: PreviousMonthWidgetProvider()) { entry in
             PreviousMonthWidgetView(entry: entry)
-                .containerBackground(
-                    LinearGradient(
-                        colors: [Color(hex: "231A3D"), Color(hex: "0D0D14")],
-                        startPoint: .top, endPoint: .bottom
-                    ),
-                    for: .widget
-                )
+                .containerBackground(DesignSystem.Gradient.widgetCosmicBackground, for: .widget)
         }
         .supportedFamilies([.systemSmall])
         .configurationDisplayName("이전 / 다음 달")

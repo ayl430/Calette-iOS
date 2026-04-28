@@ -39,7 +39,7 @@ struct WidgetCalendarDateView: View {
         } else {
             return isSunday
                 ? Color(name: calendarSettingVM.themeColor)
-                : Color(hex: "4A4A4A").dark(Color(hex: "D4D0CC"))
+                : DesignSystem.Colors.Widget.Classic.date
         }
     }
 
@@ -63,7 +63,7 @@ struct WidgetCalendarDateView: View {
                         .shadow(color: (WidgetTheme(rawValue: calendarSettingVM.themeColor) ?? .dustyLavender).glowColor, radius: 6, x: 0, y: 1)
                 } else {
                     Circle()
-                        .fill(Color.selectedDateBG.dark(Color(hex: "413C38")))
+                        .fill(DesignSystem.Colors.Widget.Classic.selectedBG)
                 }
             }
 
@@ -71,7 +71,7 @@ struct WidgetCalendarDateView: View {
                 Text("\(dateDate.get(component: .day))")
                     .font(.system(size: 14, weight: isSelected ? .bold : .semibold))
                     .foregroundStyle(dateTextColor)
-                EventMarkingView(dateDate: dateDate, eventDays: eventDays, dayEventInfo: dayEventInfo, plusColor: designStyle == .cosmic ? DesignSystem.Colors.primary : Color(hex: "4A4A4A").dark(Color(hex: "D4D0CC")), accentColor: (WidgetTheme(rawValue: calendarSettingVM.themeColor) ?? .dustyLavender).color)
+                EventMarkingView(dateDate: dateDate, eventDays: eventDays, dayEventInfo: dayEventInfo, plusColor: designStyle == .cosmic ? DesignSystem.Colors.primary : DesignSystem.Colors.Widget.Classic.date, accentColor: (WidgetTheme(rawValue: calendarSettingVM.themeColor) ?? .dustyLavender).color)
                     .padding(.bottom, 2)
                 Text("\(dateDate.lunarDate.toStringMdd())")
                     .font(.system(size: 8))
@@ -79,7 +79,7 @@ struct WidgetCalendarDateView: View {
                         calendarSettingVM.isLunarCalendar && isSelected
                         ? (designStyle == .cosmic
                            ? DesignSystem.Colors.background.opacity(0.7)
-                           : Color.lunarDate.dark(Color(hex: "A89E94")))
+                           : DesignSystem.Colors.Widget.Classic.lunar)
                         : Color.clear
                     )
             }

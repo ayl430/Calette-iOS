@@ -83,7 +83,6 @@
 				Utils/Extensions/DateExtension.swift,
 				Utils/Extensions/StringExtension.swift,
 				Utils/Extensions/UserDefaultsExtension.swift,
-				Utils/Extensions/ViewExtension.swift,
 			);
 			target = D832DA282D4FAB3A002B5B13 /* CaletteWidgetExtension */;
 		};

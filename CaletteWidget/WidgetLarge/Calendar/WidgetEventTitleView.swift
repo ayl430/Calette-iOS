@@ -75,17 +75,17 @@ struct WidgetEventTitleView: View {
                 .foregroundStyle(
                     designStyle == .cosmic
                     ? DesignSystem.Colors.secondary
-                    : Color(hex: "545354").dark(Color(hex: "C8C2BC"))
+                    : DesignSystem.Colors.Widget.Classic.event
                 )
                 .padding(.leading, 10)
             Spacer()
             if showPlus {
                 ZStack {
                     Rectangle()
-                        .fill(designStyle == .cosmic ? DesignSystem.Colors.secondary : Color(hex: "545354").dark(Color(hex: "C8C2BC")))
+                        .fill(designStyle == .cosmic ? DesignSystem.Colors.secondary : DesignSystem.Colors.Widget.Classic.event)
                         .frame(width: 5, height: 1, alignment: .center)
                     Rectangle()
-                        .fill(designStyle == .cosmic ? DesignSystem.Colors.secondary : Color(hex: "545354").dark(Color(hex: "C8C2BC")))
+                        .fill(designStyle == .cosmic ? DesignSystem.Colors.secondary : DesignSystem.Colors.Widget.Classic.event)
                         .frame(width: 1, height: 5, alignment: .center)
                 }
                 .padding(.trailing, 10)
@@ -127,7 +127,7 @@ struct WidgetEventTitleView: View {
                     .foregroundStyle(
                         designStyle == .cosmic
                         ? DesignSystem.Colors.primary
-                        : Color(hex: "545354").dark(Color(hex: "C8C2BC"))
+                        : DesignSystem.Colors.Widget.Classic.event
                     )
                     .padding(.leading, 15)
                 Spacer()

@@ -94,12 +94,9 @@ struct CaletteWidget: Widget {
                 .padding(2)
                 .containerBackground(for: .widget) {
                     if entry.designStyle == .cosmic {
-                        LinearGradient(
-                            colors: [Color(hex: "231A3D"), Color(hex: "0D0D14")],
-                            startPoint: .top, endPoint: .bottom
-                        )
+                        DesignSystem.Gradient.widgetCosmicBackground
                     } else {
-                        Color.white.dark(Color(hex: "1C1C1E"))
+                        DesignSystem.Colors.Widget.Classic.background
                     }
                 }
                 .environmentObject(calendarSettingVM)

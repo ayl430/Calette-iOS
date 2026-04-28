@@ -234,7 +234,7 @@ struct EventDetailView: View {
             
             Text(value)
                 .font(.system(size: 15))
-                .foregroundStyle(Color(hex: "8A8A8A"))
+                .foregroundStyle(DesignSystem.Colors.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 48)
         }

@@ -59,13 +59,7 @@ struct CaletteWidgetSmall: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: kind, intent: SmallWidgetConfigurationIntent.self, provider: CaletteWidgetSmallProvider()) { entry in
             CaletteWidgetSmallView(entry: entry)
-                .containerBackground(
-                    LinearGradient(
-                        colors: [Color(hex: "231A3D"), Color(hex: "0D0D14")],
-                        startPoint: .top, endPoint: .bottom
-                    ),
-                    for: .widget
-                )
+                .containerBackground(DesignSystem.Gradient.widgetCosmicBackground, for: .widget)
         }
         .supportedFamilies([.systemSmall])
         .configurationDisplayName(AppInfo.widgetName)

@@ -32,14 +32,7 @@ enum WidgetBackgroundColor: String, AppEnum {
     }
 
     var color: Color {
-        switch self {
-        case .dustyLavender: return DesignSystem.Colors.Theme.dustyLavender
-        case .softPeach:     return DesignSystem.Colors.Theme.softPeach
-        case .mintGreen:     return DesignSystem.Colors.Theme.mintGreen
-        case .mutedCoral:    return DesignSystem.Colors.Theme.mutedCoral
-        case .slateSilver:   return DesignSystem.Colors.Theme.slateSilver
-        case .iceCyan:       return DesignSystem.Colors.Theme.iceCyan
-        }
+        (WidgetTheme(rawValue: rawValue) ?? .dustyLavender).color
     }
 }
 
@@ -50,9 +43,9 @@ enum WidgetColor {
 
     var color: Color {
         switch self {
-        case .primaryText:   return Color(hex: "F0EDF8")
-        case .secondaryText: return Color(hex: "9E9BAE")
-        case .holiday:       return Color(hex: "FF6370")
+        case .primaryText:   return DesignSystem.Colors.Widget.primaryText
+        case .secondaryText: return DesignSystem.Colors.Widget.secondaryText
+        case .holiday:       return DesignSystem.Colors.Widget.holiday
         }
     }
 }

@@ -89,6 +89,30 @@ enum DesignSystem {
                 mutedCoral, slateSilver, iceCyan
             ]
         }
+
+        // --- Widget ---
+        enum Widget {
+            /// 위젯 주요 텍스트 (Lavender White)
+            static let primaryText   = Color(hex: "F0EDF8")
+            /// 위젯 보조 텍스트
+            static let secondaryText = Color(hex: "9E9BAE")
+            /// 공휴일·일요일 빨강 (EventBar.holiday와 동일)
+            static let holiday       = Color(hex: "FF7A6B")
+            /// PreviousMonth 토요일 색
+            static let saturday      = Color(hex: "7A7590")
+            /// PreviousMonth 평일 색
+            static let weekday       = Color(hex: "C8C2D6")
+
+            /// Classic 디자인 스타일 색 (라이트/다크 페어)
+            enum Classic {
+                static let title      = Color(hex: "2E2E2E").dark(Color(hex: "E8E4E0"))
+                static let date       = Color(hex: "4A4A4A").dark(Color(hex: "D4D0CC"))
+                static let event      = Color(hex: "545354").dark(Color(hex: "C8C2BC"))
+                static let selectedBG = Color.selectedDateBG.dark(Color(hex: "413C38"))
+                static let lunar      = Color.lunarDate.dark(Color(hex: "A89E94"))
+                static let background = Color.white.dark(Color(hex: "1C1C1E"))
+            }
+        }
     }
 
     // MARK: - Gradient
@@ -122,6 +146,11 @@ enum DesignSystem {
         /// 버튼 보더 그라데이션 (white 45→5%)
         static let buttonBorder = LinearGradient(
             colors: [Color.white.opacity(0.45), Color.white.opacity(0.05)],
+            startPoint: .top, endPoint: .bottom
+        )
+        /// 위젯 cosmic 배경 그라데이션
+        static let widgetCosmicBackground = LinearGradient(
+            colors: [Color(hex: "231A3D"), Color(hex: "0D0D14")],
             startPoint: .top, endPoint: .bottom
         )
     }
