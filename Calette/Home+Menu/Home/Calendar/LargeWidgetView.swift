@@ -15,11 +15,13 @@ struct LargeWidgetView: View {
     @EnvironmentObject var dateVM: DateViewModel
     @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
 
-    @State private var currentPage: Int = 1
-    @State private var isTransitioning: Bool = false
-    @State private var contentOpacity: Double = 1.0
     @State private var displayedDate: Date = Date()
+    @State private var dragOffset: CGFloat = 0
+    @State private var isAnimating: Bool = false
     @State private var hintOffset: CGFloat = 0
+
+    private let swipeAnimation: Animation = .interactiveSpring(response: 0.32, dampingFraction: 0.85)
+    private let swipeDuration: Double = 0.32
 
     var body: some View {
         GeometryReader { geometry in
@@ -96,28 +98,43 @@ struct LargeWidgetView: View {
                 
                 // 캘린더(스와이프) + 이벤트 영역
                 VStack(spacing: 0) {
-                    TabView(selection: $currentPage) {
+                    let calendarWidth = geometry.size.width
+
+                    HStack(spacing: 0) {
                         MonthGridView(targetDate: previousMonth, cellWidth: cellWidth, cellHeight: cellHeight, fixedRows: currentMonthRows)
-                            .tag(0)
+                            .frame(width: calendarWidth)
 
                         MonthGridView(targetDate: displayedDate, cellWidth: cellWidth, cellHeight: cellHeight, fixedRows: currentMonthRows)
-                            .tag(1)
+                            .frame(width: calendarWidth)
 
                         MonthGridView(targetDate: nextMonth, cellWidth: cellWidth, cellHeight: cellHeight, fixedRows: currentMonthRows)
-                            .tag(2)
+                            .frame(width: calendarWidth)
                     }
-                    .frame(height: CGFloat(currentMonthRows) * cellHeight)
-                    .tabViewStyle(.page(indexDisplayMode: .never))
-                    .background(ClearPageBackground())
-                    .offset(x: hintOffset)
-                    .onChange(of: currentPage) { oldValue, newValue in
-                        handlePageChange(newValue: newValue)
-                    }
+                    .offset(x: -calendarWidth + dragOffset + hintOffset)
+                    .frame(width: calendarWidth, height: CGFloat(currentMonthRows) * cellHeight, alignment: .leading)
+                    .clipped()
+                    .contentShape(Rectangle())
+                    .gesture(
+                        DragGesture(minimumDistance: 8)
+                            .onChanged { value in
+                                guard !isAnimating else { return }
+                                // 가로 우세한 제스처만 따라가기 (세로 스크롤과의 충돌 방지)
+                                guard abs(value.translation.width) > abs(value.translation.height) else { return }
+                                dragOffset = rubberBand(value.translation.width, limit: calendarWidth)
+                            }
+                            .onEnded { value in
+                                guard !isAnimating else { return }
+                                handleDragEnd(
+                                    translation: value.translation.width,
+                                    predictedEnd: value.predictedEndTranslation.width,
+                                    width: calendarWidth
+                                )
+                            }
+                    )
 
                     EventTitleView(cellWidth: cellWidth, cellHeight: cellHeight)
                 }
                 .background(Color.clear)
-                .opacity(contentOpacity)
             }
             .background(Color.clear)
         }
@@ -129,36 +146,58 @@ struct LargeWidgetView: View {
         }
     }
     
-    private func handlePageChange(newValue: Int) {
-        guard !isTransitioning && newValue != 1 else { return }
+    private enum PageDirection { case prev, next }
 
-        isTransitioning = true
+    private func handleDragEnd(translation: CGFloat, predictedEnd: CGFloat, width: CGFloat) {
+        let threshold = width * 0.25
+        // 빠른 플릭은 predictedEnd, 느린 드래그는 translation 기준
+        let decisionValue = abs(predictedEnd) > abs(translation) ? predictedEnd : translation
 
-        // 1. 페이드 아웃
-        withAnimation(.easeOut(duration: 0.08)) {
-            contentOpacity = 0
-        }
-
-        // 2. 데이터 변경 및 페이지 리셋
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
-            if newValue == 0 {
-                dateVM.setPriorMonth()
-                displayedDate = displayedDate.priorMonth.startOfMonth
-            } else if newValue == 2 {
-                dateVM.setNextMonth()
-                displayedDate = displayedDate.nextMonth.startOfMonth
-            }
-            currentPage = 1
-
-            // 3. 페이드 인
-            withAnimation(.easeIn(duration: 0.1)) {
-                contentOpacity = 1
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                isTransitioning = false
+        if decisionValue <= -threshold {
+            commitPageChange(direction: .next, width: width)
+        } else if decisionValue >= threshold {
+            commitPageChange(direction: .prev, width: width)
+        } else {
+            withAnimation(swipeAnimation) {
+                dragOffset = 0
             }
         }
+    }
+
+    private func commitPageChange(direction: PageDirection, width: CGFloat) {
+        isAnimating = true
+        let target: CGFloat = direction == .next ? -width : width
+
+        withAnimation(swipeAnimation) {
+            dragOffset = target
+        }
+
+        // 스냅 애니메이션 완료 후 데이터 갱신 + offset 리셋을 한 프레임에 (애니메이션 없이)
+        DispatchQueue.main.asyncAfter(deadline: .now() + swipeDuration) {
+            var transaction = Transaction()
+            transaction.disablesAnimations = true
+            withTransaction(transaction) {
+                switch direction {
+                case .next:
+                    dateVM.setNextMonth()
+                    displayedDate = displayedDate.nextMonth.startOfMonth
+                case .prev:
+                    dateVM.setPriorMonth()
+                    displayedDate = displayedDate.priorMonth.startOfMonth
+                }
+                dragOffset = 0
+            }
+            isAnimating = false
+        }
+    }
+
+    /// 양 끝에서 살짝 저항감 있는 드래그 (러버밴딩)
+    private func rubberBand(_ value: CGFloat, limit: CGFloat) -> CGFloat {
+        guard limit > 0 else { return value }
+        if abs(value) <= limit { return value }
+        let excess = abs(value) - limit
+        let damped = limit + excess / (1 + excess / limit) * 0.55
+        return value < 0 ? -damped : damped
     }
     
     private func showSwipeHint() {
