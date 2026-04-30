@@ -140,6 +140,11 @@ class EventManager: NSObject {
         return count > 0
     }
 
+    /// 공휴일을 제외한 이벤트가 하나라도 있는지 여부
+    func hasNormalEvent(_ date: Date) -> Bool {
+        return !fetchAllNormalEvents(on: date).isEmpty
+    }
+
     // MARK: - 위젯 only
 
     /// 월별 날짜별 이벤트 정보를 한 번에 조회

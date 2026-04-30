@@ -14,7 +14,7 @@ struct CaletteWidgetSmallProvider: AppIntentTimelineProvider {
     }
 
     func snapshot(for configuration: SmallWidgetConfigurationIntent, in context: Context) async -> CaletteWidgetSmallEntry {
-        let hasEvent = EventManager.shared.hasEvent(Date())
+        let hasEvent = EventManager.shared.hasNormalEvent(Date())
         let isHoliday = EventManager.shared.isHoliday(Date())
         return CaletteWidgetSmallEntry(date: Date(), backgroundColor: configuration.backgroundColor, hasEvent: hasEvent, isHoliday: isHoliday)
     }
@@ -28,7 +28,7 @@ struct CaletteWidgetSmallProvider: AppIntentTimelineProvider {
         for dayOffset in 0..<7 {
             guard let entryDate = calendar.date(byAdding: .day, value: dayOffset, to: calendar.startOfDay(for: now)) else { continue }
 
-            let hasEvent = EventManager.shared.hasEvent(entryDate)
+            let hasEvent = EventManager.shared.hasNormalEvent(entryDate)
             let isHoliday = EventManager.shared.isHoliday(entryDate)
 
             let entry = CaletteWidgetSmallEntry(
