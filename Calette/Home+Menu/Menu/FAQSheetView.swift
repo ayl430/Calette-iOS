@@ -22,7 +22,19 @@ struct FAQList {
 
 struct FAQSheetView: View {
     let onCancelTapped: () -> Void
-    
+
+    var body: some View {
+        NavigationStack {
+            FAQRootView(onCancelTapped: onCancelTapped)
+                .toolbar(.hidden, for: .navigationBar)
+        }
+    }
+}
+
+// MARK: - FAQ 루트 뷰
+struct FAQRootView: View {
+    let onCancelTapped: () -> Void
+
     var body: some View {
         VStack {
             HStack {
@@ -43,7 +55,7 @@ struct FAQSheetView: View {
                     .padding()
                 Spacer()
                 Button(action: {
-                    
+
                 }) {
                     Text("닫기")
                         .font(.headline)
@@ -53,9 +65,10 @@ struct FAQSheetView: View {
             }
             .padding(.horizontal, 8)
             .padding(.top, 10)
-            
+
             ScrollView {
                 VStack(alignment: .leading, spacing: 10) {
+                    WidgetTipsLinkView()
                     FAQItemView(faqItem: FAQList.widget)
                     FAQItemView(faqItem: FAQList.marking)
                     FAQItemView(faqItem: FAQList.lunar)
@@ -77,11 +90,44 @@ struct FAQSheetView: View {
     }
 }
 
+// MARK: - 위젯 활용 팁 진입 항목
+struct WidgetTipsLinkView: View {
+    var body: some View {
+        NavigationLink {
+            WidgetTipsView()
+                .toolbar(.hidden, for: .navigationBar)
+        } label: {
+            HStack(spacing: 12) {
+                Text("💡")
+                    .font(.callout)
+                Text("위젯 활용 팁 보러가기")
+                    .font(.callout)
+                    .bold()
+                    .foregroundStyle(DesignSystem.Colors.primary)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.footnote)
+                    .bold()
+                    .foregroundStyle(DesignSystem.Colors.secondary)
+            }
+            .padding()
+            .background {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(DesignSystem.Colors.Glass.base)
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 12)
+                    .strokeBorder(DesignSystem.Colors.border, lineWidth: 1)
+            }
+        }
+    }
+}
+
 struct FAQItemView: View {
     @State var isShowing: Bool = false
     let faqItem: FAQItem
     @EnvironmentObject var calendarSettingVM: CalendarSettingsViewModel
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Button {
@@ -94,9 +140,9 @@ struct FAQItemView: View {
                         .font(.callout)
                         .foregroundStyle(DesignSystem.Colors.primary)
                         .bold()
-                    
+
                     Spacer()
-                    
+
                     Image(systemName: "chevron.up")
                         .rotationEffect(.degrees(isShowing ? 180 : 0))
                         .animation(.easeInOut(duration: 0.25), value: isShowing)
@@ -110,7 +156,7 @@ struct FAQItemView: View {
                     }
                 }
             }
-            
+
             if isShowing {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(faqItem.content)
