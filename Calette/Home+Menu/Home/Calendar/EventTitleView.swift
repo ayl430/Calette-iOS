@@ -115,7 +115,6 @@ struct EventTitleView: View {
                 Rectangle()
             }
             .foregroundStyle(Color.clear)
-//            .buttonStyle(.plain) // 앱에서는 안 눌리고, 위젯에서는 파란 바탕색이 뜸
         }
         
         return imageView

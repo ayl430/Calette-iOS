@@ -31,8 +31,8 @@ struct WidgetEventTitleView: View {
                 noEventView(lines: maxEventLines)
             } else {
                 let availableEvents = min(eventCount, 2) // DayEventInfo는 최대 2개 보유
-                let hasOverEvent = eventCount > availableEvents
                 let visibleEventCount = min(availableEvents, maxEventLines)
+                let hasOverEvent = eventCount > visibleEventCount
                 let clearLineCount = maxEventLines - visibleEventCount
 
                 if let info = currentDateEventInfo {
