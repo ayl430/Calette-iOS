@@ -66,9 +66,19 @@ extension Date {
     var priorMonth: Date {
         return Calendar.current.date(byAdding: DateComponents(month: -1), to: self)!
     }
-    
+
     var nextMonth: Date {
         return Calendar.current.date(byAdding: DateComponents(month: 1), to: self)!
+    }
+
+    /// 하루 전 (월·연·윤년·DST 안전)
+    var priorDay: Date {
+        return Calendar.current.date(byAdding: .day, value: -1, to: self) ?? self
+    }
+
+    /// 하루 후 (월·연·윤년·DST 안전)
+    var nextDay: Date {
+        return Calendar.current.date(byAdding: .day, value: 1, to: self) ?? self
     }
     
     var lunarDate: Date {
@@ -128,5 +138,43 @@ extension Date {
     
     var isThisMonth: Bool {
         return self.startOfMonth == Date().startOfMonth ? true : false
+    }
+
+    // MARK: - 주/월 범위 계산 (scope 필터링용)
+
+    /// 해당 날짜가 포함된 주의 시작일 (startOfDay)
+    /// - Parameter firstWeekday: 1이면 일요일 시작, 2면 월요일 시작
+    func startOfWeek(firstWeekday: Int = 1) -> Date {
+        let calendar = Calendar.current
+        let weekday = calendar.component(.weekday, from: self) // 1(일) ~ 7(토)
+        let offset = (weekday - firstWeekday + 7) % 7
+        return calendar.date(byAdding: .day, value: -offset, to: self.startOfDay) ?? self.startOfDay
+    }
+
+    /// 해당 날짜가 포함된 주의 종료 시각 (다음 주 시작 - 1 epsilon)
+    func lastOfWeek(firstWeekday: Int = 1) -> Date {
+        let start = startOfWeek(firstWeekday: firstWeekday)
+        let nextWeekStart = Calendar.current.date(byAdding: .day, value: 7, to: start) ?? start
+        return nextWeekStart.addingTimeInterval(-0.0000000000000001)
+    }
+
+    /// 해당 날짜가 포함된 주의 7개 날짜 (각 날짜의 startOfDay)
+    func datesInWeek(firstWeekday: Int = 1) -> [Date] {
+        let start = startOfWeek(firstWeekday: firstWeekday)
+        let calendar = Calendar.current
+        return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: start) }
+    }
+
+    /// 해당 날짜가 포함된 달의 모든 날짜 (각 날짜의 startOfDay)
+    var datesInMonth: [Date] {
+        let calendar = Calendar.current
+        let start = startOfMonth
+        guard let range = calendar.range(of: .day, in: .month, for: start) else { return [start] }
+        return (0..<range.count).compactMap { calendar.date(byAdding: .day, value: $0, to: start) }
+    }
+
+    /// 동일 날짜 여부 (로컬 달력 기준)
+    func isSameDay(as other: Date) -> Bool {
+        Calendar.current.isDate(self, inSameDayAs: other)
     }
 }

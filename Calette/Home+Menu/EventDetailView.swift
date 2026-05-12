@@ -37,6 +37,8 @@ struct EventDetailView: View {
         .background {
             CosmicBackgroundView()
         }
+        .toolbarBackground(DesignSystem.Colors.background, for: .navigationBar)
+        .toolbarColorScheme(.dark, for: .navigationBar)
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

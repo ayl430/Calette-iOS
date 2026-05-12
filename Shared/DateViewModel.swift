@@ -127,6 +127,18 @@ class DateViewModel: ObservableObject {
             self.selectedDate = date
         }
     }
+
+    func setPriorDay() {
+        DispatchQueue.main.async {
+            self.selectedDate = self.selectedDate.priorDay
+        }
+    }
+
+    func setNextDay() {
+        DispatchQueue.main.async {
+            self.selectedDate = self.selectedDate.nextDay
+        }
+    }
     
     func setEvent() {
         DispatchQueue.main.async {

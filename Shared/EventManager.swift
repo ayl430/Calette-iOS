@@ -71,6 +71,36 @@ class EventManager: NSObject {
         return events
     }
     
+    // MARK: - 범위 조회 (scope filter용)
+
+    /// 임의 범위의 모든 이벤트 (EKEvent)
+    func fetchAllEvents(in range: ClosedRange<Date>) -> [EKEvent] {
+        guard isFullAccess else { return [] }
+        let calendars = eventStore.calendars(for: .event)
+        let predicate = eventStore.predicateForEvents(withStart: range.lowerBound, end: range.upperBound, calendars: calendars)
+        return eventStore.events(matching: predicate)
+    }
+
+    /// 임의 범위의 공휴일 (EKEvent)
+    func fetchAllHolidays(in range: ClosedRange<Date>) -> [EKEvent] {
+        guard isFullAccess else { return [] }
+        let holidayCalendars = eventStore.calendars(for: .event).filter {
+            $0.title.contains("공휴일") || $0.title.lowercased().contains("holiday")
+        }
+        let predicate = eventStore.predicateForEvents(withStart: range.lowerBound, end: range.upperBound, calendars: holidayCalendars)
+        return eventStore.events(matching: predicate)
+    }
+
+    /// 임의 범위의 일반 이벤트 (공휴일 제외)
+    func fetchAllNormalEvents(in range: ClosedRange<Date>) -> [EKEvent] {
+        guard isFullAccess else { return [] }
+        let nonHolidayCalendars = eventStore.calendars(for: .event).filter {
+            !$0.title.contains("공휴일") && !$0.title.lowercased().contains("holiday")
+        }
+        let predicate = eventStore.predicateForEvents(withStart: range.lowerBound, end: range.upperBound, calendars: nonHolidayCalendars)
+        return eventStore.events(matching: predicate)
+    }
+
     // date를 포함한 달에 이벤트가 있는 dates
     func fetchAllEventsThisMonth(date: Date) -> [Date]? {
         guard isFullAccess else { return nil }
